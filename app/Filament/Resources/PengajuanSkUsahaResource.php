@@ -28,6 +28,9 @@ class PengajuanSkUsahaResource extends Resource
 {
     protected static ?string $model = PengajuanSkUsaha::class;
 
+    protected static ?string $label = 'Pengajuan Surat Keterangan Usaha';
+    protected static ?string $pluralLabel = 'Pengajuan Surat Keterangan Usaha';
+
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     protected static ?string $navigationLabel = 'Surat Keterangan Usaha';
@@ -114,7 +117,13 @@ class PengajuanSkUsahaResource extends Resource
                 TextColumn::make('nama')->label('Nama'),
                 TextColumn::make('created_at')->label('Tanggal Pengajuan')->dateTime(),
                 TextColumn::make('updated_at')->label('Tanggal Diperbarui')->dateTime(),
-                TextColumn::make('pengajuan.statusPengajuan.status')->label('Status'),
+                TextColumn::make('pengajuan.statusPengajuan.status')->badge()
+                    ->color(fn(string $state): string => match ($state) {
+                        'Diserahkan' => 'warning',
+                        'Diproses' => 'info',
+                        'Disetujui' => 'success',
+                        'Ditolak' => 'danger',
+                    })->label('Status'),
             ])
             ->defaultSort('id', 'desc')
             ->filters([

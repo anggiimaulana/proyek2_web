@@ -10,7 +10,7 @@ class PengajuanSktmSekolah extends Model
 
     protected $fillable = [
         'hubungan',
-        'nama_ortu',
+        'nama',
         'nama_anak',
         'tempat_lahir',
         'tanggal_lahir',
@@ -39,5 +39,12 @@ class PengajuanSktmSekolah extends Model
     public function pengajuan()
     {
         return $this->morphOne(Pengajuan::class, 'detail');
+    }
+
+    protected static function booted()
+    {
+        static::deleting(function ($detail) {
+            $detail->pengajuan()->delete();
+        });
     }
 }

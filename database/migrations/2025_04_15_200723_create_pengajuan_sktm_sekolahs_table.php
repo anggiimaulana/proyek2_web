@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('pengajuan_sktm_sekolah', function (Blueprint $table) {
             $table->id();
             $table->foreignId('hubungan')->constrained('hubungan')->onDelete('cascade')->onUpdate('cascade');
-            $table->string('nama_ortu');
+            $table->string('nama');
             $table->string('nama_anak');
             $table->string('tempat_lahir');
             $table->date('tanggal_lahir');

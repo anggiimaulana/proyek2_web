@@ -47,4 +47,11 @@ class PengajuanSkpotBeasiswa extends Model
     {
         return $this->morphOne(Pengajuan::class, 'detail');
     }
+
+    protected static function booted()
+    {
+        static::deleting(function ($detail) {
+            $detail->pengajuan()->delete();
+        });
+    }
 }

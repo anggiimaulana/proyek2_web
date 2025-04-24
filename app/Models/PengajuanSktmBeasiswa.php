@@ -19,7 +19,7 @@ class PengajuanSktmBeasiswa extends Model
         'agama',
         'jk',
         'pekerjaan_anak',
-        'nama_ayah',
+        'nama',
         'nama_ibu',
         'pekerjaan_ortu',
         'file_kk',
@@ -53,5 +53,12 @@ class PengajuanSktmBeasiswa extends Model
     public function pengajuan()
     {
         return $this->morphOne(Pengajuan::class, 'detail');
+    }
+
+    protected static function booted()
+    {
+        static::deleting(function ($detail) {
+            $detail->pengajuan()->delete();
+        });
     }
 }

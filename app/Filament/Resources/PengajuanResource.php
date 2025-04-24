@@ -11,6 +11,7 @@ use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -58,7 +59,9 @@ class PengajuanResource extends Resource
             ->defaultSort('id', 'desc')
 
             ->filters([
-                //
+                SelectFilter::make('status')
+                    ->relationship('statusPengajuan', 'status')
+                    ->label('Status Pengajuan'),
             ])
             ->actions([
                 // Tables\Actions\EditAction::make(),

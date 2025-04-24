@@ -26,6 +26,9 @@ class PengajuanSktmSekolahResource extends Resource
 {
     protected static ?string $model = PengajuanSktmSekolah::class;
 
+    protected static ?string $label = 'Pengajuan Surat Keterangan Tidak Mampu - Sekolah';
+    protected static ?string $pluralLabel = 'Pengajuan Surat Keterangan Tidak Mampu - Sekolah';
+
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     protected static ?string $navigationLabel = 'SKTM - Sekolah';
@@ -41,7 +44,7 @@ class PengajuanSktmSekolahResource extends Resource
                     ->options(Hubungan::all()->pluck('jenis_hubungan', 'id'))
                     ->searchable()
                     ->required(),
-                TextInput::make('nama_ortu')
+                TextInput::make('nama')
                     ->label('Nama Lengkap Orang Tua')
                     ->required()
                     ->placeholder('Masukan nama lengkap orang tua kandung anak'),
@@ -83,7 +86,7 @@ class PengajuanSktmSekolahResource extends Resource
                     ->openable()
                     ->preserveFilenames()
                     ->directory('uploads/kk')
-                    ->disk('public'), // ✅ Disk public supaya bisa diakses
+                    ->disk('public'),
 
                 Select::make('pengajuan.status_pengajuan_id')
                     ->label('Status Pengajuan')
@@ -105,12 +108,17 @@ class PengajuanSktmSekolahResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('nama_anak')->label('Nama Anak'),
-                TextColumn::make('nama_ortu')->label('Nama Orang Tua'),
+                TextColumn::make('nama')->label('Nama Orang Tua'),
                 TextColumn::make('asal_sekolah')->label('Asal Sekolah'),
                 TextColumn::make('created_at')->label('Tanggal Pengajuan')->dateTime(),
                 TextColumn::make('updated_at')->label('Tanggal Diperbarui')->dateTime(),
-                TextColumn::make('pengajuan.statusPengajuan.status')->label('Status'),
-
+                TextColumn::make('pengajuan.statusPengajuan.status')->badge()
+                    ->color(fn(string $state): string => match ($state) {
+                        'Diserahkan' => 'warning',
+                        'Diproses' => 'info',
+                        'Disetujui' => 'success',
+                        'Ditolak' => 'danger',
+                    })->label('Status'),
             ])
             ->defaultSort('id', 'desc')
             ->filters([

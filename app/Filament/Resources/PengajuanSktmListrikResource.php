@@ -23,6 +23,9 @@ class PengajuanSktmListrikResource extends Resource
 {
     protected static ?string $model = PengajuanSktmListrik::class;
 
+    protected static ?string $label = 'Pengajuan Surat Keterangan Tidak Mampu - Listrik';
+    protected static ?string $pluralLabel = 'Pengajuan Surat Keterangan Tidak Mampu - Listrik';
+
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     protected static ?string $navigationLabel = 'SKTM - Listrik';
@@ -32,19 +35,19 @@ class PengajuanSktmListrikResource extends Resource
     public static function form(Form $form): Form
     {
         return $form->schema([
-            TextInput::make('nama')
-                ->label('Nama Lengkap')
-                ->required()
-                ->placeholder('Masukan nama lengkap'),
-            TextInput::make('nik')
-                ->label('NIK')
-                ->required()
-                ->placeholder('Masukan NIK secara lengkap'),
             Select::make('hubungan')
                 ->label('Hubungan Pemohon dengan Pemilik Akun')
                 ->options(Hubungan::all()->pluck('jenis_hubungan', 'id'))
                 ->searchable()
                 ->required(),
+            TextInput::make('nik')
+                ->label('NIK')
+                ->required()
+                ->placeholder('Masukan NIK secara lengkap'),
+            TextInput::make('nama')
+                ->label('Nama Lengkap')
+                ->required()
+                ->placeholder('Masukan nama lengkap'),
             Textarea::make('alamat')
                 ->label('Alamat')
                 ->required()
@@ -74,7 +77,7 @@ class PengajuanSktmListrikResource extends Resource
                 ->openable()
                 ->preserveFilenames()
                 ->directory('uploads/kk')
-                ->disk('public'), // ✅ Disk public supaya bisa diakses
+                ->disk('public'), // 
 
             Select::make('pengajuan.status_pengajuan_id')
                 ->label('Status Pengajuan')
@@ -100,8 +103,13 @@ class PengajuanSktmListrikResource extends Resource
                 TextColumn::make('nik')->label('NIK'),
                 TextColumn::make('created_at')->label('Tanggal Pengajuan')->dateTime(),
                 TextColumn::make('updated_at')->label('Tanggal Diperbarui')->dateTime(),
-                TextColumn::make('pengajuan.statusPengajuan.status')->label('Status'),
-
+                TextColumn::make('pengajuan.statusPengajuan.status')->badge()
+                    ->color(fn(string $state): string => match ($state) {
+                        'Diserahkan' => 'warning',
+                        'Diproses' => 'info',
+                        'Disetujui' => 'success',
+                        'Ditolak' => 'danger',
+                    })->label('Status'),
             ])
             ->defaultSort('id', 'desc')
             ->filters([

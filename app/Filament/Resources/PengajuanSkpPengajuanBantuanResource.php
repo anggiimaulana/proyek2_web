@@ -20,6 +20,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -29,6 +30,9 @@ class PengajuanSkpPengajuanBantuanResource extends Resource
     protected static ?string $model = PengajuanSkpPengajuanBantuan::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+
+    protected static ?string $label = 'Pengajuan Surat Keterangan Bantuan';
+    protected static ?string $pluralLabel = 'Pengajuan Surat Keterangan Bantuan';
 
     protected static ?string $navigationLabel = 'Surat Keterangan Pengajuan Bantuan';
 
@@ -107,7 +111,19 @@ class PengajuanSkpPengajuanBantuanResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-            ->columns([])
+            ->columns([
+                TextColumn::make('nama')->label('Nama'),
+                TextColumn::make('created_at')->label('Tanggal Pengajuan')->dateTime(),
+                TextColumn::make('updated_at')->label('Tanggal Diperbarui')->dateTime(),
+                TextColumn::make('pengajuan.statusPengajuan.status')->badge()
+                    ->color(fn(string $state): string => match ($state) {
+                        'Diserahkan' => 'warning',
+                        'Diproses' => 'info',
+                        'Disetujui' => 'success',
+                        'Ditolak' => 'danger',
+                    })->label('Status'),
+            ])
+            ->defaultSort('id', 'desc')
             ->filters([
                 //
             ])
