@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreignId('agama')->constrained('agama')->onDelete('cascade')->onUpdate('cascade');
             $table->foreignId('jk')->constrained('jenis_kelamin')->onDelete('cascade')->onUpdate('cascade');
             $table->foreignId('pekerjaan_anak')->constrained('pekerjaan')->onDelete('cascade')->onUpdate('cascade');
-            $table->string('nama_ayah');
+            $table->string('nama');
             $table->string('nama_ibu');
             $table->foreignId('pekerjaan_ortu')->constrained('pekerjaan')->onDelete('cascade')->onUpdate('cascade');
             $table->string('file_kk');

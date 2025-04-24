@@ -29,6 +29,9 @@ class PengajuanSkStatusResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    protected static ?string $label = 'Pengajuan Surat Keterangan Status';
+    protected static ?string $pluralLabel = 'Pengajuan Surat Keterangan Status';
+
     protected static ?string $navigationLabel = 'Surat Keterangan Status';
 
     protected static ?string $navigationGroup = 'Kelola Pengajuan';
@@ -107,7 +110,13 @@ class PengajuanSkStatusResource extends Resource
                 TextColumn::make('nama')->label('Nama'),
                 TextColumn::make('created_at')->label('Tanggal Pengajuan')->dateTime(),
                 TextColumn::make('updated_at')->label('Tanggal Diperbarui')->dateTime(),
-                TextColumn::make('pengajuan.statusPengajuan.status')->label('Status'),
+                TextColumn::make('pengajuan.statusPengajuan.status')->badge()
+                    ->color(fn(string $state): string => match ($state) {
+                        'Diserahkan' => 'warning',
+                        'Diproses' => 'info',
+                        'Disetujui' => 'success',
+                        'Ditolak' => 'danger',
+                    })->label('Status'),
             ])
             ->defaultSort('id', 'desc')
             ->filters([

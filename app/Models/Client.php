@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Hash;
 
 class Client extends Model
 {
@@ -24,6 +25,16 @@ class Client extends Model
         'nomor_telepon',
         'password',
     ];
+
+    public function setPasswordAttribute($value)
+    {
+        // Cek dulu apakah password-nya sudah di-hash atau belum
+        if (!Hash::needsRehash($value)) {
+            $value = Hash::make($value);
+        }
+
+        $this->attributes['password'] = $value;
+    }
 
     public function clientJenisKelamin()
     {

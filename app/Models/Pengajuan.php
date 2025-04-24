@@ -57,4 +57,13 @@ class Pengajuan extends Model
     {
         return $this->belongsTo(Kuwu::class, 'id_kuwu_updated');
     }
+
+    protected static function booted()
+    {
+        static::deleting(function ($pengajuan) {
+            if ($pengajuan->detail) {
+                $pengajuan->detail->delete();
+            }
+        });
+    }
 }

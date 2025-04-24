@@ -27,6 +27,9 @@ class PengajuanSkpotBeasiswaResource extends Resource
 {
     protected static ?string $model = PengajuanSkpotBeasiswa::class;
 
+    protected static ?string $label = 'Pengajuan Surat Keterangan Penghasilan Orang Tua';
+    protected static ?string $pluralLabel = 'Pengajuan Surat Keterangan Penghasilan Orang Tua';
+
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     protected static ?string $navigationLabel = 'Surat Keterangan Penghasilan Orang Tua';
@@ -108,12 +111,17 @@ class PengajuanSkpotBeasiswaResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('nama_anak')->label('Nama Anak'),
-                TextColumn::make('nama_ayah')->label('Nama Ayah'),
+                TextColumn::make('nama')->label('Nama Anak'),
+                TextColumn::make('nama_ortu')->label('Nama Ayah'),
                 TextColumn::make('created_at')->label('Tanggal Pengajuan')->dateTime(),
                 TextColumn::make('updated_at')->label('Tanggal Diperbarui')->dateTime(),
-                TextColumn::make('pengajuan.statusPengajuan.status')->label('Status'),
-
+                TextColumn::make('pengajuan.statusPengajuan.status')->badge()
+                    ->color(fn(string $state): string => match ($state) {
+                        'Diserahkan' => 'warning',
+                        'Diproses' => 'info',
+                        'Disetujui' => 'success',
+                        'Ditolak' => 'danger',
+                    })->label('Status'),
             ])
             ->defaultSort('id', 'desc')
             ->filters([

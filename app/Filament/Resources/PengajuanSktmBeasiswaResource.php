@@ -29,6 +29,9 @@ class PengajuanSktmBeasiswaResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    protected static ?string $label = 'Pengajuan Surat Keterangan Tidak Mampu - Beasiswa';
+    protected static ?string $pluralLabel = 'Pengajuan Surat Keterangan Tidak Mampu - Beasiswa';
+
     protected static ?string $navigationLabel = 'SKTM - Beasiswa';
 
     protected static ?string $navigationGroup = 'Kelola Pengajuan';
@@ -37,15 +40,15 @@ class PengajuanSktmBeasiswaResource extends Resource
     {
         return $form
             ->schema([
-                TextInput::make('nama_anak')
-                    ->label('Nama Lengkap Anak')
-                    ->required()
-                    ->placeholder('Masukan nama lengkap anak'),
                 Select::make('hubungan')
                     ->label('Hubungan Pemohon dengan Pemilik Akun')
                     ->options(Hubungan::all()->pluck('jenis_hubungan', 'id'))
                     ->searchable()
                     ->required(),
+                TextInput::make('nama_anak')
+                    ->label('Nama Lengkap Anak')
+                    ->required()
+                    ->placeholder('Masukan nama lengkap anak'),
                 TextInput::make('tempat_lahir')
                     ->label('Tempat Lahir Anak')
                     ->required()
@@ -75,7 +78,7 @@ class PengajuanSktmBeasiswaResource extends Resource
                     ->searchable()
                     ->required(),
 
-                TextInput::make('nama_ayah')
+                TextInput::make('nama')
                     ->label('Nama Ayah Kandung')
                     ->required()
                     ->placeholder('Masukan nama lengkap Ayah kandung anak'),
@@ -100,7 +103,7 @@ class PengajuanSktmBeasiswaResource extends Resource
                     ->openable()
                     ->preserveFilenames()
                     ->directory('uploads/kk')
-                    ->disk('public'), // ✅ Disk public supaya bisa diakses
+                    ->disk('public'),
 
                 Select::make('pengajuan.status_pengajuan_id')
                     ->label('Status Pengajuan')
@@ -122,11 +125,16 @@ class PengajuanSktmBeasiswaResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('nama_anak')->label('Nama Anak'),
-                TextColumn::make('nama_ayah')->label('Nama Ayah'),
+                TextColumn::make('nama')->label('Nama Ayah'),
                 TextColumn::make('created_at')->label('Tanggal Pengajuan')->dateTime(),
                 TextColumn::make('updated_at')->label('Tanggal Diperbarui')->dateTime(),
-                TextColumn::make('pengajuan.statusPengajuan.status')->label('Status'),
-
+                TextColumn::make('pengajuan.statusPengajuan.status')->badge()
+                    ->color(fn(string $state): string => match ($state) {
+                        'Diserahkan' => 'warning',
+                        'Diproses' => 'info',
+                        'Disetujui' => 'success',
+                        'Ditolak' => 'danger',
+                    })->label('Status'),
             ])
             ->defaultSort('id', 'desc')
 

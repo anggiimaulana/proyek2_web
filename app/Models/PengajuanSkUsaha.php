@@ -31,7 +31,7 @@ class PengajuanSkUsaha extends Model
     {
         return $this->belongsTo(JenisKelamin::class, 'jenis_kelamin');
     }
-    
+
     public function skUsahaPekerjaan()
     {
         return $this->belongsTo(Pekerjaan::class, 'nama_pekerjaan');
@@ -45,5 +45,12 @@ class PengajuanSkUsaha extends Model
     public function pengajuan()
     {
         return $this->morphOne(Pengajuan::class, 'detail');
+    }
+
+    protected static function booted()
+    {
+        static::deleting(function ($detail) {
+            $detail->pengajuan()->delete();
+        });
     }
 }
