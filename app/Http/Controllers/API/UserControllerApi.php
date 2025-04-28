@@ -3,41 +3,37 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use App\Models\Client;
+use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response as HttpFoundationResponse;
 
-class ClientControllerApi extends Controller
+class UserControllerApi extends Controller
 {
     public function index()
     {
-        $client = Client::orderBy('created_at', 'desc')->paginate(5);
+        $users = User::all();
         $response = [
             'error' => false,
-            'message' => 'Data Akun Masyarakat',
-            'data' => $client,
+            'message' => 'Data Akun Admin',
+            'data' => $users
         ];
+
         return response()->json($response, HttpFoundationResponse::HTTP_OK);
     }
 
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required',
-            'nik' => 'required|unique:client,nik',
-            'tempat_lahir' => 'required',
-            'tanggal_lahir' => 'required',
+            'nip' => 'required|unique:users,nip',
+            'nama' => 'required',
             'jk' => 'required',
-            'agama' => 'required',
-            'pendidikan' => 'required',
-            'pekerjaan' => 'required',
-            'alamat' => 'required',
             'status' => 'required',
-            'nomor_telepon' => 'required',
-            'password' => 'required',
+            'agama' => 'required',
+            'email' => 'required|unique:users,email',
+            'password' => 'required'
         ]);
 
         if ($validator->fails()) {
@@ -48,36 +44,35 @@ class ClientControllerApi extends Controller
         }
 
         try {
-            $client = Client::create($request->all());
-
+            $user = User::create($request->all());
             $response = [
                 'error' => false,
-                'message' => 'Data Akun Masyarakat Berhasil Ditambahkan',
-                'data' => $client
+                'message' => 'Data Akun Admin Berhasil Ditambahkan',
+                'data' => $user
             ];
 
             return response()->json($response, HttpFoundationResponse::HTTP_CREATED);
         } catch (QueryException $e) {
             return response()->json([
                 'error' => true,
-                'message' => 'Data Akun Masyarakat Gagal Ditambahkan',
-            ]);
+                'message' => 'Data Akun Admin Gagal Ditambahkan',
+            ], HttpFoundationResponse::HTTP_UNPROCESSABLE_ENTITY);
         }
     }
 
     public function show(string $id)
     {
         try {
-            $client = Client::where('id', $id)->firstOrFail();
+            $user = User::where('id', $id)->firstOrFail();
             return response()->json([
                 'error' => false,
-                'message' => 'Data Akun Masyarakat',
-                'data' => $client,
+                'message' => 'Data Akun Admin',
+                'data' => $user
             ]);
         } catch (ModelNotFoundException $e) {
             return response()->json([
                 'error' => true,
-                'message' => 'Data Akun Tidak Ditemukan',
+                'message' => 'Data Akun Admin Tidak Ditemukan',
             ], 404);
         }
     }
@@ -85,13 +80,13 @@ class ClientControllerApi extends Controller
     public function update(Request $request, string $id)
     {
         try {
-            $client = Client::findOrFail($id);
-            $client->update($request->all());
+            $user = User::findOrFail($id);
+            $user->update($request->all());
 
             return response()->json([
                 'error' => false,
-                'message' => 'Data Akun Masyarakat Berhasil Diperbarui',
-                'data' => $client,
+                'message' => 'Data Akun Admin Berhasil Diperbarui',
+                'data' => $user,
             ]);
         } catch (ModelNotFoundException $e) {
             return response()->json([
@@ -101,16 +96,14 @@ class ClientControllerApi extends Controller
         }
     }
 
-
     public function destroy(string $id)
     {
         try {
-            $client = Client::findOrFail($id);
-            $client->delete();
-
+            $user = User::findOrFail($id);
+            $user->delete();
             return response()->json([
                 'error' => false,
-                'message' => 'Data Akun Berhasil Dihapus',
+                'message' => 'Data Akun User Berhasil Dihapus',
             ]);
         } catch (ModelNotFoundException $e) {
             return response()->json([
