@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class PengajuanSkpPengajuanBantuan extends Model
 {
-    protected $table = 'pengajuan_skp_pengajuan_bantuan';
+    protected $table = 'pengajuan_skp_pengajuan_bantuans';
 
     protected $fillable = [
         'hubungan',

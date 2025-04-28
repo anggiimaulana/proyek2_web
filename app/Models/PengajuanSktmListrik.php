@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class PengajuanSktmListrik extends Model
 {
-    protected $table = 'pengajuan_sktm_listrik';
+    protected $table = 'pengajuan_sktm_listriks';
 
     protected $fillable = [
         'hubungan',

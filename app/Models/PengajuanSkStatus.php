@@ -9,7 +9,7 @@ class PengajuanSkStatus extends Model
 {
     use HasFactory;
 
-    protected $table = 'pengajuan_sk_status';
+    protected $table = 'pengajuan_sk_statuses';
 
     protected $fillable = [
         'hubungan',

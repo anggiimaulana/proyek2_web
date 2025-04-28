@@ -9,6 +9,9 @@ use App\Http\Controllers\API\KategoriPengajuanControllerApi;
 use App\Http\Controllers\API\KuwuControllerApi;
 use App\Http\Controllers\API\PekerjaanControllerApi;
 use App\Http\Controllers\API\PendidikanControllerApi;
+use App\Http\Controllers\API\PengajuanSkBelumMenikahControllerApi;
+use App\Http\Controllers\API\PengajuanSkPekerjaanControllerApi;
+use App\Http\Controllers\API\PengajuanSkpotBeasiswaControllerApi;
 use App\Http\Controllers\API\PenghasilanControllerApi;
 use App\Http\Controllers\API\StatusPengajuanControllerApi;
 use App\Http\Controllers\API\StatusPerkawinanControllerApi;
@@ -52,3 +55,24 @@ Route::get('/kategori_pengajuan', [KategoriPengajuanControllerApi::class, 'index
 Route::get('/kategori_bantuan', [KategoriBantuanControllerApi::class, 'index']);
 Route::get('/penghasilan', [PenghasilanControllerApi::class, 'index']);
 Route::get('/status_pengajuan', [StatusPengajuanControllerApi::class, 'index']);
+
+// Pengajuan skbm
+Route::get('/skbm', [PengajuanSkBelumMenikahControllerApi::class, 'index']);
+Route::get('/skbm/{id}', [PengajuanSkBelumMenikahControllerApi::class, 'show']);
+Route::post('/skbm', [PengajuanSkBelumMenikahControllerApi::class, 'store']);
+Route::put('/skbm/{id}', [PengajuanSkBelumMenikahControllerApi::class, 'update']);
+Route::delete('/skbm/{id}', [PengajuanSkBelumMenikahControllerApi::class, 'destroy']);
+
+// Pengajuan skp
+Route::get('/skp', [PengajuanSkPekerjaanControllerApi::class, 'index']);
+Route::get('/skp/{id}', [PengajuanSkPekerjaanControllerApi::class, 'show']);
+Route::post('/skp', [PengajuanSkPekerjaanControllerApi::class, 'store']);
+Route::put('/skp/{id}', [PengajuanSkPekerjaanControllerApi::class, 'update']);
+Route::delete('/skp/{id}', [PengajuanSkPekerjaanControllerApi::class, 'destroy']);
+
+// Pengajuan skpot
+Route::get('/skpot', [PengajuanSkpotBeasiswaControllerApi::class, 'index']);
+Route::get('/skpot/{id}', [PengajuanSkpotBeasiswaControllerApi::class, 'show']);
+Route::post('/skpot', [PengajuanSkpotBeasiswaControllerApi::class, 'store']);
+Route::put('/skpot/{id}', [PengajuanSkpotBeasiswaControllerApi::class, 'update']);
+Route::delete('/skpot/{id}', [PengajuanSkpotBeasiswaControllerApi::class, 'destroy']);
