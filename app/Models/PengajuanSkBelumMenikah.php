@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class PengajuanSkBelumMenikah extends Model
 {
     use HasFactory;
-    protected $table = 'pengajuan_sk_belum_menikah';
+    protected $table = 'pengajuan_sk_belum_menikahs';
 
     protected $fillable = [
         'hubungan',
@@ -23,27 +23,27 @@ class PengajuanSkBelumMenikah extends Model
         'file_kk',
     ];
 
-    public function skBelumMenikahHubungan()
+    public function hubunganPengaju()
     {
         return $this->belongsTo(Hubungan::class, 'hubungan');
     }
 
-    public function skBelumMenikahJenisKelamin()
+    public function jenisKelaminPengaju()
     {
         return $this->belongsTo(JenisKelamin::class, 'jk');
     }
 
-    public function skBelumMenikahAgama()
+    public function agamaPengaju()
     {
         return $this->belongsTo(Agama::class, 'agama');
     }
 
-    public function skBelumMenikahPekerjaan()
+    public function pekerjaanPengaju()
     {
         return $this->belongsTo(Pekerjaan::class, 'pekerjaan');
     }
 
-    public function skBelumMenikahStatusPerkawinan()
+    public function statusPerkawinanPengaju()
     {
         return $this->belongsTo(StatusPerkawinan::class, 'status_perkawinan');
     }

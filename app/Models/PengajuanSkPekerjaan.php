@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class PengajuanSkPekerjaan extends Model
 {
-    protected $table = 'pengajuan_sk_pekerjaan';
+    protected $table = 'pengajuan_sk_pekerjaans';
 
     protected $fillable = [
         'hubungan',
@@ -21,29 +21,33 @@ class PengajuanSkPekerjaan extends Model
         'file_kk',
     ];
 
-    public function hubungan()
+    public function hubunganPengaju()
     {
         return $this->belongsTo(Hubungan::class, 'hubungan');
     }
 
-    public function jenisKelamin()
+    public function jenisKelaminPengaju()
     {
         return $this->belongsTo(JenisKelamin::class, 'jk');
     }
 
-    public function statusPerkawinan()
+    public function statusPerkawinanPengaju()
     {
         return $this->belongsTo(StatusPerkawinan::class, 'status_perkawinan');
     }
 
-    public function pekerjaanTerdahulu()
+    public function pekerjaanTerdahuluPengaju()
     {
         return $this->belongsTo(Pekerjaan::class, 'pekerjaan_terdahulu');
     }
 
-    public function pekerjaanSekarang()
+    public function pekerjaanSekarangPengaju()
     {
         return $this->belongsTo(Pekerjaan::class, 'pekerjaan_sekarang');
+    }
+
+    public function agamaPengaju() {
+        return $this->belongsTo(Agama::class, 'agama');
     }
 
     public function pengajuan()

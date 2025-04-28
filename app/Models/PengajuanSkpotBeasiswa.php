@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class PengajuanSkpotBeasiswa extends Model
 {
     use HasFactory;
-    protected $table = 'pengajuan_skpot_beasiswa';
+    protected $table = 'pengajuan_skpot_beasiswas';
 
     protected $fillable = [
         'hubungan',
@@ -23,22 +23,22 @@ class PengajuanSkpotBeasiswa extends Model
         'file_kk',
     ];
 
-    public function skpotBeasiswaHubungan()
+    public function hubunganPengaju()
     {
         return $this->belongsTo(Hubungan::class, 'hubungan');
     }
 
-    public function skpotBeasiswaJk()
+    public function jkPpengaju()
     {
         return $this->belongsTo(JenisKelamin::class, 'jk');
     }
 
-    public function skpotBeasiswaAgama()
+    public function agamaPpengaju()
     {
         return $this->belongsTo(Agama::class, 'agama');
     }
 
-    public function skpotBeasiswaPenghasilan()
+    public function penghasilanPengaju()
     {
         return $this->belongsTo(Penghasilan::class, 'penghasilan');
     }
