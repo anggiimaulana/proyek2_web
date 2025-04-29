@@ -2,18 +2,14 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\ClientResource\Pages;
-use App\Filament\Resources\ClientResource\RelationManagers;
+use App\Filament\Resources\KuwuResource\Pages;
+use App\Filament\Resources\KuwuResource\RelationManagers;
 use App\Models\Agama;
-use App\Models\Client;
 use App\Models\JenisKelamin;
-use App\Models\Pekerjaan;
-use App\Models\Pendidikan;
+use App\Models\Kuwu;
 use App\Models\StatusPerkawinan;
 use Filament\Forms;
-use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -23,16 +19,16 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class ClientResource extends Resource
+class KuwuResource extends Resource
 {
-    protected static ?string $model = Client::class;
+    protected static ?string $model = Kuwu::class;
 
-    protected static ?string $label = 'Data Akun Masyarakat';
-    protected static ?string $pluralLabel = 'Data Akun Masyarakat';
+    protected static ?string $navigationIcon = 'heroicon-o-user-circle';
 
-    protected static ?string $navigationLabel = 'Data Akun Masyarakat';
+    protected static ?string $label = 'Data Akun Kuwu';
+    protected static ?string $pluralLabel = 'Data Akun Kuwu';
 
-    protected static ?string $navigationIcon = 'heroicon-o-user-group';
+    protected static ?string $navigationLabel = 'Data Akun Kuwu';
 
     protected static ?string $navigationGroup = 'Kelola Akun';
 
@@ -40,26 +36,20 @@ class ClientResource extends Resource
     {
         return $form
             ->schema([
-                TextInput::make('name')
+                TextInput::make('nama')
                     ->label('Nama Lengkap')
                     ->required()
                     ->placeholder('Masukan nama lengkap'),
-                TextInput::make('nik')
-                    ->label('NIK')
+                TextInput::make('nip')
+                    ->label('NIP')
                     ->required()
+                    ->numeric()
                     ->unique()
-                    ->helperText('Tuliskan NIK secara lengkap dan teliti')
+                    ->helperText('Tuliskan NIP secara lengkap dan teliti')
                     ->validationMessages([
-                        'unique' => 'NIK ini sudah terdaftar.',
+                        'unique' => 'NIP ini sudah terdaftar.',
                     ])
-                    ->placeholder('Masukan NIK'),
-                TextInput::make('tempat_lahir')
-                    ->label('Tempat Lahir')
-                    ->required()
-                    ->placeholder('Masukan tempat lahir'),
-                DatePicker::make('tanggal_lahir')
-                    ->label('Tangal Lahir')
-                    ->required(),
+                    ->placeholder('Masukan NIP'),
                 Select::make('jk')
                     ->label('Jenis Kelamin')
                     ->options(JenisKelamin::all()->pluck('jenis_kelamin', 'id'))
@@ -70,36 +60,22 @@ class ClientResource extends Resource
                     ->options(Agama::all()->pluck('nama_agama', 'id'))
                     ->searchable()
                     ->required(),
-                Select::make('pendidikan')
-                    ->label('Pendidikan Terakhir')
-                    ->options(Pendidikan::all()->pluck('jenis_pendidikan', 'id'))
-                    ->searchable()
-                    ->required(),
-                Select::make('pekerjaan')
-                    ->label('Pekerjaan')
-                    ->options(Pekerjaan::all()->pluck('nama_pekerjaan', 'id'))
-                    ->searchable()
-                    ->required(),
                 Select::make('status')
                     ->label('Status Perkawinan')
                     ->options(StatusPerkawinan::all()->pluck('status_perkawinan', 'id'))
                     ->searchable()
                     ->required(),
-                Textarea::make('alamat')
-                    ->label('Alamat')
+                TextInput::make('email')
+                    ->label('Alamat Email')
                     ->required()
-                    ->placeholder('Masukan alamat lengkap'),
-                TextInput::make('nomor_telepon')
-                    ->label('Nomor Telepon')
-                    ->required()
-                    ->numeric()
-                    ->placeholder('Masukan nomor telepon')
+                    ->email()
+                    ->placeholder('Masukan alamat email')
                     ->unique(ignoreRecord: true)
-                    ->rule('regex:/^08[0-9]{8,11}$/')
-                    ->helperText('Gunakan nomor yang aktif dan belum pernah digunakan sebelumnya.')
+                    ->rule('regex:/^[a-zA-Z0-9._%+-]+@gmail\.com$/')
+                    ->helperText('Gunakan email @gmail.com yang aktif dan belum pernah digunakan sebelumnya.')
                     ->validationMessages([
-                        'unique' => 'Nomor ini sudah terdaftar, silakan gunakan nomor lain.',
-                        'regex' => 'Format nomor tidak valid. Gunakan format 08xxx.',
+                        'unique' => 'Email ini sudah terdaftar, silakan gunakan email lain.',
+                        'regex' => 'Format email tidak valid. Gunakan email dengan domain @gmail.com',
                     ]),
                 TextInput::make('password')
                     ->label('Password')
@@ -113,10 +89,9 @@ class ClientResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('name')->label('Nama Lengkap'),
-                TextColumn::make('nik')->label('NIK'),
-                TextColumn::make('alamat')->label('Alamat'),
-                TextColumn::make('nomor_telepon')->label('Nomor Telepon'),
+                TextColumn::make('nama')->label('Nama Lengkap'),
+                TextColumn::make('nip')->label('NIP'),
+                TextColumn::make('email')->label('Email'),
                 TextColumn::make('created_at')->label('Tanggal Pendaftaran')->dateTime(),
             ])
             ->defaultSort('id', 'desc')
@@ -147,9 +122,9 @@ class ClientResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListClients::route('/'),
-            'create' => Pages\CreateClient::route('/create'),
-            'edit' => Pages\EditClient::route('/{record}/edit'),
+            'index' => Pages\ListKuwus::route('/'),
+            'create' => Pages\CreateKuwu::route('/create'),
+            'edit' => Pages\EditKuwu::route('/{record}/edit'),
         ];
     }
 }

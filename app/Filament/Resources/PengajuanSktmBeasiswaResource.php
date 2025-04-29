@@ -27,7 +27,7 @@ class PengajuanSktmBeasiswaResource extends Resource
 {
     protected static ?string $model = PengajuanSktmBeasiswa::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-megaphone';
 
     protected static ?string $label = 'Pengajuan Surat Keterangan Tidak Mampu - Beasiswa';
     protected static ?string $pluralLabel = 'Pengajuan Surat Keterangan Tidak Mampu - Beasiswa';
@@ -142,8 +142,11 @@ class PengajuanSktmBeasiswaResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-            ])
+                Tables\Actions\ActionGroup::make([
+                    Tables\Actions\EditAction::make()->label('Ubah'),
+                    Tables\Actions\DeleteAction::make()->label('Hapus'),
+                ])->label('Aksi'),
+            ])            
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),

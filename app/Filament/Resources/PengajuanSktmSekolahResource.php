@@ -29,7 +29,7 @@ class PengajuanSktmSekolahResource extends Resource
     protected static ?string $label = 'Pengajuan Surat Keterangan Tidak Mampu - Sekolah';
     protected static ?string $pluralLabel = 'Pengajuan Surat Keterangan Tidak Mampu - Sekolah';
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-academic-cap';
 
     protected static ?string $navigationLabel = 'SKTM - Sekolah';
 
@@ -125,7 +125,10 @@ class PengajuanSktmSekolahResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\ActionGroup::make([
+                    Tables\Actions\EditAction::make()->label('Ubah'),
+                    Tables\Actions\DeleteAction::make()->label('Hapus'),
+                ])->label('Aksi'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

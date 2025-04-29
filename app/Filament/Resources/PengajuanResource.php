@@ -39,6 +39,9 @@ class PengajuanResource extends Resource
     {
         return $table
             ->columns([
+                TextColumn::make('no')
+                    ->label('No')
+                    ->rowIndex(),
                 TextColumn::make('nama')
                     ->label('Nama Pengaju')
                     ->getStateUsing(function ($record) {
@@ -49,6 +52,7 @@ class PengajuanResource extends Resource
                 TextColumn::make('updated_at')->label('Tanggal Diperbarui')->dateTime(),
                 TextColumn::make('statusPengajuan.status')
                     ->badge()
+                    ->alignCenter()
                     ->color(fn(string $state): string => match ($state) {
                         'Diserahkan' => 'warning',
                         'Diproses' => 'info',
@@ -63,9 +67,15 @@ class PengajuanResource extends Resource
                     ->relationship('statusPengajuan', 'status')
                     ->label('Status Pengajuan'),
             ])
-            ->actions([
-                // Tables\Actions\EditAction::make(),
-            ])
+            // ->actions([
+            //     Tables\Actions\Action::make('download')
+            //         ->label('Unduh')
+            //         ->icon('heroicon-o-arrow-down-tray')
+            //         ->button() // biar jadi tombol
+            //         ->color(fn($record) => $record->statusPengajuan->status === 'Disetujui' ? 'success' : 'gray')
+            //         ->disabled(fn($record) => $record->statusPengajuan->status !== 'Disetujui')
+            //         ->url(fn($record) => route('home', $record), shouldOpenInNewTab: true),
+            // ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),

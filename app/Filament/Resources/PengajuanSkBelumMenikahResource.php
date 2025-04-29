@@ -30,7 +30,7 @@ class PengajuanSkBelumMenikahResource extends Resource
     protected static ?string $label = 'Pengajuan Surat Keterangan Belum Menikah';
     protected static ?string $pluralLabel = 'Pengajuan Surat Keterangan Belum Menikah';
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-user';
 
     protected static ?string $navigationLabel = 'Surat Keterangan Belum Menikah';
 
@@ -127,7 +127,10 @@ class PengajuanSkBelumMenikahResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\ActionGroup::make([
+                    Tables\Actions\EditAction::make()->label('Ubah'),
+                    Tables\Actions\DeleteAction::make()->label('Hapus'),
+                ])->label('Aksi'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
