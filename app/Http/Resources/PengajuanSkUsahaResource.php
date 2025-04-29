@@ -21,7 +21,7 @@ class PengajuanSkUsahaResource extends JsonResource
             'pekerjaan' => $this->pekerjaanPengaju->nama_pekerjaan ?? null,
             'alamat' => $this->alamat,
             'nama_usaha' => $this->nama_usaha,
-            'file_kk' => $this->file_kk,
+            'file_ktp' => $this->file_ktp,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

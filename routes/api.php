@@ -97,13 +97,6 @@ Route::post('/sks', [PengajuanSkStatusControllerApi::class, 'store']);
 Route::put('/sks/{id}', [PengajuanSkStatusControllerApi::class, 'update']);
 Route::delete('/sks/{id}', [PengajuanSkStatusControllerApi::class, 'destroy']);
 
-// Pengajuan skpot
-Route::get('/skpot', [PengajuanSkpotBeasiswaControllerApi::class, 'index']);
-Route::get('/skpot/{id}', [PengajuanSkpotBeasiswaControllerApi::class, 'show']);
-Route::post('/skpot', [PengajuanSkpotBeasiswaControllerApi::class, 'store']);
-Route::put('/skpot/{id}', [PengajuanSkpotBeasiswaControllerApi::class, 'update']);
-Route::delete('/skpot/{id}', [PengajuanSkpotBeasiswaControllerApi::class, 'destroy']);
-
 // Pengajuan sktm beasiswa
 Route::get('/sktm_beasiswa', [PengajuanSktmBeasiswaControllerApi::class, 'index']);
 Route::get('/sktm_beasiswa/{id}', [PengajuanSktmBeasiswaControllerApi::class, 'show']);

@@ -17,8 +17,8 @@ class PengajuanSktmListrikControllerApi extends Controller
     {
         $sktmListrik = PengajuanSktmListrik::with([
             'hubunganPengaju:id,jenis_hubungan',
-            'pekerjaan:id,nama_pekerjaan',
-            'penghasilan:id,rentang_penghasilan',
+            'pekerjaanPengaju:id,nama_pekerjaan',
+            'penghasilanPengaju:id,rentang_penghasilan',
         ])->orderBy('id', 'desc')->paginate(5);
 
         return PengajuanSktmListrikResource::collection($sktmListrik);
@@ -67,8 +67,8 @@ class PengajuanSktmListrikControllerApi extends Controller
         try {
             $sktmListrik = PengajuanSktmListrik::with([
                 'hubunganPengaju:id,jenis_hubungan',
-                'pekerjaan:id,nama_pekerjaan',
-                'penghasilan:id,rentang_penghasilan',
+                'pekerjaanPengaju:id,nama_pekerjaan',
+                'penghasilanPengaju:id,rentang_penghasilan',
             ])->findOrFail($id);
 
             return new PengajuanSktmListrikResource($sktmListrik);
@@ -88,8 +88,8 @@ class PengajuanSktmListrikControllerApi extends Controller
 
             return (new PengajuanSktmListrikResource($sktmListrik->load([
                 'hubunganPengaju:id,jenis_hubungan',
-                'pekerjaan:id,nama_pekerjaan',
-                'penghasilan:id,rentang_penghasilan',
+                'pekerjaanPengaju:id,nama_pekerjaan',
+                'penghasilanPengaju:id,rentang_penghasilan',
             ])))->additional([
                 'error' => false,
                 'message' => 'Pengajuan berhasil diperbarui'

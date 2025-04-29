@@ -17,7 +17,6 @@ class PengajuanSkPekerjaanResource extends JsonResource
             'tanggal_lahir' => $this->tanggal_lahir,
             'jk' => $this->jk,
             'status_perkawinan' => $this->status_perkawinan,
-            'agama' => $this->agama,
             'pekerjaan_terdahulu' => $this->pekerjaan_terdahulu,
             'pekerjaan_sekarang' => $this->pekerjaan_sekarang,
             'file_kk' => $this->file_kk,
