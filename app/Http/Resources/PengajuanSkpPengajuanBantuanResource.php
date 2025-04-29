@@ -7,13 +7,22 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class PengajuanSkpPengajuanBantuanResource extends JsonResource
 {
-    /**
-     * Transform the resource into an array.
-     *
-     * @return array<string, mixed>
-     */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->id,
+            'hubungan' => $this->hubunganPengaju->jenis_hubungan ?? null,
+            'nama' => $this->nama,
+            'tempat_lahir' => $this->tempat_lahir,
+            'tanggal_lahir' => $this->tanggal_lahir,
+            'jk' => $this->jenisKelaminPengaju->jenis_kelamin ?? null,
+            'agama' => $this->agamaPengaju->nama_agama ?? null,
+            'alamat' => $this->alamat,
+            'pekerjaan' => $this->pekerjaanPengaju->nama_pekerjaan ?? null,
+            'kategori_bantuan' => $this->kategoriBantuan->nama_kategori ?? null,
+            'file_kk' => $this->file_kk,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
+        ];
     }
 }
