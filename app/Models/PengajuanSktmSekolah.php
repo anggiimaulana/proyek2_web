@@ -23,17 +23,17 @@ class PengajuanSktmSekolah extends Model
 
     public function hubunganPengaju()
     {
-        return $this->belongsTo(Hubungan::class);
+        return $this->belongsTo(Hubungan::class, 'hubungan');
     }
 
     public function jenisKelaminPengaju()
     {
-        return $this->belongsTo(JenisKelamin::class);
+        return $this->belongsTo(JenisKelamin::class, 'jk');
     }
 
     public function agamaPengaju()
     {
-        return $this->belongsTo(Agama::class);
+        return $this->belongsTo(Agama::class, 'agama');
     }
 
     public function pengajuan()
