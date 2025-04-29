@@ -21,27 +21,27 @@ class PengajuanSkpPengajuanBantuan extends Model
         'file_kk',
     ];
 
-    public function skpBantuanHubungan()
+    public function hubunganPengaju()
     {
         return $this->belongsTo(Hubungan::class, 'hubungan');
     }
 
-    public function skpBantuanJenisKelamin()
+    public function jenisKelaminPengaju()
     {
         return $this->belongsTo(JenisKelamin::class, 'jk');
     }
 
-    public function skpBantuanAgama()
+    public function agamaPengaju()
     {
         return $this->belongsTo(Agama::class, 'agama');
     }
 
-    public function skpBantuanPekerjaan()
+    public function pekerjaanPengaju()
     {
         return $this->belongsTo(Pekerjaan::class, 'pekerjaan');
     }
 
-    public function skpBantuanKategoriBantuan()
+    public function kategoriBantuan()
     {
         return $this->belongsTo(KategoriBantuan::class, 'kategori_bantuan');
     }

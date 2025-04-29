@@ -25,27 +25,27 @@ class PengajuanSktmBeasiswa extends Model
         'file_kk',
     ];
 
-    public function sktmBeasiswaHubungan()
+    public function hubunganPengaju()
     {
         return $this->belongsTo(Hubungan::class, 'hubungan');
     }
 
-    public function sktmBeasiswaJk()
+    public function jenisKelaminPengaju()
     {
         return $this->belongsTo(JenisKelamin::class, 'jk');
     }
 
-    public function sktmBeasiswaAgama()
+    public function agamaPengaju()
     {
         return $this->belongsTo(Agama::class, 'agama');
     }
 
-    public function sktmBeasiswaPekerjaanOrtu()
+    public function pekerjaanOrtuPengaju()
     {
         return $this->belongsTo(Pekerjaan::class, 'pekerjaan_ortu');
     }
 
-    public function sktmBeasiswaPekerjaanAnak()
+    public function pekerjaanAnakPengaju()
     {
         return $this->belongsTo(Pekerjaan::class, 'pekerjaan_anak');
     }

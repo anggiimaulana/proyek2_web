@@ -19,17 +19,17 @@ class PengajuanSktmListrik extends Model
         'file_kk',
     ];
 
-    public function sktmListrikHubungan()
+    public function hubunganPengaju()
     {
         return $this->belongsTo(Hubungan::class, 'hubungan');
     }
 
-    public function sktmListrikPekerjaan()
+    public function pekerjaanPengaju()
     {
         return $this->belongsTo(Pekerjaan::class, 'pekerjaan');
     }
 
-    public function sktmListrikPenghasilan()
+    public function penghasilanPengaju()
     {
         return $this->belongsTo(Penghasilan::class, 'penghasilan');
     }

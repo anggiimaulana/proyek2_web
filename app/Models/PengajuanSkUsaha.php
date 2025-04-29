@@ -22,22 +22,22 @@ class PengajuanSkUsaha extends Model
         'file_ktp',
     ];
 
-    public function skUsahaHubungan()
+    public function hubunganPengaju()
     {
         return $this->belongsTo(Hubungan::class, 'hubungan');
     }
 
-    public function skUsahaJk()
+    public function jenisKelaminPengaju()
     {
         return $this->belongsTo(JenisKelamin::class, 'jenis_kelamin');
     }
 
-    public function skUsahaPekerjaan()
+    public function pekerjaanPengaju()
     {
         return $this->belongsTo(Pekerjaan::class, 'nama_pekerjaan');
     }
 
-    public function skUsahaStatusPerkawinan()
+    public function statusPerkawinanPengaju()
     {
         return $this->belongsTo(StatusPerkawinan::class, 'status_perkawinan');
     }

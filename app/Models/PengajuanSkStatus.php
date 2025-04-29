@@ -23,27 +23,27 @@ class PengajuanSkStatus extends Model
         'file_kk',
     ];
 
-    public function skStatusStatusPerkawinan()
+    public function statusPerkawinanPengaju()
     {
         return $this->belongsTo(StatusPerkawinan::class, 'status_perkawinan');
     }
 
-    public function skStatusHubungan()
+    public function hubunganPengaju()
     {
         return $this->belongsTo(Hubungan::class, 'hubungan');
     }
 
-    public function skStatusJenisKelamin()
+    public function jenisKelaminPengaju()
     {
         return $this->belongsTo(JenisKelamin::class, 'jk');
     }
 
-    public function skStatusAgama()
+    public function agamaPengaju()
     {
         return $this->belongsTo(Agama::class, 'agama');
     }
 
-    public function skStatusPekerjaan()
+    public function pekerjaanPengaju()
     {
         return $this->belongsTo(Pekerjaan::class, 'pekerjaan');
     }

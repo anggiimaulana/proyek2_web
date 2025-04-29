@@ -21,17 +21,17 @@ class PengajuanSktmSekolah extends Model
         'file_kk',
     ];
 
-    public function sktmSekolahHubungan()
+    public function hubunganPengaju()
     {
         return $this->belongsTo(Hubungan::class);
     }
 
-    public function sktmSekolahJenisKelamin()
+    public function jenisKelaminPengaju()
     {
         return $this->belongsTo(JenisKelamin::class);
     }
 
-    public function sktmSekolahAgama()
+    public function agamaPengaju()
     {
         return $this->belongsTo(Agama::class);
     }

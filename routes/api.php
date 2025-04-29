@@ -12,6 +12,12 @@ use App\Http\Controllers\API\PendidikanControllerApi;
 use App\Http\Controllers\API\PengajuanSkBelumMenikahControllerApi;
 use App\Http\Controllers\API\PengajuanSkPekerjaanControllerApi;
 use App\Http\Controllers\API\PengajuanSkpotBeasiswaControllerApi;
+use App\Http\Controllers\API\PengajuanSkpPengajuanBantuanControllerApi;
+use App\Http\Controllers\API\PengajuanSkStatusControllerApi;
+use App\Http\Controllers\API\PengajuanSktmBeasiswaControllerApi;
+use App\Http\Controllers\API\PengajuanSktmListrikControllerApi;
+use App\Http\Controllers\API\PengajuanSktmSekolahControllerApi;
+use App\Http\Controllers\API\PengajuanSkUsahaControllerApi;
 use App\Http\Controllers\API\PenghasilanControllerApi;
 use App\Http\Controllers\API\StatusPengajuanControllerApi;
 use App\Http\Controllers\API\StatusPerkawinanControllerApi;
@@ -76,3 +82,52 @@ Route::get('/skpot/{id}', [PengajuanSkpotBeasiswaControllerApi::class, 'show']);
 Route::post('/skpot', [PengajuanSkpotBeasiswaControllerApi::class, 'store']);
 Route::put('/skpot/{id}', [PengajuanSkpotBeasiswaControllerApi::class, 'update']);
 Route::delete('/skpot/{id}', [PengajuanSkpotBeasiswaControllerApi::class, 'destroy']);
+
+// Pengajuan skp bantuan
+Route::get('/skp_bantuan', [PengajuanSkpPengajuanBantuanControllerApi::class, 'index']);
+Route::get('/skp_bantuan/{id}', [PengajuanSkpPengajuanBantuanControllerApi::class, 'show']);
+Route::post('/skp_bantuan', [PengajuanSkpPengajuanBantuanControllerApi::class, 'store']);
+Route::put('/skp_bantuan/{id}', [PengajuanSkpPengajuanBantuanControllerApi::class, 'update']);
+Route::delete('/skp_bantuan/{id}', [PengajuanSkpPengajuanBantuanControllerApi::class, 'destroy']);
+
+// Pengajuan sks
+Route::get('/sks', [PengajuanSkStatusControllerApi::class, 'index']);
+Route::get('/sks/{id}', [PengajuanSkStatusControllerApi::class, 'show']);
+Route::post('/sks', [PengajuanSkStatusControllerApi::class, 'store']);
+Route::put('/sks/{id}', [PengajuanSkStatusControllerApi::class, 'update']);
+Route::delete('/sks/{id}', [PengajuanSkStatusControllerApi::class, 'destroy']);
+
+// Pengajuan skpot
+Route::get('/skpot', [PengajuanSkpotBeasiswaControllerApi::class, 'index']);
+Route::get('/skpot/{id}', [PengajuanSkpotBeasiswaControllerApi::class, 'show']);
+Route::post('/skpot', [PengajuanSkpotBeasiswaControllerApi::class, 'store']);
+Route::put('/skpot/{id}', [PengajuanSkpotBeasiswaControllerApi::class, 'update']);
+Route::delete('/skpot/{id}', [PengajuanSkpotBeasiswaControllerApi::class, 'destroy']);
+
+// Pengajuan sktm beasiswa
+Route::get('/sktm_beasiswa', [PengajuanSktmBeasiswaControllerApi::class, 'index']);
+Route::get('/sktm_beasiswa/{id}', [PengajuanSktmBeasiswaControllerApi::class, 'show']);
+Route::post('/sktm_beasiswa', [PengajuanSktmBeasiswaControllerApi::class, 'store']);
+Route::put('/sktm_beasiswa/{id}', [PengajuanSktmBeasiswaControllerApi::class, 'update']);
+Route::delete('/sktm_beasiswa/{id}', [PengajuanSktmBeasiswaControllerApi::class, 'destroy']);
+
+// Pengajuan sktm listrik
+Route::get('/sktm_listrik', [PengajuanSktmListrikControllerApi::class, 'index']);
+Route::get('/sktm_listrik/{id}', [PengajuanSktmListrikControllerApi::class, 'show']);
+Route::post('/sktm_listrik', [PengajuanSktmListrikControllerApi::class, 'store']);
+Route::put('/sktm_listrik/{id}', [PengajuanSktmListrikControllerApi::class, 'update']);
+Route::delete('/sktm_listrik/{id}', [PengajuanSktmListrikControllerApi::class, 'destroy']);
+
+// Pengajuan sktm sekolah
+Route::get('/sktm_sekolah', [PengajuanSktmSekolahControllerApi::class, 'index']);
+Route::get('/sktm_sekolah/{id}', [PengajuanSktmSekolahControllerApi::class, 'show']);
+Route::post('/sktm_sekolah', [PengajuanSktmSekolahControllerApi::class, 'store']);
+Route::put('/sktm_sekolah/{id}', [PengajuanSktmSekolahControllerApi::class, 'update']);
+Route::delete('/sktm_sekolah/{id}', [PengajuanSktmSekolahControllerApi::class, 'destroy']);
+
+// Pengajuan sk usaha
+Route::get('/sku', [PengajuanSkUsahaControllerApi::class, 'index']);
+Route::get('/sku/{id}', [PengajuanSkUsahaControllerApi::class, 'show']);
+Route::post('/sku', [PengajuanSkUsahaControllerApi::class, 'store']);
+Route::put('/sku/{id}', [PengajuanSkUsahaControllerApi::class, 'update']);
+Route::delete('/sku/{id}', [PengajuanSkUsahaControllerApi::class, 'destroy']);
