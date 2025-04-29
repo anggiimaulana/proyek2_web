@@ -15,7 +15,6 @@ class PengajuanSkPekerjaan extends Model
         'tanggal_lahir',
         'jk',
         'status_perkawinan',
-        'agama',
         'pekerjaan_terdahulu',
         'pekerjaan_sekarang',
         'file_kk',

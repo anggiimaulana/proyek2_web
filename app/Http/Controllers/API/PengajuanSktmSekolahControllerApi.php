@@ -20,6 +20,8 @@ class PengajuanSktmSekolahControllerApi extends Controller
             'jenisKelaminPengaju:id,jenis_kelamin',
             'agamaPengaju:id,nama_agama',
         ])->orderBy('id', 'desc')->paginate(5);
+
+        return PengajuanSktmSekolahResource::collection($sktmSekolah);
     }
 
     public function store(Request $request)

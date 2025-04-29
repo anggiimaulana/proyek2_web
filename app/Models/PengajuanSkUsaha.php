@@ -29,12 +29,12 @@ class PengajuanSkUsaha extends Model
 
     public function jenisKelaminPengaju()
     {
-        return $this->belongsTo(JenisKelamin::class, 'jenis_kelamin');
+        return $this->belongsTo(JenisKelamin::class, 'jk');
     }
 
     public function pekerjaanPengaju()
     {
-        return $this->belongsTo(Pekerjaan::class, 'nama_pekerjaan');
+        return $this->belongsTo(Pekerjaan::class, 'pekerjaan');
     }
 
     public function statusPerkawinanPengaju()

@@ -38,7 +38,7 @@ class PengajuanSkUsahaControllerApi extends Controller
             'pekerjaan' => 'required',
             'alamat' => 'required',
             'nama_usaha' => 'required',
-            'file_kk' => 'required',
+            'file_ktp' => 'required',
         ]);
 
         if ($validator->fails()) {
