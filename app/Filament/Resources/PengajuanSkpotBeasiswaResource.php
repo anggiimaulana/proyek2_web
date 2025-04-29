@@ -30,7 +30,7 @@ class PengajuanSkpotBeasiswaResource extends Resource
     protected static ?string $label = 'Pengajuan Surat Keterangan Penghasilan Orang Tua';
     protected static ?string $pluralLabel = 'Pengajuan Surat Keterangan Penghasilan Orang Tua';
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-credit-card';
 
     protected static ?string $navigationLabel = 'Surat Keterangan Penghasilan Orang Tua';
 
@@ -128,7 +128,10 @@ class PengajuanSkpotBeasiswaResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\ActionGroup::make([
+                    Tables\Actions\EditAction::make()->label('Ubah'),
+                    Tables\Actions\DeleteAction::make()->label('Hapus'),
+                ])->label('Aksi'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

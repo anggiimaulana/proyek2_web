@@ -26,7 +26,7 @@ class PengajuanSktmListrikResource extends Resource
     protected static ?string $label = 'Pengajuan Surat Keterangan Tidak Mampu - Listrik';
     protected static ?string $pluralLabel = 'Pengajuan Surat Keterangan Tidak Mampu - Listrik';
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-bolt';
 
     protected static ?string $navigationLabel = 'SKTM - Listrik';
 
@@ -116,8 +116,11 @@ class PengajuanSktmListrikResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-            ])
+                Tables\Actions\ActionGroup::make([
+                    Tables\Actions\EditAction::make()->label('Ubah'),
+                    Tables\Actions\DeleteAction::make()->label('Hapus'),
+                ])->label('Aksi'),
+            ])            
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),

@@ -27,7 +27,7 @@ class PengajuanSkStatusResource extends Resource
 {
     protected static ?string $model = PengajuanSkStatus::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-identification';
 
     protected static ?string $label = 'Pengajuan Surat Keterangan Status';
     protected static ?string $pluralLabel = 'Pengajuan Surat Keterangan Status';
@@ -123,8 +123,11 @@ class PengajuanSkStatusResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-            ])
+                Tables\Actions\ActionGroup::make([
+                    Tables\Actions\EditAction::make()->label('Ubah'),
+                    Tables\Actions\DeleteAction::make()->label('Hapus'),
+                ])->label('Aksi'),
+            ])            
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
