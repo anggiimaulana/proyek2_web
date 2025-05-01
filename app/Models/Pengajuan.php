@@ -11,6 +11,8 @@ class Pengajuan extends Model
 
     protected $table = 'pengajuans';
 
+    public $timestamps = false;
+
     protected $fillable = [
         'id_user_pengajuan',
         'id_admin',

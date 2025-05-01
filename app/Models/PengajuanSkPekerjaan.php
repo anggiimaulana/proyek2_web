@@ -10,6 +10,7 @@ class PengajuanSkPekerjaan extends Model
 
     protected $fillable = [
         'hubungan',
+        'nik',
         'nama',
         'tempat_lahir',
         'tanggal_lahir',
@@ -17,6 +18,7 @@ class PengajuanSkPekerjaan extends Model
         'status_perkawinan',
         'pekerjaan_terdahulu',
         'pekerjaan_sekarang',
+        'alamat',
         'file_kk',
     ];
 

@@ -22,6 +22,7 @@ return new class extends Migration
             $table->foreignId('agama')->constrained('agama')->onDelete('cascade')->onUpdate('cascade');
             $table->foreignId('pekerjaan')->constrained('pekerjaan')->onDelete('cascade')->onUpdate('cascade');
             $table->foreignId('status_perkawinan')->constrained('status_perkawinan')->onDelete('cascade')->onUpdate('cascade');
+            $table->string('alamat');
             $table->string('file_kk');
             $table->timestamps();
         });

@@ -12,7 +12,7 @@ class KuwuSeeder extends Seeder
     {
         Kuwu::factory()->create([
             'nip' => '1234567890',
-            'nama' => 'Anggi Maulana',
+            'nama' => 'Bayu Kurniawan',
             'jk' => 1, 
             'status' => 1,
             'agama' => 1,

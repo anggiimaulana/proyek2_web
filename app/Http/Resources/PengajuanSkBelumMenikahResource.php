@@ -21,6 +21,7 @@ class PengajuanSkBelumMenikahResource extends JsonResource
             'status_perkawinan' => $this->statusPerkawinanPengaju->status_perkawinan ?? null,
             'hubungan' => $this->hubunganPengaju->jenis_hubungan ?? null,
             'file_kk' => $this->file_kk,
+            'alamat' => $this->alamat,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

@@ -114,10 +114,14 @@ class PengajuanSkUsahaResource extends Resource
     {
         return $table
             ->columns([
+                TextColumn::make('no')
+                    ->label('No')
+                    ->rowIndex(),
                 TextColumn::make('nama')->label('Nama'),
                 TextColumn::make('created_at')->label('Tanggal Pengajuan')->dateTime(),
                 TextColumn::make('updated_at')->label('Tanggal Diperbarui')->dateTime(),
                 TextColumn::make('pengajuan.statusPengajuan.status')->badge()
+                    ->alignCenter()
                     ->color(fn(string $state): string => match ($state) {
                         'Diserahkan' => 'warning',
                         'Diproses' => 'info',
@@ -131,10 +135,17 @@ class PengajuanSkUsahaResource extends Resource
             ])
             ->actions([
                 Tables\Actions\ActionGroup::make([
-                    Tables\Actions\EditAction::make()->label('Ubah'),
-                    Tables\Actions\DeleteAction::make()->label('Hapus'),
+                    Tables\Actions\EditAction::make()->label('Tinjau')->color('warning'),
+                    Tables\Actions\DeleteAction::make()->label('Hapus')->color('danger'),
                 ])->label('Aksi'),
-            ])            
+                Tables\Actions\Action::make('download')
+                    ->label('Unduh')
+                    ->icon('heroicon-o-arrow-down-tray')
+                    ->button()
+                    ->color(fn($record) => $record->pengajuan->statusPengajuan->status === 'Disetujui' ? 'info' : 'gray')
+                    ->disabled(fn($record) => $record->pengajuan->statusPengajuan->status !== 'Disetujui')
+                    ->url(fn($record) => route('exportPdfSkUsaha', $record), shouldOpenInNewTab: true),
+            ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),

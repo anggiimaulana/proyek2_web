@@ -30,6 +30,10 @@ class JenisKelamin extends Model
         return $this->hasMany(PengajuanSktmBeasiswa::class, 'jk');
     }
 
+    public function sktmListrik() {
+        return $this->hasMany(PengajuanSktmListrik::class, 'jk');
+    }
+
     public function skStatus() {
         return $this->hasMany(PengajuanSkStatus::class, 'jk');
     }

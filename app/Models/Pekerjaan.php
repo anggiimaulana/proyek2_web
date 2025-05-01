@@ -52,6 +52,10 @@ class Pekerjaan extends Model
         return $this->hasMany(PengajuanSktmListrik::class, 'pekerjaan');
     }
 
+    public function pengajuanSktmSekolah() {
+        return $this->hasMany(PengajuanSktmSekolah::class, 'pekerjaan');
+    }
+
     public function pengajuanSkUsaha() {
         return $this->hasMany(PengajuanSkUsaha::class, 'pekerjaan');
     }

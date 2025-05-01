@@ -17,7 +17,9 @@ return new class extends Migration
             $table->date('tanggal_lahir');
             $table->foreignId('jk')->constrained('jenis_kelamin')->onDelete('cascade')->onUpdate('cascade');
             $table->foreignId('agama')->constrained('agama')->onDelete('cascade')->onUpdate('cascade');
+            $table->string('alamat');
             $table->string('nama_ortu');
+            $table->foreignId('pekerjaan')->constrained('pekerjaan')->onDelete('cascade')->onUpdate('cascade');
             $table->foreignId('penghasilan')->constrained('penghasilan')->onDelete('cascade')->onUpdate('cascade');
             $table->string('file_kk');
             $table->timestamps();

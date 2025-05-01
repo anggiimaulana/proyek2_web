@@ -15,7 +15,7 @@ class UserSeeder extends Seeder
     {
         User::factory()->create([
             'nip' => '1234567890',
-            'name' => 'Anggi Maulana',
+            'name' => 'Erwan Wijaya',
             'jk' => 1, // Laki-laki
             'status' => 1, // Belum Menikah
             'agama' => 1, // Islam

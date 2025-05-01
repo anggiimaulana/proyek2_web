@@ -20,6 +20,7 @@ class PengajuanSkStatus extends Model
         'agama',
         'pekerjaan',
         'status_perkawinan',
+        'alamat',
         'file_kk',
     ];
 
