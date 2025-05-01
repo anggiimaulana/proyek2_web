@@ -48,8 +48,8 @@ class PengajuanResource extends Resource
                         return $record->detail?->nama ?? $record->detail?->name ?? '-';
                     }),
                 TextColumn::make('kategoriPengajuan.nama_kategori')->label('Jenis Pengajuan'),
-                TextColumn::make('created_at')->label('Tanggal Pengajuan')->dateTime(),
-                TextColumn::make('updated_at')->label('Tanggal Diperbarui')->dateTime(),
+                TextColumn::make('detail.created_at')->label('Tanggal Pengajuan')->dateTime(),
+                TextColumn::make('detail.updated_at')->label('Tanggal Diperbarui')->dateTime(),
                 TextColumn::make('statusPengajuan.status')
                     ->badge()
                     ->alignCenter()
@@ -67,15 +67,9 @@ class PengajuanResource extends Resource
                     ->relationship('statusPengajuan', 'status')
                     ->label('Status Pengajuan'),
             ])
-            // ->actions([
-            //     Tables\Actions\Action::make('download')
-            //         ->label('Unduh')
-            //         ->icon('heroicon-o-arrow-down-tray')
-            //         ->button() // biar jadi tombol
-            //         ->color(fn($record) => $record->statusPengajuan->status === 'Disetujui' ? 'success' : 'gray')
-            //         ->disabled(fn($record) => $record->statusPengajuan->status !== 'Disetujui')
-            //         ->url(fn($record) => route('home', $record), shouldOpenInNewTab: true),
-            // ])
+            ->actions([
+                // 
+            ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),

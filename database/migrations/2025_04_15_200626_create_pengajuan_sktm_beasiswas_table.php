@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('nama');
             $table->string('nama_ibu');
             $table->foreignId('pekerjaan_ortu')->constrained('pekerjaan')->onDelete('cascade')->onUpdate('cascade');
+            $table->string('alamat');
             $table->string('file_kk');
             $table->timestamps();
         });

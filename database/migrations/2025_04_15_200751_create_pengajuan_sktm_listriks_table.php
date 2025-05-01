@@ -17,6 +17,9 @@ return new class extends Migration
             $table->string('nama');
             $table->string('nik');
             $table->string('alamat');
+            $table->integer('umur');
+            $table->foreignId('jk')->constrained('jenis_kelamin')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignId('agama')->constrained('agama')->onDelete('cascade')->onUpdate('cascade');
             $table->foreignId('pekerjaan')->constrained('pekerjaan')->onDelete('cascade')->onUpdate('cascade');
             $table->foreignId('penghasilan')->constrained('penghasilan')->onDelete('cascade')->onUpdate('cascade');
             $table->string('nama_pln');

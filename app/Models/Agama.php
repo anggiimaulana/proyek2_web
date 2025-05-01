@@ -28,6 +28,10 @@ class Agama extends Model
         return $this->hasMany(PengajuanSkpotBeasiswa::class, 'agama');
     }
 
+    public function sktmListrik() {
+        return $this->hasMany(PengajuanSktmListrik::class, 'agama');
+    }
+
     public function sktmBeasiswa() {
         return $this->hasMany(PengajuanSktmBeasiswa::class, 'agama');
     }

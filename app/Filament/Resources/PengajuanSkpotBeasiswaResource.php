@@ -14,6 +14,7 @@ use Filament\Forms;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -75,12 +76,20 @@ class PengajuanSkpotBeasiswaResource extends Resource
                     ->required()
                     ->placeholder('Masukan nama orang tua'),
 
+                Select::make('pekerjaan')
+                    ->label('Pekerjaan Orang Tua')
+                    ->options(Pekerjaan::all()->pluck('nama_pekerjaan', 'id'))
+                    ->searchable()
+                    ->required(),
                 Select::make('penghasilan')
                     ->label('Penghasilan Orang Tua')
                     ->options(Penghasilan::all()->pluck('rentang_penghasilan', 'id'))
                     ->searchable()
                     ->required(),
-
+                Textarea::make('alamat')
+                    ->label('Alamat')
+                    ->required()
+                    ->placeholder('Masukan alamat'),
                 FileUpload::make('file_kk')
                     ->label('Upload File KK')
                     ->required()
@@ -111,11 +120,15 @@ class PengajuanSkpotBeasiswaResource extends Resource
     {
         return $table
             ->columns([
+                TextColumn::make('no')
+                    ->label('No')
+                    ->rowIndex(),
                 TextColumn::make('nama')->label('Nama Anak'),
                 TextColumn::make('nama_ortu')->label('Nama Ayah'),
                 TextColumn::make('created_at')->label('Tanggal Pengajuan')->dateTime(),
                 TextColumn::make('updated_at')->label('Tanggal Diperbarui')->dateTime(),
                 TextColumn::make('pengajuan.statusPengajuan.status')->badge()
+                    ->alignCenter()
                     ->color(fn(string $state): string => match ($state) {
                         'Diserahkan' => 'warning',
                         'Diproses' => 'info',
@@ -129,9 +142,16 @@ class PengajuanSkpotBeasiswaResource extends Resource
             ])
             ->actions([
                 Tables\Actions\ActionGroup::make([
-                    Tables\Actions\EditAction::make()->label('Ubah'),
-                    Tables\Actions\DeleteAction::make()->label('Hapus'),
+                    Tables\Actions\EditAction::make()->label('Tinjau')->color('warning'),
+                    Tables\Actions\DeleteAction::make()->label('Hapus')->color('danger'),
                 ])->label('Aksi'),
+                Tables\Actions\Action::make('download')
+                    ->label('Unduh')
+                    ->icon('heroicon-o-arrow-down-tray')
+                    ->button()
+                    ->color(fn($record) => $record->pengajuan->statusPengajuan->status === 'Disetujui' ? 'info' : 'gray')
+                    ->disabled(fn($record) => $record->pengajuan->statusPengajuan->status !== 'Disetujui')
+                    ->url(fn($record) => route('exportPdfSkpot', $record), shouldOpenInNewTab: true),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

@@ -22,6 +22,7 @@ class PengajuanSktmBeasiswa extends Model
         'nama',
         'nama_ibu',
         'pekerjaan_ortu',
+        'alamat',
         'file_kk',
     ];
 

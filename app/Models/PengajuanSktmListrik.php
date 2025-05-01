@@ -12,6 +12,9 @@ class PengajuanSktmListrik extends Model
         'hubungan',
         'nama',
         'nik',
+        'agama',
+        'umur',
+        'jk',
         'alamat',
         'pekerjaan',
         'penghasilan',
@@ -32,6 +35,16 @@ class PengajuanSktmListrik extends Model
     public function penghasilanPengaju()
     {
         return $this->belongsTo(Penghasilan::class, 'penghasilan');
+    }
+
+    public function jenisKelaminPengaju()
+    {
+        return $this->belongsTo(JenisKelamin::class, 'jk');
+    }
+
+    public function agamaPengaju()
+    {
+        return $this->belongsTo(Agama::class, 'agama');
     }
 
     public function pengajuan()

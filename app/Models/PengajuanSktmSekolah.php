@@ -11,6 +11,9 @@ class PengajuanSktmSekolah extends Model
     protected $fillable = [
         'hubungan',
         'nama',
+        'tempat_lahir_ortu',
+        'tanggal_lahir_ortu',
+        'pekerjaan',
         'nama_anak',
         'tempat_lahir',
         'tanggal_lahir',
@@ -18,6 +21,7 @@ class PengajuanSktmSekolah extends Model
         'agama',
         'asal_sekolah',
         'kelas',
+        'alamat',
         'file_kk',
     ];
 
@@ -34,6 +38,11 @@ class PengajuanSktmSekolah extends Model
     public function agamaPengaju()
     {
         return $this->belongsTo(Agama::class, 'agama');
+    }
+
+    public function pekerjaanPengaju()
+    {
+        return $this->belongsTo(Pekerjaan::class, 'pekerjaan');
     }
 
     public function pengajuan()

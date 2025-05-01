@@ -19,7 +19,9 @@ class PengajuanSkpotBeasiswa extends Model
         'jk',
         'agama',
         'nama_ortu',
+        'pekerjaan',
         'penghasilan',
+        'alamat',
         'file_kk',
     ];
 
@@ -28,12 +30,12 @@ class PengajuanSkpotBeasiswa extends Model
         return $this->belongsTo(Hubungan::class, 'hubungan');
     }
 
-    public function jkPpengaju()
+    public function jkPengaju()
     {
         return $this->belongsTo(JenisKelamin::class, 'jk');
     }
 
-    public function agamaPpengaju()
+    public function agamaPengaju()
     {
         return $this->belongsTo(Agama::class, 'agama');
     }
@@ -41,6 +43,11 @@ class PengajuanSkpotBeasiswa extends Model
     public function penghasilanPengaju()
     {
         return $this->belongsTo(Penghasilan::class, 'penghasilan');
+    }
+
+    public function pekerjaanPengaju()
+    {
+        return $this->belongsTo(Pekerjaan::class, 'pekerjaan');
     }
 
     public function pengajuan()
