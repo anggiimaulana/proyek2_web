@@ -37,6 +37,7 @@ class PengajuanSkStatusControllerApi extends Controller
             'agama' => 'required',
             'pekerjaan' => 'required',
             'status_perkawinan' => 'required',
+            'alamat' => 'required',
             'file_kk' => 'required',
         ]);
 

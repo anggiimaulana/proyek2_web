@@ -17,8 +17,9 @@ class PengajuanSkpotBeasiswaControllerApi extends Controller
     {
         $skpotBeasiswa = PengajuanSkpotBeasiswa::with([
             'hubunganPengaju:id,jenis_hubungan',
-            'jkPpengaju:id,jenis_kelamin',
-            'agamaPpengaju:id,nama_agama',
+            'pekerjaanPengaju:id,nama_pekerjaan',
+            'jkPengaju:id,jenis_kelamin',
+            'agamaPengaju:id,nama_agama',
             'penghasilanPengaju:id,rentang_penghasilan',
         ])->orderBy('id', 'desc')->paginate(5);
 
@@ -36,6 +37,8 @@ class PengajuanSkpotBeasiswaControllerApi extends Controller
             'jk' => 'required',
             'agama' => 'required',
             'nama_ortu' => 'required',
+            'pekerjaan' => 'required',
+            'alamat' => 'required',
             'penghasilan' => 'required',
             'file_kk' => 'required',
         ]);
@@ -70,8 +73,9 @@ class PengajuanSkpotBeasiswaControllerApi extends Controller
         try {
             $skpotBeasiswa = PengajuanSkpotBeasiswa::with([
                 'hubunganPengaju:id,jenis_hubungan',
-                'jkPpengaju:id,jenis_kelamin',
-                'agamaPpengaju:id,nama_agama',
+                'jkPengaju:id,jenis_kelamin',
+                'pekerjaanPengaju:id,nama_pekerjaan',
+                'agamaPengaju:id,nama_agama',
                 'penghasilanPengaju:id,rentang_penghasilan',
             ])->findOrFail($id);
 
@@ -92,8 +96,9 @@ class PengajuanSkpotBeasiswaControllerApi extends Controller
 
             return (new PengajuanSkpotBeasiswaResource($skpotBeasiswa->load([
                 'hubunganPengaju:id,jenis_hubungan',
-                'jkPpengaju:id,jenis_kelamin',
-                'agamaPpengaju:id,nama_agama',
+                'jkPengaju:id,jenis_kelamin',
+                'pekerjaanPengaju:id,nama_pekerjaan',
+                'agamaPengaju:id,nama_agama',
                 'penghasilanPengaju:id,rentang_penghasilan',
             ])))->additional([
                 'error' => false,

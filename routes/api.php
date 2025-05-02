@@ -84,12 +84,12 @@ Route::post('/skpot', [PengajuanSkpotBeasiswaControllerApi::class, 'store']);
 Route::put('/skpot/{id}', [PengajuanSkpotBeasiswaControllerApi::class, 'update']);
 Route::delete('/skpot/{id}', [PengajuanSkpotBeasiswaControllerApi::class, 'destroy']);
 
-// Pengajuan skp bantuan
-Route::get('/skp-bantuan', [PengajuanSkpPengajuanBantuanControllerApi::class, 'index']);
-Route::get('/skp-bantuan/{id}', [PengajuanSkpPengajuanBantuanControllerApi::class, 'show']);
-Route::post('/skp-bantuan', [PengajuanSkpPengajuanBantuanControllerApi::class, 'store']);
-Route::put('/skp-bantuan/{id}', [PengajuanSkpPengajuanBantuanControllerApi::class, 'update']);
-Route::delete('/skp-bantuan/{id}', [PengajuanSkpPengajuanBantuanControllerApi::class, 'destroy']);
+// // Pengajuan skp bantuan
+// Route::get('/skp-bantuan', [PengajuanSkpPengajuanBantuanControllerApi::class, 'index']);
+// Route::get('/skp-bantuan/{id}', [PengajuanSkpPengajuanBantuanControllerApi::class, 'show']);
+// Route::post('/skp-bantuan', [PengajuanSkpPengajuanBantuanControllerApi::class, 'store']);
+// Route::put('/skp-bantuan/{id}', [PengajuanSkpPengajuanBantuanControllerApi::class, 'update']);
+// Route::delete('/skp-bantuan/{id}', [PengajuanSkpPengajuanBantuanControllerApi::class, 'destroy']);
 
 // Pengajuan sks
 Route::get('/sks', [PengajuanSkStatusControllerApi::class, 'index']);
