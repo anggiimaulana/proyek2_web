@@ -19,6 +19,8 @@ class PengajuanSktmListrikControllerApi extends Controller
             'hubunganPengaju:id,jenis_hubungan',
             'pekerjaanPengaju:id,nama_pekerjaan',
             'penghasilanPengaju:id,rentang_penghasilan',
+            'agamaPengaju:id,nama_agama',
+            'jenisKelaminPengaju:id,jenis_kelamin',
         ])->orderBy('id', 'desc')->paginate(5);
 
         return PengajuanSktmListrikResource::collection($sktmListrik);
@@ -31,6 +33,9 @@ class PengajuanSktmListrikControllerApi extends Controller
             'nama' => 'required',
             'nik' => 'required',
             'alamat' => 'required',
+            'agama' => 'required',
+            'jk' => 'required',
+            'umur' => 'required',
             'pekerjaan' => 'required',
             'penghasilan' => 'required',
             'nama_pln' => 'required',
@@ -69,6 +74,8 @@ class PengajuanSktmListrikControllerApi extends Controller
                 'hubunganPengaju:id,jenis_hubungan',
                 'pekerjaanPengaju:id,nama_pekerjaan',
                 'penghasilanPengaju:id,rentang_penghasilan',
+                'agamaPengaju:id,nama_agama',
+                'jenisKelaminPengaju:id,jenis_kelamin',
             ])->findOrFail($id);
 
             return new PengajuanSktmListrikResource($sktmListrik);
@@ -90,6 +97,8 @@ class PengajuanSktmListrikControllerApi extends Controller
                 'hubunganPengaju:id,jenis_hubungan',
                 'pekerjaanPengaju:id,nama_pekerjaan',
                 'penghasilanPengaju:id,rentang_penghasilan',
+                'agamaPengaju:id,nama_agama',
+                'jenisKelaminPengaju:id,jenis_kelamin',
             ])))->additional([
                 'error' => false,
                 'message' => 'Pengajuan berhasil diperbarui'

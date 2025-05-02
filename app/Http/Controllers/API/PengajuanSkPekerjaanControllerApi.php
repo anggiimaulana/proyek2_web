@@ -18,7 +18,6 @@ class PengajuanSkPekerjaanControllerApi extends Controller
         $skPekerjaan = PengajuanSkPekerjaan::with([
             'hubunganPengaju:id,jenis_hubungan',
             'jenisKelaminPengaju:id,jenis_kelamin',
-            'agamaPengaju:id,nama_agama',
             'statusPerkawinanPengaju:id,status_perkawinan',
             'pekerjaanTerdahuluPengaju:id,nama_pekerjaan',
             'pekerjaanSekarangPengaju:id,nama_pekerjaan',
@@ -31,14 +30,15 @@ class PengajuanSkPekerjaanControllerApi extends Controller
     {
         $validator = Validator::make($request->all(), [
             'hubungan' => 'required',
+            'nik' => 'required',
             'nama' => 'required',
             'tempat_lahir' => 'required',
             'tanggal_lahir' => 'required|date',
             'jk' => 'required',
             'status_perkawinan' => 'required',
-            'agama' => 'required',
             'pekerjaan_terdahulu' => 'required',
             'pekerjaan_sekarang' => 'required',
+            'alamat' => 'required',
             'file_kk' => 'required',
         ]);
 

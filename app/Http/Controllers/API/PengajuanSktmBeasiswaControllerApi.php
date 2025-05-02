@@ -40,6 +40,7 @@ class PengajuanSktmBeasiswaControllerApi extends Controller
             'nama' => 'required',
             'nama_ibu' => 'required',
             'pekerjaan_ortu' => 'required',
+            'alamat' => 'required',
             'file_kk' => 'required',
         ]);
 

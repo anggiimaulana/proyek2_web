@@ -19,6 +19,7 @@ class PengajuanSkStatusResource extends JsonResource
             'agama' => $this->agamaPengaju->nama_agama ?? null,
             'status_perkawinan' => $this->statusPerkawinanPengaju->status_perkawinan ?? null,
             'pekerjaan' => $this->pekerjaanPengaju->nama_pekerjaan ?? null,
+            'alamat' => $this->alamat,
             'file_kk' => $this->file_kk,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,

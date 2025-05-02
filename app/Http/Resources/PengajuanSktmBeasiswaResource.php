@@ -23,6 +23,7 @@ class PengajuanSktmBeasiswaResource extends JsonResource
             'nama_ibu' => $this->nama_ibu,
             'pekerjaan_ortu' => $this->pekerjaanOrtuPengaju->nama_pekerjaan ?? null,
             'file_kk' => $this->file_kk,
+            'alamat' => $this->alamat,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

@@ -19,6 +19,7 @@ class PengajuanSktmSekolahControllerApi extends Controller
             'hubunganPengaju:id,jenis_hubungan',
             'jenisKelaminPengaju:id,jenis_kelamin',
             'agamaPengaju:id,nama_agama',
+            'pekerjaanPengaju:id,nama_pekerjaan',
         ])->orderBy('id', 'desc')->paginate(5);
 
         return PengajuanSktmSekolahResource::collection($sktmSekolah);
@@ -29,6 +30,9 @@ class PengajuanSktmSekolahControllerApi extends Controller
         $validator = Validator::make($request->all(), [
             'hubungan' => 'required',
             'nama' => 'required',
+            'tempat_lahir_ortu' => 'required',
+            'tanggal_lahir_ortu' => 'required|date',
+            'pekerjaan' => 'required',
             'nama_anak' => 'required',
             'tempat_lahir' => 'required',
             'tanggal_lahir' => 'required|date',
@@ -36,6 +40,7 @@ class PengajuanSktmSekolahControllerApi extends Controller
             'agama' => 'required',
             'asal_sekolah' => 'required',
             'kelas' => 'required',
+            'alamat' => 'required',
             'file_kk' => 'required',
         ]);
 
@@ -70,6 +75,7 @@ class PengajuanSktmSekolahControllerApi extends Controller
                 'hubunganPengaju:id,jenis_hubungan',
                 'jenisKelaminPengaju:id,jenis_kelamin',
                 'agamaPengaju:id,nama_agama',
+                'pekerjaanPengaju:id,nama_pekerjaan',
             ])->findOrFail($id);
 
             return new PengajuanSktmSekolahResource($sktmSekolah);
@@ -91,6 +97,7 @@ class PengajuanSktmSekolahControllerApi extends Controller
                 'hubunganPengaju:id,jenis_hubungan',
                 'jenisKelaminPengaju:id,jenis_kelamin',
                 'agamaPengaju:id,nama_agama',
+                'pekerjaanPengaju:id,nama_pekerjaan',
             ])))->additional([
                 'error' => false,
                 'message' => 'Pengajuan berhasil diperbarui'
