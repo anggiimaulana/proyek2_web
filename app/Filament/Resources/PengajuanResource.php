@@ -24,7 +24,7 @@ class PengajuanResource extends Resource
 
     public static function getNavigationBadge(): ?string
     {
-        return (string) Pengajuan::whereIn('status_pengajuan', [1, 2, 3])->count();
+        return (string) Pengajuan::whereIn('status_pengajuan', [1, 2, 3, 5])->count();
     }
 
     public static function form(Form $form): Form
@@ -58,6 +58,7 @@ class PengajuanResource extends Resource
                         'Diproses' => 'info',
                         'Disetujui' => 'success',
                         'Ditolak' => 'danger',
+                        'Direvisi' => 'primary',
                     })->label('Status Pengajuan'),
             ])
             ->defaultSort('id', 'desc')

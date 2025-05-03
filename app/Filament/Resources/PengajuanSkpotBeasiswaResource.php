@@ -92,16 +92,18 @@ class PengajuanSkpotBeasiswaResource extends Resource
                     ->placeholder('Masukan alamat'),
                 FileUpload::make('file_kk')
                     ->label('Upload File KK')
-                    ->required()
                     ->acceptedFileTypes(['image/jpeg', 'image/png', 'application/pdf', 'image/jpg'])
                     ->previewable(true)
                     ->downloadable()
                     ->openable()
                     ->preserveFilenames()
                     ->directory('uploads/kk')
-                    ->disk('public'), // ✅ Disk public supaya bisa diakses
+                    ->disk('public')
+                    ->nullable()
+                    ->dehydrated(false)
+                    ->hint('Kosongkan jika tidak ingin mengganti file'),
 
-                Select::make('pengajuan.status_pengajuan_id')
+                Select::make('pengajuan.status_pengajuan')
                     ->label('Status Pengajuan')
                     ->options(\App\Models\StatusPengajuan::all()->pluck('status', 'id'))
                     ->default(fn($record) => $record?->pengajuan?->status_pengajuan)
@@ -113,6 +115,14 @@ class PengajuanSkpotBeasiswaResource extends Resource
                             $record->pengajuan->save();
                         }
                     }),
+
+                Textarea::make('pengajuan.catatan')
+                    ->label('Catatan Penolakan')
+                    ->placeholder('Tulis alasan penolakan di sini...')
+                    ->required()
+                    ->rows(4)
+                    ->columnSpan('full')
+                    ->visible(fn($get) => (int) $get('pengajuan.status_pengajuan') === 3),
             ]);
     }
 
@@ -134,6 +144,7 @@ class PengajuanSkpotBeasiswaResource extends Resource
                         'Diproses' => 'info',
                         'Disetujui' => 'success',
                         'Ditolak' => 'danger',
+                        'Direvisi' => 'primary',
                     })->label('Status'),
             ])
             ->defaultSort('id', 'desc')

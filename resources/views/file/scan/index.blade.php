@@ -110,7 +110,7 @@
                     <p class="text-sm text-gray-500 mb-1">Link Detail Pengajuan</p>
                     <div class="flex flex-col items-center sm:items-start space-y-2">
                         <p id="urlText" class="text-blue-700 text-base break-words max-w-full">
-                            127.0.0.1:8000/{{ $url }}
+                            127.0.0.1:8000{{ $url }}
                         </p>
                         <button onclick="copyURL()"
                             class="bg-gray-200 hover:bg-gray-300 text-base px-3 py-1 rounded-md transition">
@@ -135,7 +135,7 @@
     <!-- Copy Script -->
     <script>
         function copyURL() {
-            const text = "127.0.0.1:8000/{{ $url }}";
+            const text = "127.0.0.1:8000{{ $url }}";
             navigator.clipboard.writeText(text).then(() => {
                 const notif = document.getElementById("notifCopied");
                 notif.classList.remove("hidden");

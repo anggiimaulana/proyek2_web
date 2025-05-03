@@ -16,6 +16,7 @@ use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\ViewField;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -23,6 +24,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Storage;
 
 class PengajuanSkBelumMenikahResource extends Resource
 {
@@ -46,58 +48,69 @@ class PengajuanSkBelumMenikahResource extends Resource
                     ->options(Hubungan::all()->pluck('jenis_hubungan', 'id'))
                     ->searchable()
                     ->required(),
+
                 TextInput::make('nik')
                     ->label('NIK')
                     ->required()
                     ->placeholder('Masukan NIK'),
+
                 TextInput::make('nama')
                     ->label('Nama Lengkap')
                     ->required()
                     ->placeholder('Masukan nama lengkap'),
+
                 Select::make('jk')
                     ->label('Jenis Kelamin')
                     ->options(JenisKelamin::all()->pluck('jenis_kelamin', 'id'))
                     ->searchable()
                     ->required(),
+
                 TextInput::make('tempat_lahir')
                     ->label('Tempat Lahir')
                     ->required()
                     ->placeholder('Masukan tempat lahir'),
+
                 DatePicker::make('tanggal_lahir')
                     ->label('Tangal Lahir')
                     ->required(),
+
                 Select::make('agama')
                     ->label('Agama')
                     ->options(Agama::all()->pluck('nama_agama', 'id'))
                     ->searchable()
                     ->required(),
+
                 Select::make('pekerjaan')
                     ->label('Pekerjaan')
                     ->options(Pekerjaan::all()->pluck('nama_pekerjaan', 'id'))
                     ->searchable()
                     ->required(),
-                Textarea::make('alamat')
-                    ->required()
-                    ->label('Alamat')
-                    ->placeholder('Masukan alamat pengaju'),
-                FileUpload::make('file_kk')
-                    ->label('Upload File KK')
-                    ->required()
-                    ->acceptedFileTypes(['image/jpeg', 'image/png', 'application/pdf', 'image/jpg'])
-                    ->previewable(true)
-                    ->downloadable()
-                    ->openable()
-                    ->preserveFilenames()
-                    ->directory('uploads/kk')
-                    ->disk('public'),
+
                 Select::make('status_perkawinan')
                     ->label('Status Perkawinan')
                     ->options(StatusPerkawinan::all()->pluck('status_perkawinan', 'id'))
                     ->searchable()
                     ->required(),
 
+                Textarea::make('alamat')
+                    ->required()
+                    ->label('Alamat')
+                    ->placeholder('Masukan alamat pengaju'),
 
-                Select::make('pengajuan.status_pengajuan_id')
+                FileUpload::make('file_kk')
+                    ->label('Upload File KK')
+                    ->acceptedFileTypes(['image/jpeg', 'image/png', 'application/pdf', 'image/jpg'])
+                    ->previewable(true)
+                    ->downloadable()
+                    ->openable()
+                    ->preserveFilenames()
+                    ->directory('uploads/kk')
+                    ->disk('public')
+                    ->nullable()
+                    ->dehydrated(false)
+                    ->hint('Kosongkan jika tidak ingin mengganti file'),
+
+                Select::make('pengajuan.status_pengajuan')
                     ->label('Status Pengajuan')
                     ->options(\App\Models\StatusPengajuan::all()->pluck('status', 'id'))
                     ->default(fn($record) => $record?->pengajuan?->status_pengajuan)
@@ -109,8 +122,17 @@ class PengajuanSkBelumMenikahResource extends Resource
                             $record->pengajuan->save();
                         }
                     }),
+
+                Textarea::make('pengajuan.catatan')
+                    ->label('Catatan Penolakan')
+                    ->placeholder('Tulis alasan penolakan di sini...')
+                    ->required()
+                    ->rows(4)
+                    ->columnSpan('full')
+                    ->visible(fn($get) => (int) $get('pengajuan.status_pengajuan') === 3),
             ]);
     }
+
 
     public static function table(Table $table): Table
     {
@@ -129,6 +151,7 @@ class PengajuanSkBelumMenikahResource extends Resource
                         'Diproses' => 'info',
                         'Disetujui' => 'success',
                         'Ditolak' => 'danger',
+                        'Direvisi' => 'primary',
                     })->label('Status'),
             ])
             ->defaultSort('id', 'desc')

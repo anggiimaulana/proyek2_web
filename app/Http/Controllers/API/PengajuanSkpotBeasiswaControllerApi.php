@@ -54,7 +54,7 @@ class PengajuanSkpotBeasiswaControllerApi extends Controller
             // Upload file
             $file = $request->file('file_kk');
             $namaFile = uniqid() . '_' . $file->getClientOriginalName();
-            $file->storeAs('public/kk', $namaFile);
+            $file->storeAs('/uploads/kk', $namaFile);
 
             // Simpan data detail
             $skpotBeasiswa = PengajuanSkpotBeasiswa::create([
@@ -90,7 +90,7 @@ class PengajuanSkpotBeasiswaControllerApi extends Controller
                 'data' => [
                     'pengajuan' => $pengajuan,
                     'detail' => $skpotBeasiswa,
-                    'file_url' => asset('storage/kk/' . $namaFile),
+                    'file_url' => asset('storage/uploads/kk/' . $namaFile),
                 ],
             ], HttpFoundationResponse::HTTP_CREATED);
         } catch (\Exception $e) {
@@ -119,6 +119,92 @@ class PengajuanSkpotBeasiswaControllerApi extends Controller
                 'error' => true,
                 'message' => 'Data Pengajuan Tidak Ditemukan',
             ], 404);
+        }
+    }
+
+    public function update(Request $request, string $id)
+    {
+        try {
+            $data = PengajuanSkpotBeasiswa::findOrFail($id);
+
+            $validator = Validator::make($request->all(), [
+                'hubungan' => 'required',
+                'nik' => 'required',
+                'nama' => 'required',
+                'tempat_lahir' => 'required',
+                'tanggal_lahir' => 'required|date',
+                'jk' => 'required',
+                'agama' => 'required',
+                'nama_ortu' => 'required',
+                'pekerjaan' => 'required',
+                'alamat' => 'required',
+                'penghasilan' => 'required',
+                'file_kk' => 'required|file|mimes:pdf,jpg,jpeg,png|max:2048',
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json([
+                    'error' => true,
+                    'message' => 'Validasi gagal.',
+                    'data' => $validator->errors(),
+                ], 422);
+            }
+
+            // Cek dan ganti file jika diupload ulang
+            if ($request->hasFile('file_kk')) {
+                // Hapus file lama
+                if ($data->file_kk && file_exists(storage_path('app/' . $data->file_kk))) {
+                    unlink(storage_path('app/' . $data->file_kk));
+                }
+
+                $file = $request->file('file_kk');
+                $namaFile = uniqid() . '_' . $file->getClientOriginalName();
+                $file->storeAs('uploads/kk', $namaFile);
+                $data->file_kk = $namaFile;
+            }
+
+            // Update data lainnya
+            $data->update([
+                'hubungan' => $request->hubungan,
+                'nik' => $request->nik,
+                'nama' => $request->nama,
+                'tempat_lahir' => $request->tempat_lahir,
+                'tanggal_lahir' => $request->tanggal_lahir,
+                'jk' => $request->jk,
+                'agama' => $request->agama,
+                'nama_ortu' => $request->nama_ortu,
+                'pekerjaan' => $request->pekerjaan,
+                'alamat' => $request->alamat,
+                'penghasilan' => $request->penghasilan,
+                'file_kk' => $namaFile,
+            ]);
+
+            // Reset status pengajuan jika sebelumnya ditolak
+            $pengajuan = $data->pengajuan;
+            if ($pengajuan && $pengajuan->status_pengajuan == 3) {
+                $pengajuan->update([
+                    'status_pengajuan' => 5,
+                    'catatan' => null,
+                    'updated_at' => now(),
+                ]);
+            }
+
+            return response()->json([
+                'error' => false,
+                'message' => 'Data pengajuan berhasil diperbarui.',
+                'data' => new PengajuanSkpotBeasiswaResource($data),
+            ]);
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'error' => true,
+                'message' => 'Data tidak ditemukan.',
+            ], 404);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => true,
+                'message' => 'Terjadi kesalahan saat memperbarui data.',
+                'data' => $e->getMessage(),
+            ], 500);
         }
     }
 }
