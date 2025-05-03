@@ -47,8 +47,4 @@ class Agama extends Model
     public function sktmSekolah() {
         return $this->hasMany(PengajuanSktmSekolah::class, 'agama');
     }
-
-    public function skpPengajuanBantuan() {
-        return $this->hasMany(PengajuanSkpPengajuanBantuan::class, 'agama');
-    }
 }

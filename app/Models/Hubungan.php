@@ -38,10 +38,6 @@ class Hubungan extends Model
         return $this->hasMany(PengajuanSktmSekolah::class, 'hubungan');
     }
 
-    public function skpPengajuanBantuan() {
-        return $this->hasMany(PengajuanSkpPengajuanBantuan::class, 'hubungan');
-    }
-
     public function sktmListrik() {
         return $this->hasMany(PengajuanSktmListrik::class, 'hubungan');
     }

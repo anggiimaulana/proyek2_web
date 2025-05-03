@@ -23,29 +23,20 @@ class PengajuanControllerApi extends Controller
         return PengajuanResource::collection($pengajuan);
     }
 
-    public function store(Request $request)
+    public function showByUser($id_user)
     {
-        //
-    }
+        $pengajuan = Pengajuan::with([
+            'userPengajuan:id',
+            'admin:id',
+            'kategoriPengajuan:id,nama_kategori',
+            'statusPengajuan:id,status',
+            'adminUpdated:id',
+            'kuwuUpdated:id',
+        ])
+            ->where('id_user_pengajuan', $id_user)
+            ->orderBy('id', 'desc')
+            ->paginate(5);
 
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        return PengajuanResource::collection($pengajuan);
     }
 }

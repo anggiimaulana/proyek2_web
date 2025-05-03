@@ -35,35 +35,66 @@ class PengajuanSktmListrikControllerApi extends Controller
             'alamat' => 'required',
             'agama' => 'required',
             'jk' => 'required',
-            'umur' => 'required',
+            'umur' => 'required|numeric',
             'pekerjaan' => 'required',
             'penghasilan' => 'required',
             'nama_pln' => 'required',
-            'file_kk' => 'required',
+            'file_kk' => 'required|file|mimes:pdf,jpg,jpeg,png|max:2048',
         ]);
 
         if ($validator->fails()) {
             return response()->json([
                 'error' => true,
-                'message' => 'Validasi gagal ditambahkan.',
+                'message' => 'Validasi gagal.',
                 'data' => $validator->errors(),
             ], HttpFoundationResponse::HTTP_UNPROCESSABLE_ENTITY);
         }
 
         try {
-            $sktmListrik = PengajuanSktmListrik::create($request->all());
+            $file = $request->file('file_kk');
+            $namaFile = uniqid() . '_' . $file->getClientOriginalName();
+            $file->storeAs('public/kk', $namaFile);
+
+            $sktm = PengajuanSktmListrik::create([
+                'hubungan' => $request->hubungan,
+                'nama' => $request->nama,
+                'nik' => $request->nik,
+                'alamat' => $request->alamat,
+                'agama' => $request->agama,
+                'jk' => $request->jk,
+                'umur' => $request->umur,
+                'pekerjaan' => $request->pekerjaan,
+                'penghasilan' => $request->penghasilan,
+                'nama_pln' => $request->nama_pln,
+                'file_kk' => $namaFile,
+            ]);
+
+            $pengajuan = $sktm->pengajuan()->create([
+                'id_user_pengajuan' => 1,
+                'id_admin' => null,
+                'kategori_pengajuan' => 1, 
+                'detail_type' => PengajuanSktmListrik::class,
+                'status_pengajuan' => 1,
+                'catatan' => null,
+                'id_admin_updated' => 1,
+                'id_kuwu_updated' => 1,
+            ]);
 
             return response()->json([
                 'error' => false,
-                'message' => 'Pengajuan berhasil ditambahkan.',
-                'data' => $sktmListrik,
+                'message' => 'Pengajuan dan file berhasil disimpan.',
+                'data' => [
+                    'pengajuan' => $pengajuan,
+                    'detail' => $sktm,
+                    'file_url' => asset('storage/kk/' . $namaFile),
+                ],
             ], HttpFoundationResponse::HTTP_CREATED);
-        } catch (QueryException $e) {
+        } catch (\Exception $e) {
             return response()->json([
                 'error' => true,
-                'message' => 'Pengajuan gagal ditambahkan.',
-                'data' => $e,
-            ], HttpFoundationResponse::HTTP_UNPROCESSABLE_ENTITY);
+                'message' => 'Terjadi kesalahan saat menyimpan data.',
+                'data' => $e->getMessage(),
+            ], HttpFoundationResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -84,48 +115,6 @@ class PengajuanSktmListrikControllerApi extends Controller
                 'error' => true,
                 'message' => 'Data Pengajuan Tidak Ditemukan',
             ], 404);
-        }
-    }
-
-    public function update(Request $request, string $id)
-    {
-        try {
-            $sktmListrik = PengajuanSktmListrik::findOrFail($id);
-            $sktmListrik->update($request->all());
-
-            return (new PengajuanSktmListrikResource($sktmListrik->load([
-                'hubunganPengaju:id,jenis_hubungan',
-                'pekerjaanPengaju:id,nama_pekerjaan',
-                'penghasilanPengaju:id,rentang_penghasilan',
-                'agamaPengaju:id,nama_agama',
-                'jenisKelaminPengaju:id,jenis_kelamin',
-            ])))->additional([
-                'error' => false,
-                'message' => 'Pengajuan berhasil diperbarui'
-            ]);
-        } catch (ModelNotFoundException $e) {
-            return response()->json([
-                'error' => true,
-                'message' => 'Data Pengajuan tidak ditemukan.',
-            ], HttpFoundationResponse::HTTP_NOT_FOUND);
-        }
-    }
-
-    public function destroy(string $id)
-    {
-        try {
-            $sktmListrik = PengajuanSktmListrik::findOrFail($id);
-            $sktmListrik->delete();
-
-            return response()->json([
-                'error' => false,
-                'message' => 'Data Pengajuan berhasil dihapus.',
-            ], HttpFoundationResponse::HTTP_OK);
-        } catch (ModelNotFoundException $e) {
-            return response()->json([
-                'error' => true,
-                'message' => 'Data Pengajuan tidak ditemukan.',
-            ], HttpFoundationResponse::HTTP_NOT_FOUND);
         }
     }
 }

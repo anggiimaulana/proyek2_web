@@ -67,64 +67,44 @@ Route::get('/status-pengajuan', [StatusPengajuanControllerApi::class, 'index']);
 Route::get('/skbm', [PengajuanSkBelumMenikahControllerApi::class, 'index']);
 Route::get('/skbm/{id}', [PengajuanSkBelumMenikahControllerApi::class, 'show']);
 Route::post('/skbm', [PengajuanSkBelumMenikahControllerApi::class, 'store']);
-Route::put('/skbm/{id}', [PengajuanSkBelumMenikahControllerApi::class, 'update']);
-Route::delete('/skbm/{id}', [PengajuanSkBelumMenikahControllerApi::class, 'destroy']);
 
 // Pengajuan skp
 Route::get('/skp', [PengajuanSkPekerjaanControllerApi::class, 'index']);
 Route::get('/skp/{id}', [PengajuanSkPekerjaanControllerApi::class, 'show']);
 Route::post('/skp', [PengajuanSkPekerjaanControllerApi::class, 'store']);
-Route::put('/skp/{id}', [PengajuanSkPekerjaanControllerApi::class, 'update']);
-Route::delete('/skp/{id}', [PengajuanSkPekerjaanControllerApi::class, 'destroy']);
 
 // Pengajuan skpot
 Route::get('/skpot', [PengajuanSkpotBeasiswaControllerApi::class, 'index']);
 Route::get('/skpot/{id}', [PengajuanSkpotBeasiswaControllerApi::class, 'show']);
 Route::post('/skpot', [PengajuanSkpotBeasiswaControllerApi::class, 'store']);
-Route::put('/skpot/{id}', [PengajuanSkpotBeasiswaControllerApi::class, 'update']);
-Route::delete('/skpot/{id}', [PengajuanSkpotBeasiswaControllerApi::class, 'destroy']);
-
-// // Pengajuan skp bantuan
-// Route::get('/skp-bantuan', [PengajuanSkpPengajuanBantuanControllerApi::class, 'index']);
-// Route::get('/skp-bantuan/{id}', [PengajuanSkpPengajuanBantuanControllerApi::class, 'show']);
-// Route::post('/skp-bantuan', [PengajuanSkpPengajuanBantuanControllerApi::class, 'store']);
-// Route::put('/skp-bantuan/{id}', [PengajuanSkpPengajuanBantuanControllerApi::class, 'update']);
-// Route::delete('/skp-bantuan/{id}', [PengajuanSkpPengajuanBantuanControllerApi::class, 'destroy']);
 
 // Pengajuan sks
 Route::get('/sks', [PengajuanSkStatusControllerApi::class, 'index']);
 Route::get('/sks/{id}', [PengajuanSkStatusControllerApi::class, 'show']);
 Route::post('/sks', [PengajuanSkStatusControllerApi::class, 'store']);
-Route::put('/sks/{id}', [PengajuanSkStatusControllerApi::class, 'update']);
-Route::delete('/sks/{id}', [PengajuanSkStatusControllerApi::class, 'destroy']);
 
 // Pengajuan sktm beasiswa
 Route::get('/sktm-beasiswa', [PengajuanSktmBeasiswaControllerApi::class, 'index']);
 Route::get('/sktm-beasiswa/{id}', [PengajuanSktmBeasiswaControllerApi::class, 'show']);
 Route::post('/sktm-beasiswa', [PengajuanSktmBeasiswaControllerApi::class, 'store']);
-Route::put('/sktm-beasiswa/{id}', [PengajuanSktmBeasiswaControllerApi::class, 'update']);
-Route::delete('/sktm-beasiswa/{id}', [PengajuanSktmBeasiswaControllerApi::class, 'destroy']);
 
 // Pengajuan sktm listrik
 Route::get('/sktm-listrik', [PengajuanSktmListrikControllerApi::class, 'index']);
 Route::get('/sktm-listrik/{id}', [PengajuanSktmListrikControllerApi::class, 'show']);
 Route::post('/sktm-listrik', [PengajuanSktmListrikControllerApi::class, 'store']);
-Route::put('/sktm-listrik/{id}', [PengajuanSktmListrikControllerApi::class, 'update']);
-Route::delete('/sktm-listrik/{id}', [PengajuanSktmListrikControllerApi::class, 'destroy']);
 
 // Pengajuan sktm sekolah
 Route::get('/sktm-sekolah', [PengajuanSktmSekolahControllerApi::class, 'index']);
 Route::get('/sktm-sekolah/{id}', [PengajuanSktmSekolahControllerApi::class, 'show']);
 Route::post('/sktm-sekolah', [PengajuanSktmSekolahControllerApi::class, 'store']);
-Route::put('/sktm-sekolah/{id}', [PengajuanSktmSekolahControllerApi::class, 'update']);
-Route::delete('/sktm-sekolah/{id}', [PengajuanSktmSekolahControllerApi::class, 'destroy']);
 
 // Pengajuan sk usaha
 Route::get('/sku', [PengajuanSkUsahaControllerApi::class, 'index']);
 Route::get('/sku/{id}', [PengajuanSkUsahaControllerApi::class, 'show']);
 Route::post('/sku', [PengajuanSkUsahaControllerApi::class, 'store']);
-Route::put('/sku/{id}', [PengajuanSkUsahaControllerApi::class, 'update']);
-Route::delete('/sku/{id}', [PengajuanSkUsahaControllerApi::class, 'destroy']);
 
 // main pengajuan
 Route::get('/pengajuan/detail', [PengajuanControllerApi::class, 'index']);
+
+Route::get('/pengajuan', [PengajuanControllerApi::class, 'index']);
+Route::get('/pengajuan/user/{id_user}', [PengajuanControllerApi::class, 'showByUser']);

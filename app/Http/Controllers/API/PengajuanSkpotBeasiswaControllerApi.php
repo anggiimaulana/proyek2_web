@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\PengajuanSkpotBeasiswaResource;
 use App\Models\PengajuanSkpotBeasiswa;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response as HttpFoundationResponse;
@@ -40,31 +39,66 @@ class PengajuanSkpotBeasiswaControllerApi extends Controller
             'pekerjaan' => 'required',
             'alamat' => 'required',
             'penghasilan' => 'required',
-            'file_kk' => 'required',
+            'file_kk' => 'required|file|mimes:pdf,jpg,jpeg,png|max:2048',
         ]);
 
         if ($validator->fails()) {
             return response()->json([
                 'error' => true,
-                'message' => 'Pengajuan gagal ditambahkan.',
+                'message' => 'Validasi gagal.',
                 'data' => $validator->errors(),
             ], HttpFoundationResponse::HTTP_UNPROCESSABLE_ENTITY);
         }
 
         try {
-            $skpotBeasiswa = PengajuanSkpotBeasiswa::create($request->all());
+            // Upload file
+            $file = $request->file('file_kk');
+            $namaFile = uniqid() . '_' . $file->getClientOriginalName();
+            $file->storeAs('public/kk', $namaFile);
+
+            // Simpan data detail
+            $skpotBeasiswa = PengajuanSkpotBeasiswa::create([
+                'hubungan' => $request->hubungan,
+                'nik' => $request->nik,
+                'nama' => $request->nama,
+                'tempat_lahir' => $request->tempat_lahir,
+                'tanggal_lahir' => $request->tanggal_lahir,
+                'jk' => $request->jk,
+                'agama' => $request->agama,
+                'nama_ortu' => $request->nama_ortu,
+                'pekerjaan' => $request->pekerjaan,
+                'alamat' => $request->alamat,
+                'penghasilan' => $request->penghasilan,
+                'file_kk' => $namaFile,
+            ]);
+
+            // Buat relasi ke pengajuan umum
+            $pengajuan = $skpotBeasiswa->pengajuan()->create([
+                'id_user_pengajuan' => 1,
+                'id_admin' => null,
+                'kategori_pengajuan' => 7,
+                'detail_type' => PengajuanSkpotBeasiswa::class,
+                'status_pengajuan' => 1,
+                'catatan' => null,
+                'id_admin_updated' => 1,
+                'id_kuwu_updated' => 1,
+            ]);
 
             return response()->json([
                 'error' => false,
                 'message' => 'Pengajuan Surat Keterangan Potensi Beasiswa berhasil ditambahkan.',
-                'data' => $skpotBeasiswa,
+                'data' => [
+                    'pengajuan' => $pengajuan,
+                    'detail' => $skpotBeasiswa,
+                    'file_url' => asset('storage/kk/' . $namaFile),
+                ],
             ], HttpFoundationResponse::HTTP_CREATED);
-        } catch (QueryException $e) {
+        } catch (\Exception $e) {
             return response()->json([
                 'error' => true,
-                'message' => 'Terjadi kesalahan saat menambahkan data.',
-                'data' => $e,
-            ], HttpFoundationResponse::HTTP_UNPROCESSABLE_ENTITY);
+                'message' => 'Terjadi kesalahan saat menyimpan data.',
+                'data' => $e->getMessage(),
+            ], HttpFoundationResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -85,48 +119,6 @@ class PengajuanSkpotBeasiswaControllerApi extends Controller
                 'error' => true,
                 'message' => 'Data Pengajuan Tidak Ditemukan',
             ], 404);
-        }
-    }
-
-    public function update(Request $request, string $id)
-    {
-        try {
-            $skpotBeasiswa = PengajuanSkpotBeasiswa::findOrFail($id);
-            $skpotBeasiswa->update($request->all());
-
-            return (new PengajuanSkpotBeasiswaResource($skpotBeasiswa->load([
-                'hubunganPengaju:id,jenis_hubungan',
-                'jkPengaju:id,jenis_kelamin',
-                'pekerjaanPengaju:id,nama_pekerjaan',
-                'agamaPengaju:id,nama_agama',
-                'penghasilanPengaju:id,rentang_penghasilan',
-            ])))->additional([
-                'error' => false,
-                'message' => 'Pengajuan berhasil diperbarui'
-            ]);
-        } catch (ModelNotFoundException $e) {
-            return response()->json([
-                'error' => true,
-                'message' => 'Data Pengajuan tidak ditemukan.',
-            ]);
-        }
-    }
-
-    public function destroy(string $id)
-    {
-        try {
-            $skpotBeasiswa = PengajuanSkpotBeasiswa::findOrFail($id);
-            $skpotBeasiswa->delete();
-
-            return response()->json([
-                'error' => false,
-                'message' => 'Data Pengajuan berhasil dihapus.',
-            ], HttpFoundationResponse::HTTP_OK);
-        } catch (ModelNotFoundException $e) {
-            return response()->json([
-                'error' => true,
-                'message' => 'Data Pengajuan tidak ditemukan.',
-            ], HttpFoundationResponse::HTTP_NOT_FOUND);
         }
     }
 }

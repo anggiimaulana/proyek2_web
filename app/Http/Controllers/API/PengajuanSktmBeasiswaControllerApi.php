@@ -41,7 +41,7 @@ class PengajuanSktmBeasiswaControllerApi extends Controller
             'nama_ibu' => 'required',
             'pekerjaan_ortu' => 'required',
             'alamat' => 'required',
-            'file_kk' => 'required',
+            'file_kk' => 'required|file|mimes:pdf,jpg,jpeg,png|max:2048',
         ]);
 
         if ($validator->fails()) {
@@ -53,19 +53,52 @@ class PengajuanSktmBeasiswaControllerApi extends Controller
         }
 
         try {
-            $sktmbeasiswa = PengajuanSktmBeasiswa::create($request->all());
+            $file = $request->file('file_kk');
+            $namaFile = uniqid() . '_' . $file->getClientOriginalName();
+            $file->storeAs('public/kk', $namaFile);
+
+            $sktm = PengajuanSktmBeasiswa::create([
+                'hubungan' => $request->hubungan,
+                'nama_anak' => $request->nama_anak,
+                'tempat_lahir' => $request->tempat_lahir,
+                'tanggal_lahir' => $request->tanggal_lahir,
+                'suku' => $request->suku,
+                'jk' => $request->jk,
+                'agama' => $request->agama,
+                'pekerjaan_anak' => $request->pekerjaan_anak,
+                'nama' => $request->nama,
+                'nama_ibu' => $request->nama_ibu,
+                'pekerjaan_ortu' => $request->pekerjaan_ortu,
+                'alamat' => $request->alamat,
+                'file_kk' => $namaFile,
+            ]);
+
+            $pengajuan = $sktm->pengajuan()->create([
+                'id_user_pengajuan' => 1,
+                'id_admin' => null,
+                'kategori_pengajuan' => 2,
+                'detail_type' => PengajuanSktmBeasiswa::class,
+                'status_pengajuan' => 1,
+                'catatan' => null,
+                'id_admin_updated' => 1,
+                'id_kuwu_updated' => 1,
+            ]);
 
             return response()->json([
                 'error' => false,
-                'message' => 'Pengajuan berhasil ditambahkan.',
-                'data' => $sktmbeasiswa,
+                'message' => 'Pengajuan dan file berhasil disimpan.',
+                'data' => [
+                    'pengajuan' => $pengajuan,
+                    'detail' => $sktm,
+                    'file_url' => asset('storage/kk/' . $namaFile),
+                ],
             ], HttpFoundationResponse::HTTP_CREATED);
-        } catch (QueryException $e) {
+        } catch (\Exception $e) {
             return response()->json([
                 'error' => true,
-                'message' => 'Pengajuan gagal ditambahkan.',
-                'data' => $e,
-            ], HttpFoundationResponse::HTTP_UNPROCESSABLE_ENTITY);
+                'message' => 'Terjadi kesalahan saat menyimpan data.',
+                'data' => $e->getMessage(),
+            ], HttpFoundationResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -86,48 +119,6 @@ class PengajuanSktmBeasiswaControllerApi extends Controller
                 'error' => true,
                 'message' => 'Data Pengajuan Tidak Ditemukan',
             ], 404);
-        }
-    }
-
-    public function update(Request $request, string $id)
-    {
-        try {
-            $sktmbeasiswa = PengajuanSktmBeasiswa::findOrFail($id);
-            $sktmbeasiswa->update($request->all());
-
-            return (new PengajuanSktmBeasiswaResource($sktmbeasiswa->load([
-                'hubunganPengaju:id,jenis_hubungan',
-                'jenisKelaminPengaju:id,jenis_kelamin',
-                'agamaPengaju:id,nama_agama',
-                'pekerjaanAnakPengaju:id,nama_pekerjaan',
-                'pekerjaanOrtuPengaju:id,nama_pekerjaan',
-            ])))->additional([
-                'error' => false,
-                'message' => 'Pengajuan berhasil diperbarui'
-            ]);
-        } catch (ModelNotFoundException $e) {
-            return response()->json([
-                'error' => true,
-                'message' => 'Data Pengajuan tidak ditemukan.',
-            ], HttpFoundationResponse::HTTP_NOT_FOUND);
-        }
-    }
-
-    public function destroy(string $id)
-    {
-        try {
-            $sktmbeasiswa = PengajuanSktmBeasiswa::findOrFail($id);
-            $sktmbeasiswa->delete();
-
-            return response()->json([
-                'error' => false,
-                'message' => 'Data Pengajuan berhasil dihapus.',
-            ], HttpFoundationResponse::HTTP_OK);
-        } catch (ModelNotFoundException $e) {
-            return response()->json([
-                'error' => true,
-                'message' => 'Data Pengajuan tidak ditemukan.',
-            ], HttpFoundationResponse::HTTP_NOT_FOUND);
         }
     }
 }

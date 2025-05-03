@@ -22,6 +22,5 @@ class KategoriPengajuanSeeder extends Seeder
         KategoriPengajuan::create(['nama_kategori' => 'Surat Keterangan Pekerjaan', 'created_at' => now(), 'updated_at' => now()]);
         KategoriPengajuan::create(['nama_kategori' => 'Surat Keterangan Penghasilan Orang Tua (Beasiswa)', 'created_at' => now(), 'updated_at' => now()]);
         KategoriPengajuan::create(['nama_kategori' => 'Surat Keterangan Usaha', 'created_at' => now(), 'updated_at' => now()]);
-        KategoriPengajuan::create(['nama_kategori' => 'Surat Keterangan Penghasilan (Bantuan)', 'created_at' => now(), 'updated_at' => now()]);
     }
 }

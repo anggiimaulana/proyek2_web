@@ -44,10 +44,6 @@ class Pekerjaan extends Model
         return $this->hasMany(PengajuanSkBelumMenikah::class, 'pekerjaan');
     }
 
-    public function pengajuanSkpBantuan() {
-        return $this->hasMany(PengajuanSkpPengajuanBantuan::class, 'pekerjaan');
-    }
-
     public function pengajuanSktmListrik() {
         return $this->hasMany(PengajuanSktmListrik::class, 'pekerjaan');
     }

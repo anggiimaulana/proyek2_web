@@ -211,7 +211,7 @@
     </p>
 
     <div class="ttd">
-        <p style="margin-top: 25">Bulak Lor,
+        <p style="margin-top: 40">Bulak Lor,
             {{ \Carbon\Carbon::parse($skUsaha->updated_at)->translatedFormat('d F Y') }} <br>Kuwu Desa
             Bulak Lor</p>
         @if ($qrCode)
