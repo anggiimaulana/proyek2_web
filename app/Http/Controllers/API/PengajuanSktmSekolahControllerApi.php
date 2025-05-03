@@ -15,14 +15,14 @@ class PengajuanSktmSekolahControllerApi extends Controller
 {
     public function index()
     {
-        $sktmSekolah = PengajuanSktmSekolah::with([
+        $sktm = PengajuanSktmSekolah::with([
             'hubunganPengaju:id,jenis_hubungan',
             'jenisKelaminPengaju:id,jenis_kelamin',
             'agamaPengaju:id,nama_agama',
             'pekerjaanPengaju:id,nama_pekerjaan',
         ])->orderBy('id', 'desc')->paginate(5);
 
-        return PengajuanSktmSekolahResource::collection($sktmSekolah);
+        return PengajuanSktmSekolahResource::collection($sktm);
     }
 
     public function store(Request $request)
@@ -30,6 +30,7 @@ class PengajuanSktmSekolahControllerApi extends Controller
         $validator = Validator::make($request->all(), [
             'hubungan' => 'required',
             'nama' => 'required',
+            'nik' => 'required',
             'tempat_lahir_ortu' => 'required',
             'tanggal_lahir_ortu' => 'required|date',
             'pekerjaan' => 'required',
@@ -41,29 +42,65 @@ class PengajuanSktmSekolahControllerApi extends Controller
             'asal_sekolah' => 'required',
             'kelas' => 'required',
             'alamat' => 'required',
-            'file_kk' => 'required',
+            'file_kk' => 'required|file|mimes:pdf,jpg,jpeg,png|max:2048',
         ]);
 
         if ($validator->fails()) {
             return response()->json([
                 'error' => true,
-                'message' => 'Validasi gagal ditambahkan.',
+                'message' => 'Validasi gagal.',
                 'data' => $validator->errors(),
             ], HttpFoundationResponse::HTTP_UNPROCESSABLE_ENTITY);
         }
 
         try {
-            $sktmSekolah = PengajuanSktmSekolah::create($request->all());
+            $file = $request->file('file_kk');
+            $namaFile = uniqid() . '_' . $file->getClientOriginalName();
+            $file->storeAs('public/kk', $namaFile);
+
+            $sktm = PengajuanSktmSekolah::create([
+                'hubungan' => $request->hubungan,
+                'nama' => $request->nama,
+                'nik' => $request->nik,
+                'tempat_lahir_ortu' => $request->tempat_lahir_ortu,
+                'tanggal_lahir_ortu' => $request->tanggal_lahir_ortu,
+                'pekerjaan' => $request->pekerjaan,
+                'nama_anak' => $request->nama_anak,
+                'tempat_lahir' => $request->tempat_lahir,
+                'tanggal_lahir' => $request->tanggal_lahir,
+                'jk' => $request->jk,
+                'agama' => $request->agama,
+                'asal_sekolah' => $request->asal_sekolah,
+                'kelas' => $request->kelas,
+                'alamat' => $request->alamat,
+                'file_kk' => $namaFile,
+            ]);
+
+            $pengajuan = $sktm->pengajuan()->create([
+                'id_user_pengajuan' => 1,
+                'id_admin' => null,
+                'kategori_pengajuan' => 2,
+                'detail_type' => PengajuanSktmSekolah::class,
+                'status_pengajuan' => 1,
+                'catatan' => null,
+                'id_admin_updated' => 1,
+                'id_kuwu_updated' => 1,
+            ]);
 
             return response()->json([
                 'error' => false,
-                'message' => 'Pengajuan Surat Keterangan Tamat Sekolah berhasil ditambahkan.',
-                'data' => $sktmSekolah,
+                'message' => 'Pengajuan dan file berhasil disimpan.',
+                'data' => [
+                    'pengajuan' => $pengajuan,
+                    'detail' => $sktm,
+                    'file_url' => asset('storage/kk/' . $namaFile),
+                ],
             ], HttpFoundationResponse::HTTP_CREATED);
-        } catch (QueryException $e) {
+        } catch (\Exception $e) {
             return response()->json([
                 'error' => true,
-                'message' => 'Pengajuan Surat Keterangan Tamat Sekolah gagal ditambahkan.',
+                'message' => 'Terjadi kesalahan saat menyimpan data.',
+                'data' => $e->getMessage(),
             ], HttpFoundationResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
@@ -71,60 +108,19 @@ class PengajuanSktmSekolahControllerApi extends Controller
     public function show(string $id)
     {
         try {
-            $sktmSekolah = PengajuanSktmSekolah::with([
+            $sktm = PengajuanSktmSekolah::with([
                 'hubunganPengaju:id,jenis_hubungan',
                 'jenisKelaminPengaju:id,jenis_kelamin',
                 'agamaPengaju:id,nama_agama',
                 'pekerjaanPengaju:id,nama_pekerjaan',
             ])->findOrFail($id);
 
-            return new PengajuanSktmSekolahResource($sktmSekolah);
+            return new PengajuanSktmSekolahResource($sktm);
         } catch (ModelNotFoundException $e) {
             return response()->json([
                 'error' => true,
                 'message' => 'Data Pengajuan Tidak Ditemukan',
             ], 404);
-        }
-    }
-
-    public function update(Request $request, string $id)
-    {
-        try {
-            $sktmSekolah = PengajuanSktmSekolah::findOrFail($id);
-            $sktmSekolah->update($request->all());
-
-            return (new PengajuanSktmSekolahResource($sktmSekolah->load([
-                'hubunganPengaju:id,jenis_hubungan',
-                'jenisKelaminPengaju:id,jenis_kelamin',
-                'agamaPengaju:id,nama_agama',
-                'pekerjaanPengaju:id,nama_pekerjaan',
-            ])))->additional([
-                'error' => false,
-                'message' => 'Pengajuan berhasil diperbarui'
-            ]);
-        } catch (ModelNotFoundException $e) {
-            return response()->json([
-                'error' => true,
-                'message' => 'Data Pengajuan tidak ditemukan.',
-            ], HttpFoundationResponse::HTTP_NOT_FOUND);
-        }
-    }
-
-    public function destroy(string $id)
-    {
-        try {
-            $sktmSekolah = PengajuanSktmSekolah::findOrFail($id);
-            $sktmSekolah->delete();
-
-            return response()->json([
-                'error' => false,
-                'message' => 'Data Pengajuan berhasil dihapus.',
-            ], HttpFoundationResponse::HTTP_OK);
-        } catch (ModelNotFoundException $e) {
-            return response()->json([
-                'error' => true,
-                'message' => 'Data Pengajuan tidak ditemukan.',
-            ], HttpFoundationResponse::HTTP_NOT_FOUND);
         }
     }
 }

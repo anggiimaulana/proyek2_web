@@ -38,33 +38,68 @@ class PengajuanSkUsahaControllerApi extends Controller
             'pekerjaan' => 'required',
             'alamat' => 'required',
             'nama_usaha' => 'required',
-            'file_ktp' => 'required',
+            'file_ktp' => 'required|file|mimes:pdf,jpg,jpeg,png|max:2048', // maksimal 2MB
         ]);
 
         if ($validator->fails()) {
             return response()->json([
                 'error' => true,
-                'message' => 'Validasi gagal ditambahkan.',
+                'message' => 'Validasi gagal.',
                 'data' => $validator->errors(),
             ], HttpFoundationResponse::HTTP_UNPROCESSABLE_ENTITY);
         }
 
         try {
-            $skUsaha = PengajuanSkUsaha::create($request->all());
+            // Simpan file
+            $file = $request->file('file_ktp');
+            $namaFile = uniqid() . '_' . $file->getClientOriginalName();
+            $path = $file->storeAs('public/kk', $namaFile);
+
+            // Buat data SKU
+            $sku = PengajuanSkUsaha::create([
+                'hubungan' => $request->hubungan,
+                'nama' => $request->nama,
+                'nik' => $request->nik,
+                'tempat_lahir' => $request->tempat_lahir,
+                'tanggal_lahir' => $request->tanggal_lahir,
+                'jk' => $request->jk,
+                'status_perkawinan' => $request->status_perkawinan,
+                'pekerjaan' => $request->pekerjaan,
+                'alamat' => $request->alamat,
+                'nama_usaha' => $request->nama_usaha,
+                'file_ktp' => $namaFile,
+            ]);
+
+            // Simpan ke pengajuan
+            $pengajuan = $sku->pengajuan()->create([
+                'id_user_pengajuan' => 1,
+                'id_admin' => null,
+                'kategori_pengajuan' => 8,
+                'detail_type' => PengajuanSkUsaha::class,
+                'status_pengajuan' => 1,
+                'catatan' => null,
+                'id_admin_updated' => 1,
+                'id_kuwu_updated' => 1,
+            ]);
 
             return response()->json([
                 'error' => false,
-                'message' => 'Pengajuan berhasil ditambahkan.',
-                'data' => $skUsaha,
+                'message' => 'Pengajuan dan file berhasil disimpan.',
+                'data' => [
+                    'pengajuan' => $pengajuan,
+                    'detail' => $sku,
+                    'file_url' => asset('storage/kk/' . $namaFile),
+                ],
             ], HttpFoundationResponse::HTTP_CREATED);
-        } catch (QueryException $e) {
+        } catch (\Exception $e) {
             return response()->json([
                 'error' => true,
-                'message' => 'Pengajuan gagal ditambahkan.',
-                'data' => $e,
-            ], HttpFoundationResponse::HTTP_UNPROCESSABLE_ENTITY);
+                'message' => 'Terjadi kesalahan saat menyimpan data.',
+                'data' => $e->getMessage(),
+            ], HttpFoundationResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
+
 
     public function show(string $id)
     {
@@ -82,47 +117,6 @@ class PengajuanSkUsahaControllerApi extends Controller
                 'error' => true,
                 'message' => 'Data Pengajuan Tidak Ditemukan',
             ], 404);
-        }
-    }
-
-    public function update(Request $request, string $id)
-    {
-        try {
-            $skUsaha = PengajuanSkUsaha::findOrFail($id);
-            $skUsaha->update($request->all());
-
-            return (new PengajuanSkUsahaResource($skUsaha->load([
-                'hubunganPengaju:id,jenis_hubungan',
-                'jenisKelaminPengaju:id,jenis_kelamin',
-                'statusPerkawinanPengaju:id,status_perkawinan',
-                'pekerjaanPengaju:id,nama_pekerjaan',
-            ])))->additional([
-                'error' => false,
-                'message' => 'Pengajuan berhasil diperbarui'
-            ]);
-        } catch (ModelNotFoundException $e) {
-            return response()->json([
-                'error' => true,
-                'message' => 'Data Pengajuan tidak ditemukan.',
-            ], HttpFoundationResponse::HTTP_NOT_FOUND);
-        }
-    }
-
-    public function destroy(string $id)
-    {
-        try {
-            $skUsaha = PengajuanSkUsaha::findOrFail($id);
-            $skUsaha->delete();
-
-            return response()->json([
-                'error' => false,
-                'message' => 'Data Pengajuan berhasil dihapus.',
-            ], HttpFoundationResponse::HTTP_OK);
-        } catch (ModelNotFoundException $e) {
-            return response()->json([
-                'error' => true,
-                'message' => 'Data Pengajuan tidak ditemukan.',
-            ], HttpFoundationResponse::HTTP_NOT_FOUND);
         }
     }
 }

@@ -50,10 +50,6 @@ class JenisKelamin extends Model
         return $this->hasMany(PengajuanSktmSekolah::class, 'jk');
     }
 
-    public function skpPengajuanBantuan() {
-        return $this->hasMany(PengajuanSkpPengajuanBantuan::class, 'jk');
-    }
-
     public function skUsaha() {
         return $this->hasMany(PengajuanSkUsaha::class, 'jk');
     }

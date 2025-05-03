@@ -16,7 +16,7 @@ class CreatePengajuanSkUsaha extends CreateRecord
         $record = $this->record;
 
         Pengajuan::create([
-            'id_admin' => Auth::id(), // <-- Pakai Auth::id()
+            'id_admin' => Auth::id(),
             'kategori_pengajuan' => 8,
             'detail_type' => get_class($record),
             'detail_id' => $record->id,
