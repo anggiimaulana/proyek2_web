@@ -56,7 +56,7 @@ class PengajuanSktmSekolahControllerApi extends Controller
         try {
             $file = $request->file('file_kk');
             $namaFile = uniqid() . '_' . $file->getClientOriginalName();
-            $file->storeAs('public/kk', $namaFile);
+            $file->storeAs('/uploads/kk', $namaFile);
 
             $sktm = PengajuanSktmSekolah::create([
                 'hubungan' => $request->hubungan,
@@ -93,7 +93,7 @@ class PengajuanSktmSekolahControllerApi extends Controller
                 'data' => [
                     'pengajuan' => $pengajuan,
                     'detail' => $sktm,
-                    'file_url' => asset('storage/kk/' . $namaFile),
+                    'file_url' => asset('storage/public/uploads/kk/' . $namaFile),
                 ],
             ], HttpFoundationResponse::HTTP_CREATED);
         } catch (\Exception $e) {
@@ -121,6 +121,98 @@ class PengajuanSktmSekolahControllerApi extends Controller
                 'error' => true,
                 'message' => 'Data Pengajuan Tidak Ditemukan',
             ], 404);
+        }
+    }
+
+    public function update(Request $request, string $id)
+    {
+        try {
+            $data = PengajuanSktmSekolah::findOrFail($id);
+
+            $validator = Validator::make($request->all(), [
+                'hubungan' => 'required',
+                'nama' => 'required',
+                'nik' => 'required',
+                'tempat_lahir_ortu' => 'required',
+                'tanggal_lahir_ortu' => 'required|date',
+                'pekerjaan' => 'required',
+                'nama_anak' => 'required',
+                'tempat_lahir' => 'required',
+                'tanggal_lahir' => 'required|date',
+                'jk' => 'required',
+                'agama' => 'required',
+                'asal_sekolah' => 'required',
+                'kelas' => 'required',
+                'alamat' => 'required',
+                'file_kk' => 'required|file|mimes:pdf,jpg,jpeg,png|max:2048',
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json([
+                    'error' => true,
+                    'message' => 'Validasi gagal.',
+                    'data' => $validator->errors(),
+                ], 422);
+            }
+
+            // Cek dan ganti file jika diupload ulang
+            if ($request->hasFile('file_kk')) {
+                // Hapus file lama
+                if ($data->file_kk && file_exists(storage_path('app/' . $data->file_kk))) {
+                    unlink(storage_path('app/' . $data->file_kk));
+                }
+
+                $file = $request->file('file_kk');
+                $namaFile = uniqid() . '_' . $file->getClientOriginalName();
+                $file->storeAs('uploads/kk', $namaFile);
+                $data->file_kk = $namaFile;
+            }
+
+            // Update data lainnya
+            $data->update([
+                'hubungan' => $request->hubungan,
+                'nama' => $request->nama,
+                'nik' => $request->nik,
+                'tempat_lahir_ortu' => $request->tempat_lahir_ortu,
+                'tanggal_lahir_ortu' => $request->tanggal_lahir_ortu,
+                'pekerjaan' => $request->pekerjaan,
+                'nama_anak' => $request->nama_anak,
+                'tempat_lahir' => $request->tempat_lahir,
+                'tanggal_lahir' => $request->tanggal_lahir,
+                'jk' => $request->jk,
+                'agama' => $request->agama,
+                'asal_sekolah' => $request->asal_sekolah,
+                'kelas' => $request->kelas,
+                'alamat' => $request->alamat,
+                'file_kk' => $namaFile,
+            ]);
+
+            // Reset status pengajuan jika sebelumnya ditolak
+            $pengajuan = $data->pengajuan;
+            if ($pengajuan && $pengajuan->status_pengajuan == 3) {
+                $pengajuan->update([
+                    'status_pengajuan' => 5,
+                    'catatan' => null,
+                    'updated_at' => now(),
+                ]);
+            }
+
+            return response()->json([
+                'error' => false,
+                'message' => 'Data pengajuan berhasil diperbarui.',
+                'data' => new PengajuanSktmSekolahResource($data),
+            ]);
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'error' => true,
+                'message' => 'Data tidak ditemukan.',
+            ], 404);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => true,
+                'message' => 'Terjadi kesalahan saat memperbarui data.',
+                'data' => $e->getMessage(),
+            ], 500);
         }
     }
 }

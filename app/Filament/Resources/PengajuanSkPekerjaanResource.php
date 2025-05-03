@@ -46,58 +46,70 @@ class PengajuanSkPekerjaanResource extends Resource
                     ->options(Hubungan::all()->pluck('jenis_hubungan', 'id'))
                     ->searchable()
                     ->required(),
+
                 TextInput::make('nik')
                     ->label('NIK')
                     ->required()
                     ->placeholder('Masukan NIK')
                     ->numeric(),
+
                 TextInput::make('nama')
                     ->label('Nama Lengkap')
                     ->required()
                     ->placeholder('Masukan nama lengkap'),
+
                 TextInput::make('tempat_lahir')
                     ->label('Tempat Lahir')
                     ->required()
                     ->placeholder('Masukan tempat lahir'),
+
                 DatePicker::make('tanggal_lahir')
-                    ->label('Tangal Lahir')
+                    ->label('Tanggal Lahir')
                     ->required(),
+
                 Select::make('jk')
                     ->label('Jenis Kelamin')
                     ->options(JenisKelamin::all()->pluck('jenis_kelamin', 'id'))
                     ->searchable()
                     ->required(),
+
                 Select::make('status_perkawinan')
                     ->label('Status Perkawinan')
                     ->options(StatusPerkawinan::all()->pluck('status_perkawinan', 'id'))
                     ->searchable()
                     ->required(),
+
                 Select::make('pekerjaan_terdahulu')
                     ->label('Pekerjaan Terdahulu')
                     ->options(Pekerjaan::all()->pluck('nama_pekerjaan', 'id'))
                     ->searchable()
                     ->required(),
+
                 Select::make('pekerjaan_sekarang')
                     ->label('Pekerjaan Sekarang')
                     ->options(Pekerjaan::all()->pluck('nama_pekerjaan', 'id'))
                     ->searchable()
                     ->required(),
+
                 Textarea::make('alamat')
                     ->label('Alamat')
                     ->required()
                     ->placeholder('Masukan alamat'),
+
                 FileUpload::make('file_kk')
                     ->label('Upload File KK')
-                    ->required()
                     ->acceptedFileTypes(['image/jpeg', 'image/png', 'application/pdf', 'image/jpg'])
                     ->previewable(true)
                     ->downloadable()
                     ->openable()
                     ->preserveFilenames()
                     ->directory('uploads/kk')
-                    ->disk('public'),
+                    ->disk('public')
+                    ->nullable()
+                    ->dehydrated(false)
+                    ->hint('Kosongkan jika tidak ingin mengganti file'),
 
-                Select::make('pengajuan.status_pengajuan_id')
+                Select::make('pengajuan.status_pengajuan')
                     ->label('Status Pengajuan')
                     ->options(\App\Models\StatusPengajuan::all()->pluck('status', 'id'))
                     ->default(fn($record) => $record?->pengajuan?->status_pengajuan)
@@ -109,8 +121,17 @@ class PengajuanSkPekerjaanResource extends Resource
                             $record->pengajuan->save();
                         }
                     }),
+
+                Textarea::make('pengajuan.catatan')
+                    ->label('Catatan Penolakan')
+                    ->placeholder('Tulis alasan penolakan di sini...')
+                    ->required()
+                    ->rows(4)
+                    ->columnSpan('full')
+                    ->visible(fn($get) => (int) $get('pengajuan.status_pengajuan') === 3),
             ]);
     }
+
 
     public static function table(Table $table): Table
     {
@@ -130,6 +151,7 @@ class PengajuanSkPekerjaanResource extends Resource
                         'Diproses' => 'info',
                         'Disetujui' => 'success',
                         'Ditolak' => 'danger',
+                        'Direvisi' => 'primary',
                     })->label('Status'),
             ])
             ->defaultSort('id', 'desc')
