@@ -22,6 +22,11 @@ class PengajuanSkPekerjaan extends Model
         'file_kk',
     ];
 
+    public function getFileKkAttribute($value)
+    {
+        return $value ? 'uploads/kk/' . $value : null;
+    }
+
     public function hubunganPengaju()
     {
         return $this->belongsTo(Hubungan::class, 'hubungan');
@@ -47,7 +52,8 @@ class PengajuanSkPekerjaan extends Model
         return $this->belongsTo(Pekerjaan::class, 'pekerjaan_sekarang');
     }
 
-    public function agamaPengaju() {
+    public function agamaPengaju()
+    {
         return $this->belongsTo(Agama::class, 'agama');
     }
 

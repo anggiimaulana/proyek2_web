@@ -46,31 +46,38 @@ class PengajuanSkpotBeasiswaResource extends Resource
                     ->options(Hubungan::all()->pluck('jenis_hubungan', 'id'))
                     ->searchable()
                     ->required(),
+
                 TextInput::make('nik')
                     ->label('NIK')
                     ->required()
                     ->placeholder('Masukan NIK'),
+
                 TextInput::make('nama')
                     ->label('Nama Lengkap Anak')
                     ->required()
                     ->placeholder('Masukan nama lengkap anak'),
+                    
                 Select::make('jk')
                     ->label('Jenis Kelamin Anak')
                     ->options(JenisKelamin::all()->pluck('jenis_kelamin', 'id'))
                     ->searchable()
                     ->required(),
+
                 TextInput::make('tempat_lahir')
                     ->label('Tempat Lahir Anak')
                     ->required()
                     ->placeholder('Masukan tempat lahir anak'),
+
                 DatePicker::make('tanggal_lahir')
                     ->label('Tangal Lahir Anak')
                     ->required(),
+
                 Select::make('agama')
                     ->label('Agama Anak')
                     ->options(Agama::all()->pluck('nama_agama', 'id'))
                     ->searchable()
                     ->required(),
+
                 TextInput::make('nama_ortu')
                     ->label('Nama Orang Tua')
                     ->required()
@@ -81,15 +88,18 @@ class PengajuanSkpotBeasiswaResource extends Resource
                     ->options(Pekerjaan::all()->pluck('nama_pekerjaan', 'id'))
                     ->searchable()
                     ->required(),
+
                 Select::make('penghasilan')
                     ->label('Penghasilan Orang Tua')
                     ->options(Penghasilan::all()->pluck('rentang_penghasilan', 'id'))
                     ->searchable()
                     ->required(),
+
                 Textarea::make('alamat')
                     ->label('Alamat')
                     ->required()
                     ->placeholder('Masukan alamat'),
+                    
                 FileUpload::make('file_kk')
                     ->label('Upload File KK')
                     ->acceptedFileTypes(['image/jpeg', 'image/png', 'application/pdf', 'image/jpg'])

@@ -25,6 +25,11 @@ class PengajuanSktmSekolah extends Model
         'file_kk',
     ];
 
+    public function getFileKkAttribute($value)
+    {
+        return $value ? 'uploads/kk/' . $value : null;
+    }
+
     public function hubunganPengaju()
     {
         return $this->belongsTo(Hubungan::class, 'hubungan');

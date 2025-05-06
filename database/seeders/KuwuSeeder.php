@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Kuwu;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class KuwuSeeder extends Seeder
 {
@@ -17,7 +18,7 @@ class KuwuSeeder extends Seeder
             'status' => 1,
             'agama' => 1,
             'email' => 'test@example.com',
-            'password' => bcrypt('password'),
+            'password' => Hash::make('password'),
         ]);
     }
 }

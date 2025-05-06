@@ -155,8 +155,8 @@ class PengajuanSktmListrikResource extends Resource
                     ->label('Unduh')
                     ->icon('heroicon-o-arrow-down-tray')
                     ->button()
-                    ->color(fn($record) => $record->pengajuan->statusPengajuan->status === 'Disetujui' ? 'info' : 'gray')
-                    ->disabled(fn($record) => $record->pengajuan->statusPengajuan->status !== 'Disetujui')
+                    ->color(fn($record) => $record->pengajuan?->statusPengajuan?->status === 'Disetujui' ? 'info' : 'gray')
+                    ->disabled(fn($record) => $record->pengajuan?->statusPengajuan?->status !== 'Disetujui')
                     ->url(fn($record) => route('exportPdfSktmListrik', $record), shouldOpenInNewTab: true),
             ])
             ->bulkActions([

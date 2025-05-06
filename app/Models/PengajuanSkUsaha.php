@@ -22,6 +22,11 @@ class PengajuanSkUsaha extends Model
         'file_ktp',
     ];
 
+    public function getFileKtpAttribute($value)
+    {
+        return $value ? 'uploads/kk/' . $value : null;
+    }
+
     public function hubunganPengaju()
     {
         return $this->belongsTo(Hubungan::class, 'hubungan');

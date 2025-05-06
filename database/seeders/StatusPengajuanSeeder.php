@@ -18,6 +18,6 @@ class StatusPengajuanSeeder extends Seeder
         StatusPengajuan::create(['status' => 'Diproses', 'created_at' => now(), 'updated_at' => now()]);
         StatusPengajuan::create(['status' => 'Ditolak', 'created_at' => now(), 'updated_at' => now()]);
         StatusPengajuan::create(['status' => 'Disetujui', 'created_at' => now(), 'updated_at' => now()]);
-    
+        StatusPengajuan::create(['status' => 'Direvisi', 'created_at' => now(), 'updated_at' => now()]);
     }
 }
