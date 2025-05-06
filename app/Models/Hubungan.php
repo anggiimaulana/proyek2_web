@@ -11,7 +11,7 @@ class Hubungan extends Model
     protected $table = 'hubungan';
 
     protected $fillable = [
-        'hubungan',
+        'jenis_hubungan',
     ];
 
     public function skpotBeasiswa() {

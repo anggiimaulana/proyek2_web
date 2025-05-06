@@ -12,22 +12,30 @@ class AuthController extends Controller
 {
     public function login(Request $request)
     {
-        $client = Client::where('nomor_telepon', $request->nomor_telepon)->first();
+        try {
+            $client = Client::where('nomor_telepon', $request->nomor_telepon)->first();
 
-        if (! $client || ! Hash::check($request->password, $client->password)) {
-            return response()->json(['message' => 'Nomor telepon atau password salah.'], 401);
+            if (! $client || ! Hash::check($request->password, $client->password)) {
+                return response()->json(['message' => 'Nomor telepon atau password salah.'], 401);
+            }
+
+            $token = $client->createToken('auth_token')->plainTextToken;
+
+            return response()->json([
+                'error' => false,
+                'message' => 'Login Berhasil',
+                'data' => [
+                    'token' => $token,
+                    'client' => $client,
+                ],
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => true,
+                'message' => 'Terjadi kesalahan saat login.',
+                'details' => $e->getMessage() // untuk debugging, hapus di production
+            ], 500);
         }
-
-        $token = $client->createToken('auth_token')->plainTextToken;
-
-        return response()->json([
-            'error' => false,
-            'message' => 'Login Berhasil',
-            'data' => [
-                'token' => $token,
-                'client' => $client,
-            ],
-        ]);
     }
 
     public function logout()
