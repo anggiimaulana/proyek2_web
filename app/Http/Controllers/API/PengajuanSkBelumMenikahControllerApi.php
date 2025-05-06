@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response as HttpFoundationResponse;
 use App\Http\Resources\PengajuanSkBelumMenikahResource;
+use Illuminate\Support\Facades\Auth;
 
 class PengajuanSkBelumMenikahControllerApi extends Controller
 {
@@ -70,9 +71,11 @@ class PengajuanSkBelumMenikahControllerApi extends Controller
                 'file_kk' => $namaFile,
             ]);
 
+            $user = Auth::guard('client')->user();
+
             // Buat relasi ke tabel pengajuan umum
             $pengajuan = $skBelumMenikah->pengajuan()->create([
-                'id_user_pengajuan' => 1,
+                'id_user_pengajuan' => $user->id,
                 'id_admin' => null,
                 'kategori_pengajuan' => 5,
                 'detail_type' => PengajuanSkBelumMenikah::class,
@@ -148,11 +151,19 @@ class PengajuanSkBelumMenikahControllerApi extends Controller
                 ], 422);
             }
 
-            // Cek dan ganti file jika diupload ulang
+            // Jika status pengajuan sebelumnya ditolak
+            if ($data->pengajuan && $data->pengajuan->status_pengajuan == 3 && !$request->hasFile('file_kk')) {
+                return response()->json([
+                    'error' => true,
+                    'message' => 'File KK wajib di-upload ulang karena pengajuan ditolak.',
+                ], 400);
+            }
+
+            // Jika ada file baru
             if ($request->hasFile('file_kk')) {
-                // Hapus file lama
-                if ($data->file_kk && file_exists(storage_path('app/' . $data->file_kk))) {
-                    unlink(storage_path('app/' . $data->file_kk));
+                // Hapus file lama jika ada
+                if ($data->file_kk && file_exists(storage_path('app/uploads/kk/' . $data->file_kk))) {
+                    unlink(storage_path('app/uploads/kk/' . $data->file_kk));
                 }
 
                 $file = $request->file('file_kk');
@@ -161,7 +172,6 @@ class PengajuanSkBelumMenikahControllerApi extends Controller
                 $data->file_kk = $namaFile;
             }
 
-            // Update data lainnya
             $data->update([
                 'hubungan' => $request->hubungan,
                 'nik' => $request->nik,
@@ -176,9 +186,8 @@ class PengajuanSkBelumMenikahControllerApi extends Controller
             ]);
 
             // Reset status pengajuan jika sebelumnya ditolak
-            $pengajuan = $data->pengajuan;
-            if ($pengajuan && $pengajuan->status_pengajuan == 3) {
-                $pengajuan->update([
+            if ($data->pengajuan && $data->pengajuan->status_pengajuan == 3) {
+                $data->pengajuan->update([
                     'status_pengajuan' => 5,
                     'catatan' => null,
                     'updated_at' => now(),

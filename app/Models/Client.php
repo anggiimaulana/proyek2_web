@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Hash;
+use Laravel\Sanctum\HasApiTokens;
 
-class Client extends Model
+class Client extends Authenticatable
 {
-    use HasFactory;
+    use HasFactory, HasApiTokens;
     protected $table = 'client';
 
     protected $fillable = [
@@ -25,16 +26,6 @@ class Client extends Model
         'nomor_telepon',
         'password',
     ];
-
-    public function setPasswordAttribute($value)
-    {
-        // Cek dulu apakah password-nya sudah di-hash atau belum
-        if (!Hash::needsRehash($value)) {
-            $value = Hash::make($value);
-        }
-
-        $this->attributes['password'] = $value;
-    }
 
     public function clientJenisKelamin()
     {
@@ -63,7 +54,6 @@ class Client extends Model
 
     public function pengajuan()
     {
-        return $this->hasMany(Pengajuan::class, 'id_user_pengajuan')
-            ->onDelete('cascade');
+        return $this->hasMany(Pengajuan::class, 'id_user_pengajuan');
     }
 }

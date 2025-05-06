@@ -7,8 +7,10 @@ use App\Http\Resources\PengajuanSkUsahaResource;
 use App\Models\PengajuanSkUsaha;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
-use Symfony\Component\HttpFoundation\Response as HttpFoundationResponse;
+use Illuminate\Support\Facades\Storage;
+use Symfony\Component\HttpFoundation\Response;
 
 class PengajuanSkUsahaControllerApi extends Controller
 {
@@ -37,7 +39,7 @@ class PengajuanSkUsahaControllerApi extends Controller
             'pekerjaan' => 'required',
             'alamat' => 'required',
             'nama_usaha' => 'required',
-            'file_ktp' => 'required|file|mimes:pdf,jpg,jpeg,png|max:2048',
+            'file_ktp' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
         ]);
 
         if ($validator->fails()) {
@@ -45,13 +47,13 @@ class PengajuanSkUsahaControllerApi extends Controller
                 'error' => true,
                 'message' => 'Validasi gagal.',
                 'data' => $validator->errors(),
-            ], HttpFoundationResponse::HTTP_UNPROCESSABLE_ENTITY);
+            ], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
         try {
             $file = $request->file('file_ktp');
             $namaFile = uniqid() . '_' . $file->getClientOriginalName();
-            $file->storeAs('public/uploads/kk', $namaFile);
+            $file->storeAs('uploads/kk', $namaFile);
 
             $sku = PengajuanSkUsaha::create([
                 'hubungan' => $request->hubungan,
@@ -67,8 +69,9 @@ class PengajuanSkUsahaControllerApi extends Controller
                 'file_ktp' => $namaFile,
             ]);
 
+            $user = Auth::guard('client')->user();
             $pengajuan = $sku->pengajuan()->create([
-                'id_user_pengajuan' => 1,
+                'id_user_pengajuan' => $user->id,
                 'id_admin' => null,
                 'kategori_pengajuan' => 8,
                 'detail_type' => PengajuanSkUsaha::class,
@@ -84,29 +87,29 @@ class PengajuanSkUsahaControllerApi extends Controller
                 'data' => [
                     'pengajuan' => $pengajuan,
                     'detail' => $sku,
-                    'file_url' => asset('storage/public/uploads/kk/' . $namaFile),
+                    'file_url' => asset('storage/uploads/kk/' . $namaFile),
                 ],
-            ], HttpFoundationResponse::HTTP_CREATED);
+            ], Response::HTTP_CREATED);
         } catch (\Exception $e) {
             return response()->json([
                 'error' => true,
                 'message' => 'Terjadi kesalahan saat menyimpan data.',
                 'data' => $e->getMessage(),
-            ], HttpFoundationResponse::HTTP_INTERNAL_SERVER_ERROR);
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
     public function show(string $id)
     {
         try {
-            $skUsaha = PengajuanSkUsaha::with([
+            $sku = PengajuanSkUsaha::with([
                 'hubunganPengaju:id,jenis_hubungan',
                 'jenisKelaminPengaju:id,jenis_kelamin',
                 'statusPerkawinanPengaju:id,status_perkawinan',
                 'pekerjaanPengaju:id,nama_pekerjaan',
             ])->findOrFail($id);
 
-            return new PengajuanSkUsahaResource($skUsaha);
+            return new PengajuanSkUsahaResource($sku);
         } catch (ModelNotFoundException $e) {
             return response()->json([
                 'error' => true,
@@ -142,12 +145,19 @@ class PengajuanSkUsahaControllerApi extends Controller
                 ], 422);
             }
 
-            $namaFile = $data->file_ktp; // default file lama
+            $pengajuan = $data->pengajuan;
+            $namaFile = $data->file_ktp;
 
-            // Jika ada file baru, ganti file lama
+            if ($pengajuan && $pengajuan->status_pengajuan == 3 && !$request->hasFile('file_ktp')) {
+                return response()->json([
+                    'error' => true,
+                    'message' => 'File KTP wajib di-upload ulang karena pengajuan ditolak.',
+                ], 400);
+            }
+
             if ($request->hasFile('file_ktp')) {
-                if ($data->file_ktp && file_exists(storage_path('app/' . $data->file_ktp))) {
-                    unlink(storage_path('app/' . $data->file_ktp));
+                if ($data->file_ktp && Storage::exists('uploads/kk/' . $data->file_ktp)) {
+                    Storage::delete('uploads/kk/' . $data->file_ktp);
                 }
 
                 $file = $request->file('file_ktp');
@@ -155,7 +165,6 @@ class PengajuanSkUsahaControllerApi extends Controller
                 $file->storeAs('uploads/kk', $namaFile);
             }
 
-            // Update data
             $data->update([
                 'hubungan' => $request->hubungan,
                 'nama' => $request->nama,
@@ -170,9 +179,7 @@ class PengajuanSkUsahaControllerApi extends Controller
                 'file_ktp' => $namaFile,
             ]);
 
-            // Reset status pengajuan jika sebelumnya ditolak
-            $pengajuan = $data->pengajuan;
-            if ($pengajuan && $pengajuan->status_pengajuan == 3) {
+            if ($pengajuan && $pengajuan->status_pengajuan == 3 && $request->hasFile('file_ktp')) {
                 $pengajuan->update([
                     'status_pengajuan' => 5,
                     'catatan' => null,

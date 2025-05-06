@@ -1,4 +1,4 @@
-@if ($getState())
+{{-- @if ($getState())
     <div class="mb-2 font-medium text-sm">File KK yang sudah diunggah:</div>
 
     @foreach ((array) $getState() as $file)
@@ -17,4 +17,4 @@
     @endforeach
 @else
     <span class="text-gray-400 italic">Belum ada file diunggah</span>
-@endif
+@endif --}}

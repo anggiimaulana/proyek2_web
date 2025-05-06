@@ -40,15 +40,16 @@ class Pengajuan extends Model
         return $this->belongsTo(KategoriPengajuan::class, 'kategori_pengajuan');
     }
 
+    public function statusPengajuan()
+    {
+        return $this->belongsTo(StatusPengajuan::class, 'status_pengajuan');
+    }
+
     public function detail()
     {
         return $this->morphTo();
     }
 
-    public function statusPengajuan()
-    {
-        return $this->belongsTo(StatusPengajuan::class, 'status_pengajuan');
-    }
 
     public function adminUpdated()
     {

@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use App\Models\Client;
+use Illuminate\Support\Facades\Hash;
 
 class ClientSeeder extends Seeder
 {
@@ -21,7 +22,7 @@ class ClientSeeder extends Seeder
             'pendidikan' => 1,
             'pekerjaan' => 1,
             'nomor_telepon' => '1234567890',
-            'password' => bcrypt('password'),
+            'password' => Hash::make('password'),
         ]);
     }
 }

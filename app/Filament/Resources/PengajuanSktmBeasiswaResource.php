@@ -168,8 +168,8 @@ class PengajuanSktmBeasiswaResource extends Resource
                     ->label('Unduh')
                     ->icon('heroicon-o-arrow-down-tray')
                     ->button()
-                    ->color(fn($record) => $record->pengajuan->statusPengajuan->status === 'Disetujui' ? 'info' : 'gray')
-                    ->disabled(fn($record) => $record->pengajuan->statusPengajuan->status !== 'Disetujui')
+                    ->color(fn($record) => $record->pengajuan?->statusPengajuan?->status === 'Disetujui' ? 'info' : 'gray')
+                    ->disabled(fn($record) => $record->pengajuan?->statusPengajuan?->status !== 'Disetujui')
                     ->url(fn($record) => route('exportPdfSktmBeasiswa', $record), shouldOpenInNewTab: true),
             ])
             ->bulkActions([

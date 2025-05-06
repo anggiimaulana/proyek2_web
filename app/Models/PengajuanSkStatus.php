@@ -24,6 +24,11 @@ class PengajuanSkStatus extends Model
         'file_kk',
     ];
 
+    public function getFileKkAttribute($value)
+    {
+        return $value ? 'uploads/kk/' . $value : null;
+    }
+
     public function statusPerkawinanPengaju()
     {
         return $this->belongsTo(StatusPerkawinan::class, 'status_perkawinan');

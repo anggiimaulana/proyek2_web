@@ -10,4 +10,10 @@ class StatusPengajuan extends Model
     use HasFactory;
     protected $table = 'status_pengajuan';
     protected $fillable = ['status'];
+
+    // Di model PengajuanSktmBeasiswa
+    public function pengajuan()
+    {
+        return $this->hasMany(Pengajuan::class, 'status');
+    }
 }

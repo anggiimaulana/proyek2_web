@@ -8,6 +8,7 @@ use App\Models\PengajuanSktmSekolah;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response as HttpFoundationResponse;
 
@@ -76,8 +77,11 @@ class PengajuanSktmSekolahControllerApi extends Controller
                 'file_kk' => $namaFile,
             ]);
 
+            $user = Auth::guard('client')->user();
+
+            // Buat relasi ke tabel pengajuan umum
             $pengajuan = $sktm->pengajuan()->create([
-                'id_user_pengajuan' => 1,
+                'id_user_pengajuan' => $user->id,
                 'id_admin' => null,
                 'kategori_pengajuan' => 2,
                 'detail_type' => PengajuanSktmSekolah::class,
@@ -93,7 +97,7 @@ class PengajuanSktmSekolahControllerApi extends Controller
                 'data' => [
                     'pengajuan' => $pengajuan,
                     'detail' => $sktm,
-                    'file_url' => asset('storage/public/uploads/kk/' . $namaFile),
+                    'file_url' => asset('storage/uploads/kk/' . $namaFile),
                 ],
             ], HttpFoundationResponse::HTTP_CREATED);
         } catch (\Exception $e) {
@@ -144,7 +148,7 @@ class PengajuanSktmSekolahControllerApi extends Controller
                 'asal_sekolah' => 'required',
                 'kelas' => 'required',
                 'alamat' => 'required',
-                'file_kk' => 'required|file|mimes:pdf,jpg,jpeg,png|max:2048',
+                'file_kk' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
             ]);
 
             if ($validator->fails()) {
@@ -155,11 +159,21 @@ class PengajuanSktmSekolahControllerApi extends Controller
                 ], 422);
             }
 
+            // Cek jika status pengajuan ditolak, wajib upload ulang file
+            if ($data->pengajuan && $data->pengajuan->status_pengajuan == 3) {
+                if (!$request->hasFile('file_kk')) {
+                    return response()->json([
+                        'error' => true,
+                        'message' => 'File KK wajib di-upload ulang karena pengajuan ditolak.',
+                    ], 400);
+                }
+            }
+
             // Cek dan ganti file jika diupload ulang
             if ($request->hasFile('file_kk')) {
                 // Hapus file lama
-                if ($data->file_kk && file_exists(storage_path('app/' . $data->file_kk))) {
-                    unlink(storage_path('app/' . $data->file_kk));
+                if ($data->file_kk && file_exists(storage_path('app/uploads/kk/' . $data->file_kk))) {
+                    unlink(storage_path('app/uploads/kk/' . $data->file_kk));
                 }
 
                 $file = $request->file('file_kk');
@@ -189,7 +203,7 @@ class PengajuanSktmSekolahControllerApi extends Controller
 
             // Reset status pengajuan jika sebelumnya ditolak
             $pengajuan = $data->pengajuan;
-            if ($pengajuan && $pengajuan->status_pengajuan == 3) {
+            if ($pengajuan && $pengajuan->status_pengajuan == 3 && $request->hasFile('file_kk')) {
                 $pengajuan->update([
                     'status_pengajuan' => 5,
                     'catatan' => null,
