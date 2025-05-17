@@ -31,6 +31,6 @@ class PengajuanSkpotController extends Controller
             ->loadView('file.detail.skpot', compact('skpot', 'qrCode'))
             ->setPaper('a4', 'portrait');
 
-        return $pdf->stream("{$skpot->nama}.pdf");
+        return $pdf->download("SKPOT - {$skpot->nama}.pdf");
     }
 }

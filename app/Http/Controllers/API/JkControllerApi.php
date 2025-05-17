@@ -5,38 +5,23 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\JenisKelamin;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Symfony\Component\HttpFoundation\Response as HttpFoundationResponse;
 
 class JkControllerApi extends Controller
 {
     public function index()
     {
-        $jk = JenisKelamin::all();
-        $response = [
+        $jk = Cache::remember('jk_list', 1296000, function () {
+            return JenisKelamin::query()
+                ->select('id', 'jenis_kelamin')
+                ->orderByDesc('id')
+                ->get();
+        });
+        return response()->json([
             'error' => false,
             'message' => 'Data Jenis Kelamin',
             'data' => $jk,
-        ];
-        return response()->json($response, HttpFoundationResponse::HTTP_OK);
-    }
-
-    public function store(Request $request)
-    {
-        //
-    }
-
-    public function show(string $id)
-    {
-        //
-    }
-
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    public function destroy(string $id)
-    {
-        //
+        ], HttpFoundationResponse::HTTP_OK);
     }
 }

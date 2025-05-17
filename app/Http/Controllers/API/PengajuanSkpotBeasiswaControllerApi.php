@@ -17,6 +17,8 @@ class PengajuanSkpotBeasiswaControllerApi extends Controller
     {
         $skpotBeasiswa = PengajuanSkpotBeasiswa::with([
             'hubunganPengaju:id,jenis_hubungan',
+            'idKkPengaju:id,nomor_kk',
+            'idNikPengaju:id,nomor_nik',
             'pekerjaanPengaju:id,nama_pekerjaan',
             'jkPengaju:id,jenis_kelamin',
             'agamaPengaju:id,nama_agama',
@@ -29,17 +31,18 @@ class PengajuanSkpotBeasiswaControllerApi extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'hubungan' => 'required',
-            'nik' => 'required',
-            'nama' => 'required',
-            'tempat_lahir' => 'required',
+            'hubungan' => 'required|integer',
+            'nik_id' => 'required|integer',
+            'kk_id' => 'required|integer',
+            'nama' => 'required|string',
+            'tempat_lahir' => 'required|string',
             'tanggal_lahir' => 'required|date',
-            'jk' => 'required',
-            'agama' => 'required',
-            'nama_ortu' => 'required',
-            'pekerjaan' => 'required',
-            'alamat' => 'required',
-            'penghasilan' => 'required',
+            'jk' => 'required|integer',
+            'agama' => 'required|integer',
+            'nama_ortu' => 'required|string',
+            'pekerjaan' => 'required|integer',
+            'alamat' => 'required|string',
+            'penghasilan' => 'required|integer',
             'file_kk' => 'required|file|mimes:pdf,jpg,jpeg,png|max:2048',
         ]);
 
@@ -60,7 +63,8 @@ class PengajuanSkpotBeasiswaControllerApi extends Controller
             // Simpan data detail
             $skpotBeasiswa = PengajuanSkpotBeasiswa::create([
                 'hubungan' => $request->hubungan,
-                'nik' => $request->nik,
+                'kk_id' => $request->kk_id,
+                'nik_id' => $request->nik_id,
                 'nama' => $request->nama,
                 'tempat_lahir' => $request->tempat_lahir,
                 'tanggal_lahir' => $request->tanggal_lahir,
@@ -70,7 +74,7 @@ class PengajuanSkpotBeasiswaControllerApi extends Controller
                 'pekerjaan' => $request->pekerjaan,
                 'alamat' => $request->alamat,
                 'penghasilan' => $request->penghasilan,
-                'file_kk' => $namaFile,
+                'file_kk' => 'uploads/kk/' . $namaFile,
             ]);
             $user = Auth::guard('client')->user();
 
@@ -109,6 +113,8 @@ class PengajuanSkpotBeasiswaControllerApi extends Controller
         try {
             $skpotBeasiswa = PengajuanSkpotBeasiswa::with([
                 'hubunganPengaju:id,jenis_hubungan',
+                'idKkPengaju:id,nomor_kk',
+                'idNikPengaju:id,nomor_nik',
                 'jkPengaju:id,jenis_kelamin',
                 'pekerjaanPengaju:id,nama_pekerjaan',
                 'agamaPengaju:id,nama_agama',
@@ -130,17 +136,18 @@ class PengajuanSkpotBeasiswaControllerApi extends Controller
             $data = PengajuanSkpotBeasiswa::findOrFail($id);
 
             $validator = Validator::make($request->all(), [
-                'hubungan' => 'required',
-                'nik' => 'required',
-                'nama' => 'required',
-                'tempat_lahir' => 'required',
+                'hubungan' => 'required|integer',
+                'nik_id' => 'required|integer',
+                'kk_id' => 'required|integer',
+                'nama' => 'required|string',
+                'tempat_lahir' => 'required|string',
                 'tanggal_lahir' => 'required|date',
-                'jk' => 'required',
-                'agama' => 'required',
-                'nama_ortu' => 'required',
-                'pekerjaan' => 'required',
-                'alamat' => 'required',
-                'penghasilan' => 'required',
+                'jk' => 'required|integer',
+                'agama' => 'required|integer',
+                'nama_ortu' => 'required|string',
+                'pekerjaan' => 'required|integer',
+                'alamat' => 'required|string',
+                'penghasilan' => 'required|integer',
                 'file_kk' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
             ]);
 
@@ -172,13 +179,14 @@ class PengajuanSkpotBeasiswaControllerApi extends Controller
                 $file = $request->file('file_kk');
                 $namaFile = uniqid() . '_' . $file->getClientOriginalName();
                 $file->storeAs('uploads/kk', $namaFile);
-                $data->file_kk = $namaFile;
+                $data->file_kk = 'uploads/kk/' . $namaFile;
             }
 
             // Update data lainnya
             $data->update([
                 'hubungan' => $request->hubungan,
-                'nik' => $request->nik,
+                'kk_id' => $request->kk_id,
+                'nik_id' => $request->nik_id,
                 'nama' => $request->nama,
                 'tempat_lahir' => $request->tempat_lahir,
                 'tanggal_lahir' => $request->tanggal_lahir,

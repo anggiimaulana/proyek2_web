@@ -8,16 +8,8 @@ class ClientFactory extends Factory
     public function definition(): array
     {
         return [
-            'nik' => $this->faker->unique()->numerify('##########'),
-            'name' => $this->faker->name(),
-            'tempat_lahir' => $this->faker->city(),
-            'tanggal_lahir' => $this->faker->date(),
-            'jk' => 1,
-            'status' => 1,
-            'agama' => 1,
-            'alamat' => $this->faker->address(),
-            'pendidikan' => 1,
-            'pekerjaan' => 1,
+            'kk_id' => 1,
+            'nama_kepala_keluarga' => $this->faker->name(),
             'nomor_telepon' => $this->faker->phoneNumber(),
             'password' => bcrypt('password'),
         ];

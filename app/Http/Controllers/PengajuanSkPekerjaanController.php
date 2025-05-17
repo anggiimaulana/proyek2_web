@@ -31,6 +31,6 @@ class PengajuanSkPekerjaanController extends Controller
             ->loadView('file.detail.skPekerjaan', compact('skPekerjaan', 'qrCode'))
             ->setPaper('a4', 'portrait');
 
-        return $pdf->stream("{$skPekerjaan->nama}.pdf");
+        return $pdf->download(" Surat Keterangan Pekerjaan - {$skPekerjaan->nama}.pdf");
     }
 }

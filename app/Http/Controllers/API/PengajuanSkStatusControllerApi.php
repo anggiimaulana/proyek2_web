@@ -18,6 +18,8 @@ class PengajuanSkStatusControllerApi extends Controller
     {
         $skStatus = PengajuanSkStatus::with([
             'hubunganPengaju:id,jenis_hubungan',
+            'idNikPengaju:id,nomor_nik',
+            'idKkPengaju:id,nomor_kk',
             'jenisKelaminPengaju:id,jenis_kelamin',
             'agamaPengaju:id,nama_agama',
             'statusPerkawinanPengaju:id,status_perkawinan',
@@ -30,15 +32,17 @@ class PengajuanSkStatusControllerApi extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'hubungan' => 'required',
-            'nama' => 'required',
-            'tempat_lahir' => 'required',
+            'hubungan' => 'required|integer',
+            'nik_id' => 'required|integer',
+            'kk_id' => 'required|integer',
+            'nama' => 'required|string',
+            'tempat_lahir' => 'required|string',
             'tanggal_lahir' => 'required|date',
-            'jk' => 'required',
-            'agama' => 'required',
-            'pekerjaan' => 'required',
-            'status_perkawinan' => 'required',
-            'alamat' => 'required',
+            'jk' => 'required|integer',
+            'agama' => 'required|integer',
+            'pekerjaan' => 'required|integer',
+            'status_perkawinan' => 'required|integer',
+            'alamat' => 'required|string',
             'file_kk' => 'required|file|mimes:pdf,jpg,jpeg,png|max:2048',
         ]);
 
@@ -57,6 +61,8 @@ class PengajuanSkStatusControllerApi extends Controller
 
             $skStatus = PengajuanSkStatus::create([
                 'hubungan' => $request->hubungan,
+                'nik_id' => $request->nik_id,
+                'kk_id' => $request->kk_id,
                 'nama' => $request->nama,
                 'tempat_lahir' => $request->tempat_lahir,
                 'tanggal_lahir' => $request->tanggal_lahir,
@@ -65,7 +71,7 @@ class PengajuanSkStatusControllerApi extends Controller
                 'pekerjaan' => $request->pekerjaan,
                 'status_perkawinan' => $request->status_perkawinan,
                 'alamat' => $request->alamat,
-                'file_kk' => $namaFile,
+                'file_kk' => 'uploads/kk/' . $namaFile,
             ]);
             
             $user = Auth::guard('client')->user();
@@ -105,6 +111,8 @@ class PengajuanSkStatusControllerApi extends Controller
         try {
             $skStatus = PengajuanSkStatus::with([
                 'hubunganPengaju:id,jenis_hubungan',
+                'idNikPengaju:id,nomor_nik',
+                'idKkPengaju:id,nomor_kk',
                 'jenisKelaminPengaju:id,jenis_kelamin',
                 'agamaPengaju:id,nama_agama',
                 'statusPerkawinanPengaju:id,status_perkawinan',
@@ -126,15 +134,17 @@ class PengajuanSkStatusControllerApi extends Controller
             $data = PengajuanSkStatus::findOrFail($id);
 
             $validator = Validator::make($request->all(), [
-                'hubungan' => 'required',
-                'nama' => 'required',
-                'tempat_lahir' => 'required',
+                'hubungan' => 'required|integer',
+                'nama' => 'required|string',
+                'nik_id' => 'required|integer',
+                'kk_id' => 'required|integer',
+                'tempat_lahir' => 'required|string',
                 'tanggal_lahir' => 'required|date',
-                'jk' => 'required',
-                'agama' => 'required',
-                'pekerjaan' => 'required',
-                'status_perkawinan' => 'required',
-                'alamat' => 'required',
+                'jk' => 'required|integer',
+                'agama' => 'required|integer',
+                'pekerjaan' => 'required|integer',
+                'status_perkawinan' => 'required|integer',
+                'alamat' => 'required|string',
                 'file_kk' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
             ]);
 
@@ -166,12 +176,14 @@ class PengajuanSkStatusControllerApi extends Controller
                 $file = $request->file('file_kk');
                 $namaFile = uniqid() . '_' . $file->getClientOriginalName();
                 $file->storeAs('uploads/kk', $namaFile);
-                $data->file_kk = $namaFile;
+                $data->file_kk = 'uploads/kk/' . $namaFile;
             }
 
             // Update data lainnya
             $data->update([
                 'hubungan' => $request->hubungan,
+                'nik_id' => $request->nik_id,
+                'kk_id' => $request->kk_id,
                 'nama' => $request->nama,
                 'tempat_lahir' => $request->tempat_lahir,
                 'tanggal_lahir' => $request->tanggal_lahir,

@@ -31,6 +31,6 @@ class PengajuanSktmListrikController extends Controller
             ->loadView('file.detail.sktmListrik', compact('sktmListrik', 'qrCode'))
             ->setPaper('a4', 'portrait');
 
-        return $pdf->stream("{$sktmListrik->nama}.pdf");
+        return $pdf->download("SKTM Listrik - {$sktmListrik->nama}.pdf");
     }
 }

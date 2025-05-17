@@ -25,6 +25,8 @@ class DatabaseSeeder extends Seeder
             StatusPengajuanSeeder::class,
             KategoriPengajuanSeeder::class,
             PenghasilanSeeder::class,
+            KkSeeder::class,
+            NikSeeder::class,
             ClientSeeder::class,
             UserSeeder::class,
             KuwuSeeder::class,

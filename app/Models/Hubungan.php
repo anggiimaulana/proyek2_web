@@ -14,8 +14,27 @@ class Hubungan extends Model
         'jenis_hubungan',
     ];
 
+    protected static function booted()
+    {
+        static::created(function ($hubungan) {
+            self::clearCache($hubungan);
+        });
+
+        static::updated(function ($hubungan) {
+            self::clearCache($hubungan);
+        });
+
+        static::deleted(function ($hubungan) {
+            self::clearCache($hubungan);
+        });
+    }
+
     public function skpotBeasiswa() {
         return $this->hasMany(PengajuanSkpotBeasiswa::class, 'hubungan');
+    }
+
+    public function hubunganClient() {
+        return $this->hasMany(Nik::class, 'hubungan');
     }
 
     public function sktmBeasiswa() {

@@ -12,11 +12,28 @@ class Penghasilan extends Model
         'rentang_penghasilan',
     ];
 
-    public function skpotBeasiswa() {
+    protected static function booted()
+    {
+        static::created(function ($penghasilan) {
+            self::clearCache($penghasilan);
+        });
+
+        static::updated(function ($penghasilan) {
+            self::clearCache($penghasilan);
+        });
+
+        static::deleted(function ($penghasilan) {
+            self::clearCache($penghasilan);
+        });
+    }
+
+    public function skpotBeasiswa()
+    {
         return $this->hasMany(PengajuanSkpotBeasiswa::class, 'penghasilan');
     }
 
-    public function sktmListrik() {
+    public function sktmListrik()
+    {
         return $this->hasMany(PengajuanSktmListrik::class, 'penghasilan');
     }
 }

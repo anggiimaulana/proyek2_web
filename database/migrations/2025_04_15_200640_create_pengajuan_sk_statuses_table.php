@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('pengajuan_sk_statuses', function (Blueprint $table) {
             $table->id();
             $table->foreignId('hubungan')->constrained('hubungan')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignId('kk_id')->constrained('kartu_keluargas')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignId('nik_id')->constrained('niks')->onDelete('cascade')->onUpdate('cascade');
             $table->string('nama');
             $table->string('tempat_lahir');
             $table->date('tanggal_lahir');

@@ -11,16 +11,8 @@ class ClientSeeder extends Seeder
     public function run(): void
     {
         Client::factory()->create([
-            'nik' => '1234567890',
-            'name' => 'Anggi Maulana',
-            'tempat_lahir' => 'Jakarta',
-            'tanggal_lahir' => '2000-01-01',
-            'jk' => 1,
-            'status' => 1,
-            'agama' => 1,
-            'alamat' => 'Jl. Contoh',
-            'pendidikan' => 1,
-            'pekerjaan' => 1,
+            'kk_id' => '1',
+            'nama_kepala_keluarga' => 'John Doe',
             'nomor_telepon' => '1234567890',
             'password' => Hash::make('password'),
         ]);

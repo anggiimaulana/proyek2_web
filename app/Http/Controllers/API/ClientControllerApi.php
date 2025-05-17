@@ -5,118 +5,67 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\Client;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Cache;
 use Symfony\Component\HttpFoundation\Response as HttpFoundationResponse;
 
 class ClientControllerApi extends Controller
 {
     public function index()
     {
-        $client = Client::orderBy('created_at', 'desc')->paginate(5);
-        $response = [
-            'error' => false,
-            'message' => 'Data Akun Masyarakat',
-            'data' => $client,
-        ];
-        return response()->json($response, HttpFoundationResponse::HTTP_OK);
-    }
-
-    public function store(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required',
-            'nik' => 'required|unique:client,nik',
-            'tempat_lahir' => 'required',
-            'tanggal_lahir' => 'required',
-            'jk' => 'required',
-            'agama' => 'required',
-            'pendidikan' => 'required',
-            'pekerjaan' => 'required',
-            'alamat' => 'required',
-            'status' => 'required',
-            'nomor_telepon' => 'required',
-            'password' => 'required',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(
-                $validator->errors(),
-                HttpFoundationResponse::HTTP_UNPROCESSABLE_ENTITY
-            );
-        }
-
         try {
-            $client = Client::create($request->all());
+            $client = Cache::remember('client_list', 1296000, function () {
+                return Client::select('kk_id', 'nama_kepala_keluarga')
+                    ->orderByDesc('id')
+                    ->get();
+            });
 
-            $response = [
+            return response()->json([
                 'error' => false,
-                'message' => 'Data Akun Masyarakat Berhasil Ditambahkan',
-                'data' => $client
-            ];
-
-            return response()->json($response, HttpFoundationResponse::HTTP_CREATED);
-        } catch (QueryException $e) {
+                'message' => 'Data Akun Masyarakat',
+                'data' => $client,
+            ], HttpFoundationResponse::HTTP_OK);
+        } catch (\Exception $e) {
             return response()->json([
                 'error' => true,
-                'message' => 'Data Akun Masyarakat Gagal Ditambahkan',
-            ]);
+                'message' => 'Gagal mengambil data',
+            ], HttpFoundationResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
     public function show(string $id)
     {
+        if (!ctype_digit($id)) {
+            return response()->json([
+                'error' => true,
+                'message' => 'ID harus berupa angka',
+            ], HttpFoundationResponse::HTTP_BAD_REQUEST);
+        }
+
         try {
-            $client = Client::where('id', $id)->firstOrFail();
+            $cacheKey = "client_{$id}";
+
+            $client = Cache::remember($cacheKey, 1296000, function () use ($id) {
+                return Client::select('kk_id', 'nama_kepala_keluarga', 'nomor_telepon')
+                    ->where('id', $id)
+                    ->firstOrFail();
+            });
+
             return response()->json([
                 'error' => false,
                 'message' => 'Data Akun Masyarakat',
                 'data' => $client,
-            ]);
+            ], HttpFoundationResponse::HTTP_OK);
         } catch (ModelNotFoundException $e) {
             return response()->json([
                 'error' => true,
                 'message' => 'Data Akun Tidak Ditemukan',
-            ], 404);
-        }
-    }
-
-    public function update(Request $request, string $id)
-    {
-        try {
-            $client = Client::findOrFail($id);
-            $client->update($request->all());
-
-            return response()->json([
-                'error' => false,
-                'message' => 'Data Akun Masyarakat Berhasil Diperbarui',
-                'data' => $client,
-            ]);
-        } catch (ModelNotFoundException $e) {
+            ], HttpFoundationResponse::HTTP_NOT_FOUND);
+        } catch (\Exception $e) {
             return response()->json([
                 'error' => true,
-                'message' => 'Data Akun Tidak Ditemukan',
-            ], 404);
-        }
-    }
-
-
-    public function destroy(string $id)
-    {
-        try {
-            $client = Client::findOrFail($id);
-            $client->delete();
-
-            return response()->json([
-                'error' => false,
-                'message' => 'Data Akun Berhasil Dihapus',
-            ]);
-        } catch (ModelNotFoundException $e) {
-            return response()->json([
-                'error' => true,
-                'message' => 'Data Akun Tidak Ditemukan',
-            ], 404);
+                'message' => 'Gagal mengambil data',
+            ], HttpFoundationResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 }

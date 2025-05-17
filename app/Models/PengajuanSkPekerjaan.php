@@ -10,7 +10,8 @@ class PengajuanSkPekerjaan extends Model
 
     protected $fillable = [
         'hubungan',
-        'nik',
+        'kk_id',
+        'nik_id',
         'nama',
         'tempat_lahir',
         'tanggal_lahir',
@@ -24,7 +25,7 @@ class PengajuanSkPekerjaan extends Model
 
     public function getFileKkAttribute($value)
     {
-        return $value ? 'uploads/kk/' . $value : null;
+        return $value ? $value : null;
     }
 
     public function hubunganPengaju()
@@ -55,6 +56,16 @@ class PengajuanSkPekerjaan extends Model
     public function agamaPengaju()
     {
         return $this->belongsTo(Agama::class, 'agama');
+    }
+
+    public function idKkPengaju()
+    {
+        return $this->belongsTo(KartuKeluarga::class, 'kk_id');
+    }
+
+    public function idNikPengaju()
+    {
+        return $this->belongsTo(Nik::class, 'nik_id');
     }
 
     public function pengajuan()

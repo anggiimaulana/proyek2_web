@@ -25,7 +25,7 @@ class JenisKelaminResource extends Resource
 
     protected static ?string $navigationLabel = 'Jenis Kelamin';
 
-    protected static ?string $navigationIcon = 'heroicon-o-user-group';
+    protected static ?string $navigationIcon = 'heroicon-o-adjustments-horizontal';
 
     protected static ?string $navigationGroup = 'Kelola Informasi Umum';
 
@@ -33,6 +33,9 @@ class JenisKelaminResource extends Resource
     {
         return $form
             ->schema([
+                TextColumn::make('no')
+                    ->label('No')
+                    ->rowIndex(),
                 TextInput::make('jenis_kelamin')
                     ->label('Jenis Kelamin')
                     ->required()
@@ -52,7 +55,8 @@ class JenisKelaminResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()->label('Ubah')->color('warning'),
+                Tables\Actions\DeleteAction::make()->label('Hapus')->color('danger'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

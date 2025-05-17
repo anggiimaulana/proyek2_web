@@ -13,6 +13,8 @@ class PengajuanSktmBeasiswaResource extends JsonResource
             'id' => $this->id,
             'hubungan' => $this->hubunganPengaju->jenis_hubungan ?? null,
             'nama_anak' => $this->nama,
+            'kk_id' => $this->idKkPengaju->nomor_kk ?? null,
+            'nik_id' => $this->idNikPengaju->nomor_nik ?? null,
             'tempat_lahir' => $this->tempat_lahir,
             'tanggal_lahir' => $this->tanggal_lahir,
             'suku' => $this->suku,

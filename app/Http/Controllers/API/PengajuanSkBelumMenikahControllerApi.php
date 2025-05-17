@@ -17,6 +17,8 @@ class PengajuanSkBelumMenikahControllerApi extends Controller
     {
         $skBelumMenikah = PengajuanSkBelumMenikah::with([
             'hubunganPengaju:id,jenis_hubungan',
+            'idKkPengaju:id,nomor_kk',
+            'idNikPengaju:id,nomor_nik',
             'jenisKelaminPengaju:id,jenis_kelamin',
             'agamaPengaju:id,nama_agama',
             'pekerjaanPengaju:id,nama_pekerjaan',
@@ -29,16 +31,17 @@ class PengajuanSkBelumMenikahControllerApi extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'hubungan' => 'required',
-            'nama' => 'required',
-            'nik' => 'required',
-            'tempat_lahir' => 'required',
+            'hubungan' => 'required|integer',
+            'kk_id' => 'required|integer',
+            'nik_id' => 'required|integer',
+            'nama' => 'required|string',
+            'tempat_lahir' => 'required|string',
             'tanggal_lahir' => 'required|date',
-            'jk' => 'required',
-            'agama' => 'required',
-            'pekerjaan' => 'required',
-            'status_perkawinan' => 'required',
-            'alamat' => 'required',
+            'jk' => 'required|integer',
+            'agama' => 'required|integer',
+            'pekerjaan' => 'required|integer',
+            'status_perkawinan' => 'required|integer',
+            'alamat' => 'required|string',
             'file_kk' => 'required|file|mimes:pdf,jpg,jpeg,png|max:2048',
         ]);
 
@@ -54,13 +57,14 @@ class PengajuanSkBelumMenikahControllerApi extends Controller
             // Upload file KK
             $file = $request->file('file_kk');
             $namaFile = uniqid() . '_' . $file->getClientOriginalName();
-            $file->storeAs('/uploads/kk', $namaFile);
+            $file->storeAs('uploads/kk', $namaFile);
 
             // Simpan data detail
             $skBelumMenikah = PengajuanSkBelumMenikah::create([
                 'hubungan' => $request->hubungan,
                 'nama' => $request->nama,
-                'nik' => $request->nik,
+                'kk_id' => $request->kk_id,
+                'nik_id' => $request->nik_id,
                 'tempat_lahir' => $request->tempat_lahir,
                 'tanggal_lahir' => $request->tanggal_lahir,
                 'jk' => $request->jk,
@@ -68,7 +72,7 @@ class PengajuanSkBelumMenikahControllerApi extends Controller
                 'pekerjaan' => $request->pekerjaan,
                 'status_perkawinan' => $request->status_perkawinan,
                 'alamat' => $request->alamat,
-                'file_kk' => $namaFile,
+                'file_kk' => 'uploads/kk/' . $namaFile,
             ]);
 
             $user = Auth::guard('client')->user();
@@ -109,6 +113,8 @@ class PengajuanSkBelumMenikahControllerApi extends Controller
         try {
             $skBelumMenikah = PengajuanSkBelumMenikah::with([
                 'hubunganPengaju:id,jenis_hubungan',
+                'idKkPengaju:id,nomor_kk',
+                'idNikPengaju:id,nomor_nik',
                 'jenisKelaminPengaju:id,jenis_kelamin',
                 'agamaPengaju:id,nama_agama',
                 'pekerjaanPengaju:id,nama_pekerjaan',
@@ -130,16 +136,17 @@ class PengajuanSkBelumMenikahControllerApi extends Controller
             $data = PengajuanSkBelumMenikah::findOrFail($id);
 
             $validator = Validator::make($request->all(), [
-                'hubungan' => 'required',
-                'nik' => 'required',
-                'nama' => 'required',
-                'tempat_lahir' => 'required',
+                'hubungan' => 'required|integer',
+                'kk_id' => 'required|integer',
+                'nik_id' => 'required|integer',
+                'nama' => 'required|string',
+                'tempat_lahir' => 'required|string',
                 'tanggal_lahir' => 'required|date',
-                'jk' => 'required',
-                'agama' => 'required',
-                'pekerjaan' => 'required',
-                'status_perkawinan' => 'required',
-                'alamat' => 'required',
+                'jk' => 'required|integer',
+                'agama' => 'required|integer',
+                'pekerjaan' => 'required|integer',
+                'status_perkawinan' => 'required|integer',
+                'alamat' => 'required|string',
                 'file_kk' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
             ]);
 
@@ -169,12 +176,13 @@ class PengajuanSkBelumMenikahControllerApi extends Controller
                 $file = $request->file('file_kk');
                 $namaFile = uniqid() . '_' . $file->getClientOriginalName();
                 $file->storeAs('uploads/kk', $namaFile);
-                $data->file_kk = $namaFile;
+                $data->file_kk = 'uploads/kk/' . $namaFile;
             }
 
             $data->update([
                 'hubungan' => $request->hubungan,
-                'nik' => $request->nik,
+                'kk_id' => $request->kk_id,
+                'nik_id' => $request->nik_id,
                 'nama' => $request->nama,
                 'tempat_lahir' => $request->tempat_lahir,
                 'tanggal_lahir' => $request->tanggal_lahir,

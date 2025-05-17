@@ -11,7 +11,8 @@ class PengajuanSktmListrik extends Model
     protected $fillable = [
         'hubungan',
         'nama',
-        'nik',
+        'kk_id',
+        'nik_id',
         'agama',
         'umur',
         'jk',
@@ -24,7 +25,7 @@ class PengajuanSktmListrik extends Model
 
     public function getFileKkAttribute($value)
     {
-        return $value ? 'uploads/kk/' . $value : null;
+        return $value ? $value : null;
     }
 
     public function hubunganPengaju()
@@ -50,6 +51,16 @@ class PengajuanSktmListrik extends Model
     public function agamaPengaju()
     {
         return $this->belongsTo(Agama::class, 'agama');
+    }
+
+    public function idKkPengaju()
+    {
+        return $this->belongsTo(KartuKeluarga::class, 'kk_id');
+    }
+
+    public function idNikPengaju()
+    {
+        return $this->belongsTo(Nik::class, 'nik_id');
     }
 
     public function pengajuan()

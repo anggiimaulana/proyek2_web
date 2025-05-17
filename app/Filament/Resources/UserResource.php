@@ -44,7 +44,7 @@ class UserResource extends Resource
                     ->label('NIP')
                     ->required()
                     ->numeric()
-                    ->unique()
+                    ->unique(ignoreRecord: true)
                     ->helperText('Tuliskan NIP secara lengkap dan teliti')
                     ->validationMessages([
                         'unique' => 'NIP ini sudah terdaftar.',
@@ -89,6 +89,9 @@ class UserResource extends Resource
     {
         return $table
             ->columns([
+                TextColumn::make('no')
+                    ->label('No')
+                    ->rowIndex(),
                 TextColumn::make('name')->label('Nama Lengkap'),
                 TextColumn::make('nip')->label('NIP'),
                 TextColumn::make('email')->label('Email'),
@@ -99,10 +102,8 @@ class UserResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\ActionGroup::make([
-                    Tables\Actions\EditAction::make()->label('Ubah'),
-                    Tables\Actions\DeleteAction::make()->label('Hapus'),
-                ])->label('Aksi'),
+                Tables\Actions\EditAction::make()->label('Ubah')->color('warning'),
+                Tables\Actions\DeleteAction::make()->label('Hapus')->color('danger'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

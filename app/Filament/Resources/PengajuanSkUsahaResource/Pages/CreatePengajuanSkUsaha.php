@@ -4,6 +4,7 @@ namespace App\Filament\Resources\PengajuanSkUsahaResource\Pages;
 
 use App\Filament\Resources\PengajuanSkUsahaResource;
 use App\Models\Pengajuan;
+use App\Models\PengajuanSkUsaha;
 use Filament\Actions;
 use Filament\Resources\Pages\CreateRecord;
 use Illuminate\Support\Facades\Auth;
@@ -23,6 +24,10 @@ class CreatePengajuanSkUsaha extends CreateRecord
             'status_pengajuan' => 1,
             'id_admin_updated' => Auth::id(),
             'id_kuwu_updated' => 1,
+        ]);
+
+        PengajuanSkUsaha::created([
+            'status_pengajuan' => 1
         ]);
     }
 }

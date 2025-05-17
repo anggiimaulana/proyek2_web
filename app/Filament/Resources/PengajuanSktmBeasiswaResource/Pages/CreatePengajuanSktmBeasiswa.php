@@ -4,6 +4,7 @@ namespace App\Filament\Resources\PengajuanSktmBeasiswaResource\Pages;
 
 use App\Filament\Resources\PengajuanSktmBeasiswaResource;
 use App\Models\Pengajuan;
+use App\Models\PengajuanSktmBeasiswa;
 use Filament\Actions;
 use Filament\Resources\Pages\CreateRecord;
 use Illuminate\Support\Facades\Auth;
@@ -24,6 +25,10 @@ class CreatePengajuanSktmBeasiswa extends CreateRecord
             'status_pengajuan' => 1,
             'id_admin_updated' => Auth::id(),
             'id_kuwu_updated' => 1,
+        ]);
+
+        PengajuanSktmBeasiswa::created([
+            'status_pengajuan' => 1
         ]);
     }
 }

@@ -31,6 +31,6 @@ class PengajuanSktmSekolahController extends Controller
             ->loadView('file.detail.sktmSekolah', compact('sktmSekolah', 'qrCode'))
             ->setPaper('a4', 'portrait');
 
-        return $pdf->stream("{$sktmSekolah->nama}.pdf");
+        return $pdf->download(" SKTM Sekolah - {$sktmSekolah->nama}.pdf");
     }
 }

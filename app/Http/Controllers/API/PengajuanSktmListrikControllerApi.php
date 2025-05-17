@@ -18,6 +18,8 @@ class PengajuanSktmListrikControllerApi extends Controller
     {
         $sktmListrik = PengajuanSktmListrik::with([
             'hubunganPengaju:id,jenis_hubungan',
+            'idKkPengaju:id,nomor_kk',
+            'idNikPengaju:id,nomor_nik',
             'pekerjaanPengaju:id,nama_pekerjaan',
             'penghasilanPengaju:id,rentang_penghasilan',
             'agamaPengaju:id,nama_agama',
@@ -30,15 +32,16 @@ class PengajuanSktmListrikControllerApi extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'hubungan' => 'required',
-            'nama' => 'required',
-            'nik' => 'required',
-            'alamat' => 'required',
-            'agama' => 'required',
-            'jk' => 'required',
+            'hubungan' => 'required|integer',
+            'kk_id' => 'required|integer',
+            'nik_id' => 'required|integer',
+            'nama' => 'required|string',
+            'alamat' => 'required|string',
+            'agama' => 'required|integer',
+            'jk' => 'required|integer',
             'umur' => 'required|numeric',
-            'pekerjaan' => 'required',
-            'penghasilan' => 'required',
+            'pekerjaan' => 'required|integer',
+            'penghasilan' => 'required|integer',
             'nama_pln' => 'required',
             'file_kk' => 'required|file|mimes:pdf,jpg,jpeg,png|max:2048',
         ]);
@@ -58,8 +61,9 @@ class PengajuanSktmListrikControllerApi extends Controller
 
             $sktm = PengajuanSktmListrik::create([
                 'hubungan' => $request->hubungan,
+                'kk_id' => $request->kk_id,
+                'nik_id' => $request->nik_id,
                 'nama' => $request->nama,
-                'nik' => $request->nik,
                 'alamat' => $request->alamat,
                 'agama' => $request->agama,
                 'jk' => $request->jk,
@@ -67,7 +71,7 @@ class PengajuanSktmListrikControllerApi extends Controller
                 'pekerjaan' => $request->pekerjaan,
                 'penghasilan' => $request->penghasilan,
                 'nama_pln' => $request->nama_pln,
-                'file_kk' => $namaFile,
+                'file_kk' => 'uploads/kk/' . $namaFile,
             ]);
 
             $user = Auth::guard('client')->user();
@@ -107,6 +111,8 @@ class PengajuanSktmListrikControllerApi extends Controller
         try {
             $sktmListrik = PengajuanSktmListrik::with([
                 'hubunganPengaju:id,jenis_hubungan',
+                'idKkPengaju:id,nomor_kk',
+                'idNikPengaju:id,nomor_nik',
                 'pekerjaanPengaju:id,nama_pekerjaan',
                 'penghasilanPengaju:id,rentang_penghasilan',
                 'agamaPengaju:id,nama_agama',
@@ -128,17 +134,18 @@ class PengajuanSktmListrikControllerApi extends Controller
             $data = PengajuanSktmListrik::findOrFail($id);
 
             $validator = Validator::make($request->all(), [
-                'hubungan' => 'required',
-                'nama' => 'required',
-                'nik' => 'required',
-                'alamat' => 'required',
-                'agama' => 'required',
-                'jk' => 'required',
+                'hubungan' => 'required|integer',
+                'kk_id' => 'required|integer',
+                'nik_id' => 'required|integer',
+                'nama' => 'required|string',
+                'alamat' => 'required|string',
+                'agama' => 'required|integer',
+                'jk' => 'required|integer',
                 'umur' => 'required|numeric',
-                'pekerjaan' => 'required',
-                'penghasilan' => 'required',
+                'pekerjaan' => 'required|integer',
+                'penghasilan' => 'required|integer',
                 'nama_pln' => 'required',
-                'file_kk' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
+                'file_kk' => 'required|file|mimes:pdf,jpg,jpeg,png|max:2048',
             ]);
 
             if ($validator->fails()) {
@@ -169,12 +176,14 @@ class PengajuanSktmListrikControllerApi extends Controller
                 $file = $request->file('file_kk');
                 $namaFile = uniqid() . '_' . $file->getClientOriginalName();
                 $file->storeAs('uploads/kk', $namaFile);
-                $data->file_kk = $namaFile;
+                $data->file_kk = 'uploads/kk/' . $namaFile;
             }
 
             // Update data lainnya
             $data->update([
                 'hubungan' => $request->hubungan,
+                'nik_id' => $request->nik_id,
+                'kk_id' => $request->kk_id,
                 'nama' => $request->nama,
                 'nik' => $request->nik,
                 'alamat' => $request->alamat,

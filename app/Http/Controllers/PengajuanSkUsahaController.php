@@ -31,6 +31,6 @@ class PengajuanSkUsahaController extends Controller
             ->loadView('file.detail.skUsaha', compact('skUsaha', 'qrCode'))
             ->setPaper('a4', 'portrait');
 
-        return $pdf->stream("{$skUsaha->nama}.pdf");
+        return $pdf->download(" SK Usaha - {$skUsaha->nama}.pdf");
     }
 }

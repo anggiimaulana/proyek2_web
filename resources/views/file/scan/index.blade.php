@@ -6,10 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Detail Pengajuan</title>
 
-    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
 
-    <!-- Font Inter -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
 
     <style>
@@ -40,7 +38,7 @@
             <div class="flex justify-center sm:justify-start mb-6">
                 <span
                     class="text-green-600 text-sm font-semibold sm:text-base font-medium bg-green-100 px-4 py-1 rounded-full">
-                    ✅ Pengajuan Terverifikasi
+                    Pengajuan Terverifikasi
                 </span>
             </div>
 

@@ -21,7 +21,6 @@ class PengajuanResource extends JsonResource
                     \App\Models\PengajuanSkBelumMenikah::class => new \App\Http\Resources\PengajuanSkBelumMenikahResource($this->detail),
                     \App\Models\PengajuanSkPekerjaan::class => new \App\Http\Resources\PengajuanSkPekerjaanResource($this->detail),
                     \App\Models\PengajuanSkpotBeasiswa::class => new \App\Http\Resources\PengajuanSkpotBeasiswaResource($this->detail),
-                    \App\Models\PengajuanSkpPengajuanBantuan::class => new \App\Http\Resources\PengajuanSkpPengajuanBantuanResource($this->detail),
                     \App\Models\PengajuanSkStatus::class => new \App\Http\Resources\PengajuanSkStatusResource($this->detail),
                     \App\Models\PengajuanSktmBeasiswa::class => new \App\Http\Resources\PengajuanSktmBeasiswaResource($this->detail),
                     \App\Models\PengajuanSktmListrik::class => new \App\Http\Resources\PengajuanSktmListrikResource($this->detail),
