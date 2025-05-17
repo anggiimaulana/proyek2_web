@@ -63,15 +63,14 @@ class PengajuanSkBelumMenikahResource extends Resource
                         }
                         return Nik::where('kk_id', $kkId)->pluck('nomor_nik', 'id');
                     })
+                    ->placeholder('Pilih salah satu')
                     ->searchable()
                     ->required()
                     ->disabled(fn(Get $get) => !$get('kk_id'))
                     ->reactive()
                     ->afterStateUpdated(function (callable $set, $state) {
-                        // Ambil data lengkap dari NIK yang dipilih
                         $nikData = Nik::find($state);
                         if ($nikData) {
-                            // Set value field lain
                             $set('hubungan', $nikData->hubungan);
                             $set('nama', $nikData->name);
                             $set('jk', $nikData->jk);

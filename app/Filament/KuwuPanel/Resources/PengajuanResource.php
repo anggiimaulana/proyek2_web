@@ -95,49 +95,64 @@ class PengajuanResource extends Resource
                         return !($record->statusPengajuan->status === 'Diproses' || $record->status_pengajuan == 2);
                     })
                     ->action(function ($record) {
-                        $record->update(['status_pengajuan' => 4]);
+                        $record->update([
+                            'status_pengajuan' => 4,
+                            'id_kuwu_updated' => auth()->guard('kuwu')->user()->id,
+                        ]);
                     })
+
                     ->requiresConfirmation()
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                Tables\Actions\BulkAction::make('Setujui yang Diproses')
+                    ->icon('heroicon-m-check-circle')
+                    ->color('success')
+                    ->requiresConfirmation()
+                    ->action(function (EloquentCollection $records) {
+                        $disetujui = 0;
+                        $gagal = 0;
+                        $sudahDisetujui = 0;
 
-                    Tables\Actions\BulkAction::make('Setujui yang Diproses')
-                        ->icon('heroicon-m-check-circle')
-                        ->color('success')
-                        ->requiresConfirmation()
-                        ->action(function (EloquentCollection $records) {
-                            $disetujui = 0;
-                            $gagal = 0;
-
-                            $records->each(function ($record) use (&$disetujui, &$gagal) {
-                                if ($record->status_pengajuan == 2 || $record->statusPengajuan?->status === 'Diproses') {
-                                    $record->update(['status_pengajuan' => 4]);
-                                    $disetujui++;
-                                } else {
-                                    $gagal++;
-                                }
-                            });
-
-                            // Notifikasi berhasil
-                            if ($disetujui > 0) {
-                                Notification::make()
-                                    ->title("Berhasil menyetujui $disetujui pengajuan")
-                                    ->success()
-                                    ->send();
+                        $records->each(function ($record) use (&$disetujui, &$gagal, &$sudahDisetujui) {
+                            if ($record->status_pengajuan == 4) {
+                                $sudahDisetujui++;
+                                return;
                             }
 
-                            // Notifikasi gagal (hanya tampil jika ada yang gagal)
-                            if ($gagal > 0) {
-                                Notification::make()
-                                    ->title("$gagal pengajuan tidak bisa disetujui")
-                                    ->body('Pastikan statusnya sudah Diproses.')
-                                    ->danger()
-                                    ->send();
+                            if ($record->status_pengajuan == 2 || $record->statusPengajuan?->status === 'Diproses') {
+                                $record->update([
+                                    'status_pengajuan' => 4,
+                                    'id_kuwu_updated' => auth()->guard('kuwu')->user()->id,
+                                ]);
+
+                                $disetujui++;
+                            } else {
+                                $gagal++;
                             }
-                        }),
-                ]),
+                        });
+
+                        if ($disetujui > 0) {
+                            Notification::make()
+                                ->title("Berhasil menyetujui $disetujui pengajuan")
+                                ->success()
+                                ->send();
+                        }
+
+                        if ($gagal > 0) {
+                            Notification::make()
+                                ->title("$gagal pengajuan tidak bisa disetujui")
+                                ->body('Pastikan statusnya sudah Diproses.')
+                                ->danger()
+                                ->send();
+                        }
+
+                        if ($sudahDisetujui > 0) {
+                            Notification::make()
+                                ->title("$sudahDisetujui pengajuan sudah disetujui sebelumnya")
+                                ->warning()
+                                ->send();
+                        }
+                    }),
             ]);
     }
 
