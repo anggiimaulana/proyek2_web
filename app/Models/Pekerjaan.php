@@ -12,21 +12,6 @@ class Pekerjaan extends Model
         'nama_pekerjaan',
     ];
 
-    protected static function booted()
-    {
-        static::created(function ($pekerjaan) {
-            self::clearCache($pekerjaan);
-        });
-
-        static::updated(function ($pekerjaan) {
-            self::clearCache($pekerjaan);
-        });
-
-        static::deleted(function ($pekerjaan) {
-            self::clearCache($pekerjaan);
-        });
-    }
-
     public function client()
     {
         return $this->hasMany(Nik::class, 'pekerjaan');

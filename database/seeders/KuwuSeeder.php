@@ -13,12 +13,12 @@ class KuwuSeeder extends Seeder
     {
         Kuwu::factory()->create([
             'nip' => '1234567890',
-            'nama' => 'Bayu Kurniawan',
+            'name' => 'Bayu Kurniawan',
             'jk' => 1, 
             'status' => 1,
             'agama' => 1,
             'email' => 'test@example.com',
-            'password' => Hash::make('password'),
+            'password' => bcrypt('123'),
         ]);
     }
 }

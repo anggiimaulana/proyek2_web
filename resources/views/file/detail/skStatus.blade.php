@@ -221,7 +221,7 @@
             </div>
         @endif
         <p>
-            <u><strong>{{ $skStatus->pengajuan->kuwuUpdated->nama }}</strong></u>
+            <u><strong>{{ $skStatus->pengajuan->kuwuUpdated->name }}</strong></u>
         </p>
     </div>
 </body>

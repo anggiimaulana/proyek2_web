@@ -18,25 +18,34 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 
-class AdminPanelProvider extends PanelProvider
+class KuwuPanelPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
         return $panel
-            ->default()
-            ->id('admin')
-            ->path('admin')
+            ->id('kuwu')
+            ->path('kuwu')
             ->login()
-            ->brandName('Panel Admin - Desa Bulak Lor')
+            ->authGuard('kuwu')
+            ->brandName('Panel Kuwu - Desa Bulak Lor')
+            ->authMiddleware([
+                'auth.kuwu',
+            ])
             ->colors([
                 'primary' => Color::Amber,
             ])
-            ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
-            ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
+            ->discoverResources(
+                in: app_path('Filament/KuwuPanel/Resources'),
+                for: 'App\\Filament\\KuwuPanel\\Resources'
+            )
+            ->discoverPages(
+                in: app_path('Filament/KuwuPanel/Pages'),
+                for: 'App\\Filament\\KuwuPanel\\Pages'
+            )
             ->pages([
                 Pages\Dashboard::class,
             ])
-            ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
+            ->discoverWidgets(in: app_path('Filament/KuwuPanel/Widgets'), for: 'App\\Filament\\KuwuPanel\\Widgets')
             ->widgets([
                 Widgets\AccountWidget::class,
                 Widgets\FilamentInfoWidget::class,

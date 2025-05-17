@@ -16,6 +16,10 @@ return [
             'driver' => 'sanctum',
             'provider' => 'client',
         ],
+        'kuwu' => [
+            'driver' => 'session',
+            'provider' => 'kuwu',
+        ],
     ],
 
     'providers' => [
@@ -26,6 +30,11 @@ return [
         'client' => [
             'driver' => 'eloquent',
             'model' => App\Models\Client::class,
+        ],
+
+        'kuwu' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Kuwu::class,
         ],
 
         // 'users' => [

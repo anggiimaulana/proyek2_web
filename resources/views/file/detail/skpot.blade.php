@@ -234,7 +234,7 @@
             </div>
         @endif
         <p>
-            <u><strong>{{ $skpot->pengajuan->kuwuUpdated->nama }}</strong></u>
+            <u><strong>{{ $skpot->pengajuan->kuwuUpdated->name }}</strong></u>
         </p>
     </div>
 </body>

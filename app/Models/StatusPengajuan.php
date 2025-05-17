@@ -11,21 +11,6 @@ class StatusPengajuan extends Model
     protected $table = 'status_pengajuan';
     protected $fillable = ['status'];
 
-    protected static function booted()
-    {
-        static::created(function ($statusPengajuan) {
-            self::clearCache($statusPengajuan);
-        });
-
-        static::updated(function ($statusPengajuan) {
-            self::clearCache($statusPengajuan);
-        });
-
-        static::deleted(function ($statusPengajuan) {
-            self::clearCache($statusPengajuan);
-        });
-    }
-
     // Di model PengajuanSktmBeasiswa
     public function pengajuan()
     {

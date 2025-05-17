@@ -11,18 +11,19 @@ return new class extends Migration
         Schema::create('kuwu', function (Blueprint $table) {
             $table->id();
             $table->string('nip')->unique();
-            $table->string('nama');
+            $table->string('name');
             $table->foreignId('jk')->constrained('jenis_kelamin')->onDelete('cascade')->onUpdate('cascade');
             $table->foreignId('status')->constrained('status_perkawinan')->onDelete('cascade')->onUpdate('cascade');
             $table->foreignId('agama')->constrained('agama')->onDelete('cascade')->onUpdate('cascade');
             $table->string('email')->unique();
             $table->string('password');
+            $table->rememberToken();
             $table->timestamps();
         });
     }
 
     public function down(): void
     {
-        Schema::dropIfExists('kuwus');
+        Schema::dropIfExists('kuwu');
     }
 };
