@@ -62,6 +62,7 @@ class PengajuanSkpotBeasiswaResource extends Resource
                         return Nik::where('kk_id', $kkId)->pluck('nomor_nik', 'id');
                     })
                     ->searchable()
+                    ->placeholder('Pilih salah satu')
                     ->required()
                     ->disabled(fn(Get $get) => !$get('kk_id'))
                     ->reactive()

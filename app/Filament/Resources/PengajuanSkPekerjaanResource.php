@@ -61,12 +61,12 @@ class PengajuanSkPekerjaanResource extends Resource
                         }
                         return Nik::where('kk_id', $kkId)->pluck('nomor_nik', 'id');
                     })
+                    ->placeholder('Pilih salah satu')
                     ->searchable()
                     ->required()
                     ->disabled(fn(Get $get) => !$get('kk_id'))
                     ->reactive()
                     ->afterStateUpdated(function (callable $set, $state) {
-                        // Ambil data lengkap dari NIK yang dipilih
                         $nikData = Nik::find($state);
                         if ($nikData) {
                             $set('hubungan', $nikData->hubungan);
@@ -80,6 +80,7 @@ class PengajuanSkPekerjaanResource extends Resource
                             $set('alamat', $nikData->alamat);
                         }
                     }),
+
 
                 Select::make('hubungan')
                     ->label('Status dalam Keluarga')

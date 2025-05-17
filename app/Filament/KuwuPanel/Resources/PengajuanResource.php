@@ -95,8 +95,12 @@ class PengajuanResource extends Resource
                         return !($record->statusPengajuan->status === 'Diproses' || $record->status_pengajuan == 2);
                     })
                     ->action(function ($record) {
-                        $record->update(['status_pengajuan' => 4]);
+                        $record->update([
+                            'status_pengajuan' => 4,
+                            'id_kuwu_updated' => auth()->guard('kuwu')->user()->id,
+                        ]);
                     })
+
                     ->requiresConfirmation()
             ])
             ->bulkActions([
@@ -116,7 +120,11 @@ class PengajuanResource extends Resource
                             }
 
                             if ($record->status_pengajuan == 2 || $record->statusPengajuan?->status === 'Diproses') {
-                                $record->update(['status_pengajuan' => 4]);
+                                $record->update([
+                                    'status_pengajuan' => 4,
+                                    'id_kuwu_updated' => auth()->guard('kuwu')->user()->id,
+                                ]);
+
                                 $disetujui++;
                             } else {
                                 $gagal++;

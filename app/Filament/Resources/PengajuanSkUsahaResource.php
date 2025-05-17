@@ -63,6 +63,7 @@ class PengajuanSkUsahaResource extends Resource
                     })
                     ->searchable()
                     ->required()
+                    ->placeholder('Pilih salah satu')
                     ->disabled(fn(Get $get) => !$get('kk_id'))
                     ->reactive()
                     ->afterStateUpdated(function (callable $set, $state) {
