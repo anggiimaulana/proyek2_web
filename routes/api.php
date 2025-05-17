@@ -6,7 +6,9 @@ use App\Http\Controllers\API\HubunganControllerApi;
 use App\Http\Controllers\API\JkControllerApi;
 use App\Http\Controllers\API\KategoriBantuanControllerApi;
 use App\Http\Controllers\API\KategoriPengajuanControllerApi;
+use App\Http\Controllers\API\KkControllerApi;
 use App\Http\Controllers\API\KuwuControllerApi;
+use App\Http\Controllers\API\NikControllerApi;
 use App\Http\Controllers\API\PekerjaanControllerApi;
 use App\Http\Controllers\API\PendidikanControllerApi;
 use App\Http\Controllers\API\PengajuanControllerApi;
@@ -54,6 +56,10 @@ Route::put('/admin/{id}', [UserControllerApi::class, 'update']);
 Route::delete('/admin/{id}', [UserControllerApi::class, 'destroy']);
 
 // pendukung
+Route::get('/kk', [KkControllerApi::class, 'index']);
+Route::get('/kk/{id}', [KkControllerApi::class, 'show']);
+Route::get('/nik', [NikControllerApi::class, 'index']);
+Route::get('/nik/by-kk/{id_kk}', [NikControllerApi::class, 'showByKk']);
 Route::get('/jk', [JkControllerApi::class, 'index']);
 Route::get('/agama', [AgamaControllerApi::class, 'index']);
 Route::get('/pendidikan', [PendidikanControllerApi::class, 'index']);
@@ -61,7 +67,6 @@ Route::get('/pekerjaan', [PekerjaanControllerApi::class, 'index']);
 Route::get('/status-perkawinan', [StatusPerkawinanControllerApi::class, 'index']);
 Route::get('/hubungan', [HubunganControllerApi::class, 'index']);
 Route::get('/kategori-pengajuan', [KategoriPengajuanControllerApi::class, 'index']);
-Route::get('/kategori-bantuan', [KategoriBantuanControllerApi::class, 'index']);
 Route::get('/penghasilan', [PenghasilanControllerApi::class, 'index']);
 Route::get('/status-pengajuan', [StatusPengajuanControllerApi::class, 'index']);
 

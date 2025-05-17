@@ -31,6 +31,6 @@ class PengajuanSktmBeasiswaController extends Controller
             ->loadView('file.detail.sktmBeasiswa', compact('sktmBeasiswa', 'qrCode'))
             ->setPaper('a4', 'portrait');
 
-        return $pdf->stream("{$sktmBeasiswa->nama}.pdf");
+        return $pdf->download("SKTM Beasiswa - {$sktmBeasiswa->nama}.pdf");
     }
 }

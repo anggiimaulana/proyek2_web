@@ -4,6 +4,7 @@ namespace App\Filament\Resources\PengajuanSkBelumMenikahResource\Pages;
 
 use App\Filament\Resources\PengajuanSkBelumMenikahResource;
 use App\Models\Pengajuan;
+use App\Models\PengajuanSkBelumMenikah;
 use Filament\Actions;
 use Filament\Resources\Pages\CreateRecord;
 use Illuminate\Support\Facades\Auth;
@@ -25,5 +26,19 @@ class CreatePengajuanSkBelumMenikah extends CreateRecord
             'id_admin_updated' => Auth::id(),
             'id_kuwu_updated' => 1,
         ]);
+
+        PengajuanSkBelumMenikah::created([
+            'status_pengajuan' => 1
+        ]);
+    }
+
+    protected function mutateFormDataBeforeCreate(array $data): array
+    {
+        // Pastikan file_kk disimpan sebagai string
+        if (is_array($data['file_kk'])) {
+            $data['file_kk'] = $data['file_kk'][0];
+        }
+
+        return $data;
     }
 }

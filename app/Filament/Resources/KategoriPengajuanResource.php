@@ -25,7 +25,7 @@ class KategoriPengajuanResource extends Resource
 
     protected static ?string $navigationLabel = 'Kategori Pengajuan';
 
-    protected static ?string $navigationIcon = 'heroicon-o-user-group';
+    protected static ?string $navigationIcon = 'heroicon-o-rectangle-group';
 
     protected static ?string $navigationGroup = 'Kelola Informasi Umum';
 
@@ -44,6 +44,9 @@ class KategoriPengajuanResource extends Resource
     {
         return $table
             ->columns([
+                TextColumn::make('no')
+                    ->label('No')
+                    ->rowIndex(),
                 TextColumn::make('nama_kategori')->label('Kategori Pengajuan'),
                 TextColumn::make('created_at')->label('Tanggal Dibuat')->dateTime(),
             ])
@@ -52,7 +55,8 @@ class KategoriPengajuanResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()->label('Ubah')->color('warning'),
+                Tables\Actions\DeleteAction::make()->label('Hapus')->color('danger'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

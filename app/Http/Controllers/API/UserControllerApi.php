@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response as HttpFoundationResponse;
 
@@ -14,14 +15,17 @@ class UserControllerApi extends Controller
 {
     public function index()
     {
-        $users = User::all();
-        $response = [
+        $users = Cache::remember('users_list', 1296000, function () {
+            return User::query()
+                ->select('id', 'nip', 'nama', 'jk', 'status', 'agama', 'email')
+                ->orderByDesc('id')
+                ->get();
+        });
+        return response()->json([
             'error' => false,
             'message' => 'Data Akun Admin',
             'data' => $users
-        ];
-
-        return response()->json($response, HttpFoundationResponse::HTTP_OK);
+        ], HttpFoundationResponse::HTTP_OK);
     }
 
     public function store(Request $request)

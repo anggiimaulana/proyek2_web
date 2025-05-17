@@ -11,8 +11,9 @@ class PengajuanSkBelumMenikahResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'kk_id' => $this->idKkPengaju->nomor_kk ?? null,
+            'nik_id' => $this->idNikPengaju->nomor_nik ?? null,
             'nama' => $this->nama,
-            'nik' => $this->nik,
             'tempat_lahir' => $this->tempat_lahir,
             'tanggal_lahir' => $this->tanggal_lahir,
             'jenis_kelamin' => $this->jenisKelaminPengaju->jenis_kelamin ?? null,

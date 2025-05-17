@@ -12,47 +12,73 @@ class Pekerjaan extends Model
         'nama_pekerjaan',
     ];
 
-    public function client() {
-        return $this->hasMany(Client::class, 'pekerjaan');
+    protected static function booted()
+    {
+        static::created(function ($pekerjaan) {
+            self::clearCache($pekerjaan);
+        });
+
+        static::updated(function ($pekerjaan) {
+            self::clearCache($pekerjaan);
+        });
+
+        static::deleted(function ($pekerjaan) {
+            self::clearCache($pekerjaan);
+        });
     }
 
-    public function pengajuanSkpotBeasiswaAnak() {
+    public function client()
+    {
+        return $this->hasMany(Nik::class, 'pekerjaan');
+    }
+
+    public function pengajuanSkpotBeasiswaAnak()
+    {
         return $this->hasMany(PengajuanSkpotBeasiswa::class, 'pekerjaan_anak');
     }
 
-    public function pengajuanSkpotBeasiswaOrtu() {
+    public function pengajuanSkpotBeasiswaOrtu()
+    {
         return $this->hasMany(PengajuanSkpotBeasiswa::class, 'pekerjaan_ortu');
     }
 
-    public function pengajuanSktmBeasiswa() {
+    public function pengajuanSktmBeasiswa()
+    {
         return $this->hasMany(PengajuanSktmBeasiswa::class, 'pekerjaan');
     }
 
-    public function pengajuanSkStatus() {
+    public function pengajuanSkStatus()
+    {
         return $this->hasMany(PengajuanSkStatus::class, 'pekerjaan');
     }
 
-    public function pengajuanSkPekerjaanTerdahulu() {
+    public function pengajuanSkPekerjaanTerdahulu()
+    {
         return $this->hasMany(PengajuanSkPekerjaan::class, 'pekerjaan_terdahulu');
     }
 
-    public function pengajuanSkPekerjaanSekarang() {
+    public function pengajuanSkPekerjaanSekarang()
+    {
         return $this->hasMany(PengajuanSkPekerjaan::class, 'pekerjaan_sekarang');
     }
 
-    public function pengajuanSkBelumMenikah() {
+    public function pengajuanSkBelumMenikah()
+    {
         return $this->hasMany(PengajuanSkBelumMenikah::class, 'pekerjaan');
     }
 
-    public function pengajuanSktmListrik() {
+    public function pengajuanSktmListrik()
+    {
         return $this->hasMany(PengajuanSktmListrik::class, 'pekerjaan');
     }
 
-    public function pengajuanSktmSekolah() {
+    public function pengajuanSktmSekolah()
+    {
         return $this->hasMany(PengajuanSktmSekolah::class, 'pekerjaan');
     }
 
-    public function pengajuanSkUsaha() {
+    public function pengajuanSkUsaha()
+    {
         return $this->hasMany(PengajuanSkUsaha::class, 'pekerjaan');
     }
 }

@@ -7,6 +7,7 @@ use App\Filament\Resources\ClientResource\RelationManagers;
 use App\Models\Agama;
 use App\Models\Client;
 use App\Models\JenisKelamin;
+use App\Models\KartuKeluarga;
 use App\Models\Pekerjaan;
 use App\Models\Pendidikan;
 use App\Models\StatusPerkawinan;
@@ -27,10 +28,10 @@ class ClientResource extends Resource
 {
     protected static ?string $model = Client::class;
 
-    protected static ?string $label = 'Data Akun Masyarakat';
-    protected static ?string $pluralLabel = 'Data Akun Masyarakat';
+    protected static ?string $label = 'Data Akun Pengguna';
+    protected static ?string $pluralLabel = 'Data Akun Pengguna';
 
-    protected static ?string $navigationLabel = 'Data Akun Masyarakat';
+    protected static ?string $navigationLabel = 'Data Akun Pengguna';
 
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
 
@@ -40,66 +41,26 @@ class ClientResource extends Resource
     {
         return $form
             ->schema([
-                TextInput::make('name')
-                    ->label('Nama Lengkap')
+                Select::make('kk_id')
+                    ->label('Nomor Kartu Keluarga')
+                    ->options(KartuKeluarga::all()->pluck('nomor_kk', 'id'))
+                    ->searchable()
+                    ->required(),
+                TextInput::make('nama_kepala_keluarga')
+                    ->label('Nama Kepala Keluarga')
                     ->required()
                     ->placeholder('Masukan nama lengkap'),
-                TextInput::make('nik')
-                    ->label('NIK')
-                    ->required()
-                    ->unique()
-                    ->helperText('Tuliskan NIK secara lengkap dan teliti')
-                    ->validationMessages([
-                        'unique' => 'NIK ini sudah terdaftar.',
-                    ])
-                    ->placeholder('Masukan NIK'),
-                TextInput::make('tempat_lahir')
-                    ->label('Tempat Lahir')
-                    ->required()
-                    ->placeholder('Masukan tempat lahir'),
-                DatePicker::make('tanggal_lahir')
-                    ->label('Tangal Lahir')
-                    ->required(),
-                Select::make('jk')
-                    ->label('Jenis Kelamin')
-                    ->options(JenisKelamin::all()->pluck('jenis_kelamin', 'id'))
-                    ->searchable()
-                    ->required(),
-                Select::make('agama')
-                    ->label('Agama')
-                    ->options(Agama::all()->pluck('nama_agama', 'id'))
-                    ->searchable()
-                    ->required(),
-                Select::make('pendidikan')
-                    ->label('Pendidikan Terakhir')
-                    ->options(Pendidikan::all()->pluck('jenis_pendidikan', 'id'))
-                    ->searchable()
-                    ->required(),
-                Select::make('pekerjaan')
-                    ->label('Pekerjaan')
-                    ->options(Pekerjaan::all()->pluck('nama_pekerjaan', 'id'))
-                    ->searchable()
-                    ->required(),
-                Select::make('status')
-                    ->label('Status Perkawinan')
-                    ->options(StatusPerkawinan::all()->pluck('status_perkawinan', 'id'))
-                    ->searchable()
-                    ->required(),
-                Textarea::make('alamat')
-                    ->label('Alamat')
-                    ->required()
-                    ->placeholder('Masukan alamat lengkap'),
                 TextInput::make('nomor_telepon')
                     ->label('Nomor Telepon')
                     ->required()
                     ->numeric()
                     ->placeholder('Masukan nomor telepon')
                     ->unique(ignoreRecord: true)
-                    ->rule('regex:/^08[0-9]{8,11}$/')
+                    ->rule('regex:/^08[0-9]{9,14}$/')
                     ->helperText('Gunakan nomor yang aktif dan belum pernah digunakan sebelumnya.')
                     ->validationMessages([
                         'unique' => 'Nomor ini sudah terdaftar, silakan gunakan nomor lain.',
-                        'regex' => 'Format nomor tidak valid. Gunakan format 08xxx.',
+                        'regex' => 'Format nomor tidak valid. Gunakan format 08xxx dan minimal 11 angka.',
                     ]),
                 TextInput::make('password')
                     ->label('Password')
@@ -113,9 +74,10 @@ class ClientResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('name')->label('Nama Lengkap'),
-                TextColumn::make('nik')->label('NIK'),
-                TextColumn::make('alamat')->label('Alamat'),
+                TextColumn::make('no')
+                    ->label('No')
+                    ->rowIndex(),
+                TextColumn::make('nama_kepala_keluarga')->label('Nama Kepala Keluarga'),
                 TextColumn::make('nomor_telepon')->label('Nomor Telepon'),
                 TextColumn::make('created_at')->label('Tanggal Pendaftaran')->dateTime(),
             ])
@@ -124,10 +86,8 @@ class ClientResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\ActionGroup::make([
-                    Tables\Actions\EditAction::make()->label('Ubah'),
-                    Tables\Actions\DeleteAction::make()->label('Hapus'),
-                ])->label('Aksi'),
+                Tables\Actions\EditAction::make()->label('Ubah')->color('warning'),
+                Tables\Actions\DeleteAction::make()->label('Hapus')->color('danger'),
             ])
 
             ->bulkActions([

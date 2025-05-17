@@ -25,7 +25,7 @@ class StatusPengajuanResource extends Resource
 
     protected static ?string $navigationLabel = 'Status Pengajuan';
 
-    protected static ?string $navigationIcon = 'heroicon-o-user-group';
+    protected static ?string $navigationIcon = 'heroicon-o-clipboard-document-check';
 
     protected static ?string $navigationGroup = 'Kelola Informasi Umum';
 
@@ -43,6 +43,9 @@ class StatusPengajuanResource extends Resource
     {
         return $table
             ->columns([
+                TextColumn::make('no')
+                    ->label('No')
+                    ->rowIndex(),
                 TextColumn::make('status')->label('Status Pengajuan'),
                 TextColumn::make('created_at')->label('Tanggal Dibuat')->dateTime(),
             ])
@@ -51,7 +54,8 @@ class StatusPengajuanResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()->label('Ubah')->color('warning'),
+                Tables\Actions\DeleteAction::make()->label('Hapus')->color('danger'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

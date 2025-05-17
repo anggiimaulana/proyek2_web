@@ -27,7 +27,7 @@ class Pengajuan extends Model
 
     public function userPengajuan()
     {
-        return $this->belongsTo(Client::class, 'id_user_pengajuan');
+        return $this->belongsTo(Nik::class, 'id_user_pengajuan');
     }
 
     public function admin()

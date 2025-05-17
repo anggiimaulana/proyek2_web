@@ -175,6 +175,10 @@
             <td style="width: 60%">: {{ $skStatus->nama }}</td>
         </tr>
         <tr>
+            <td style="width: 40%">NIK</td>
+            <td style="width: 60%">: {{ $skStatus->idNikPengaju->nomor_nik }}</td>
+        </tr>
+        <tr>
             <td style="width: 40%">Tempat/Tanggal Lahir</td>
             <td style="width: 60%">: {{ $skStatus->tempat_lahir }},
                 {{ \Carbon\Carbon::parse($skStatus->tanggal_lahir)->translatedFormat('d F Y') }}</td>

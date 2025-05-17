@@ -17,6 +17,8 @@ class PengajuanSktmSekolahControllerApi extends Controller
     public function index()
     {
         $sktm = PengajuanSktmSekolah::with([
+            'idKkPengaju:id,nomor_kk',
+            'idNikPengaju:id,nomor_nik',
             'hubunganPengaju:id,jenis_hubungan',
             'jenisKelaminPengaju:id,jenis_kelamin',
             'agamaPengaju:id,nama_agama',
@@ -29,20 +31,21 @@ class PengajuanSktmSekolahControllerApi extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'hubungan' => 'required',
-            'nama' => 'required',
-            'nik' => 'required',
-            'tempat_lahir_ortu' => 'required',
+            'hubungan' => 'required|integer',
+            'nik_id' => 'required|integer',
+            'kk_id' => 'required|integer',
+            'nama' => 'required|string',
+            'tempat_lahir_ortu' => 'required|string',
             'tanggal_lahir_ortu' => 'required|date',
-            'pekerjaan' => 'required',
-            'nama_anak' => 'required',
-            'tempat_lahir' => 'required',
+            'pekerjaan' => 'required|integer',
+            'nama_anak' => 'required|string',
+            'tempat_lahir' => 'required|string',
             'tanggal_lahir' => 'required|date',
-            'jk' => 'required',
-            'agama' => 'required',
-            'asal_sekolah' => 'required',
-            'kelas' => 'required',
-            'alamat' => 'required',
+            'jk' => 'required|integer',
+            'agama' => 'required|integer',
+            'asal_sekolah' => 'required|string',
+            'kelas' => 'required|string',
+            'alamat' => 'required|string',
             'file_kk' => 'required|file|mimes:pdf,jpg,jpeg,png|max:2048',
         ]);
 
@@ -61,8 +64,9 @@ class PengajuanSktmSekolahControllerApi extends Controller
 
             $sktm = PengajuanSktmSekolah::create([
                 'hubungan' => $request->hubungan,
+                'nik_id' => $request->nik_id,
+                'kk_id' => $request->kk_id,
                 'nama' => $request->nama,
-                'nik' => $request->nik,
                 'tempat_lahir_ortu' => $request->tempat_lahir_ortu,
                 'tanggal_lahir_ortu' => $request->tanggal_lahir_ortu,
                 'pekerjaan' => $request->pekerjaan,
@@ -74,7 +78,7 @@ class PengajuanSktmSekolahControllerApi extends Controller
                 'asal_sekolah' => $request->asal_sekolah,
                 'kelas' => $request->kelas,
                 'alamat' => $request->alamat,
-                'file_kk' => $namaFile,
+                'file_kk' => 'uploads/kk/' . $namaFile,
             ]);
 
             $user = Auth::guard('client')->user();
@@ -113,6 +117,8 @@ class PengajuanSktmSekolahControllerApi extends Controller
     {
         try {
             $sktm = PengajuanSktmSekolah::with([
+                'idKkPengaju:id,nomor_kk',
+                'idNikPengaju:id,nomor_nik',
                 'hubunganPengaju:id,jenis_hubungan',
                 'jenisKelaminPengaju:id,jenis_kelamin',
                 'agamaPengaju:id,nama_agama',
@@ -134,21 +140,22 @@ class PengajuanSktmSekolahControllerApi extends Controller
             $data = PengajuanSktmSekolah::findOrFail($id);
 
             $validator = Validator::make($request->all(), [
-                'hubungan' => 'required',
-                'nama' => 'required',
-                'nik' => 'required',
-                'tempat_lahir_ortu' => 'required',
+                'hubungan' => 'required|integer',
+                'nik_id' => 'required|integer',
+                'kk_id' => 'required|integer',
+                'nama' => 'required|string',
+                'tempat_lahir_ortu' => 'required|string',
                 'tanggal_lahir_ortu' => 'required|date',
-                'pekerjaan' => 'required',
-                'nama_anak' => 'required',
-                'tempat_lahir' => 'required',
+                'pekerjaan' => 'required|integer',
+                'nama_anak' => 'required|string',
+                'tempat_lahir' => 'required|string',
                 'tanggal_lahir' => 'required|date',
-                'jk' => 'required',
-                'agama' => 'required',
-                'asal_sekolah' => 'required',
-                'kelas' => 'required',
-                'alamat' => 'required',
-                'file_kk' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
+                'jk' => 'required|integer',
+                'agama' => 'required|integer',
+                'asal_sekolah' => 'required|string',
+                'kelas' => 'required|string',
+                'alamat' => 'required|string',
+                'file_kk' => 'required|file|mimes:pdf,jpg,jpeg,png|max:2048',
             ]);
 
             if ($validator->fails()) {
@@ -179,14 +186,15 @@ class PengajuanSktmSekolahControllerApi extends Controller
                 $file = $request->file('file_kk');
                 $namaFile = uniqid() . '_' . $file->getClientOriginalName();
                 $file->storeAs('uploads/kk', $namaFile);
-                $data->file_kk = $namaFile;
+                $data->file_kk = 'uploads/kk/' . $namaFile;
             }
 
             // Update data lainnya
             $data->update([
                 'hubungan' => $request->hubungan,
+                'nik_id' => $request->nik_id,
+                'kk_id' => $request->kk_id,
                 'nama' => $request->nama,
-                'nik' => $request->nik,
                 'tempat_lahir_ortu' => $request->tempat_lahir_ortu,
                 'tanggal_lahir_ortu' => $request->tanggal_lahir_ortu,
                 'pekerjaan' => $request->pekerjaan,

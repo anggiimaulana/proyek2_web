@@ -13,7 +13,8 @@ class PengajuanSkBelumMenikah extends Model
     protected $fillable = [
         'hubungan',
         'nama',
-        'nik',
+        'kk_id',
+        'nik_id',
         'tempat_lahir',
         'tanggal_lahir',
         'jk',
@@ -26,7 +27,7 @@ class PengajuanSkBelumMenikah extends Model
 
     public function getFileKkAttribute($value)
     {
-        return $value ? 'uploads/kk/' . $value : null;
+        return $value ? $value : null;
     }
 
     public function hubunganPengaju()
@@ -52,6 +53,16 @@ class PengajuanSkBelumMenikah extends Model
     public function statusPerkawinanPengaju()
     {
         return $this->belongsTo(StatusPerkawinan::class, 'status_perkawinan');
+    }
+
+    public function idKkPengaju()
+    {
+        return $this->belongsTo(KartuKeluarga::class, 'kk_id');
+    }
+
+    public function idNikPengaju()
+    {
+        return $this->belongsTo(Nik::class, 'nik_id');
     }
 
     public function pengajuan()

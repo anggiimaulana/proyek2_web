@@ -172,7 +172,7 @@
     <table class="tabel-data">
         <tr>
             <td style="width: 40%">NIK</td>
-            <td style="width: 60%">: {{ $sktmListrik->nik }}</td>
+            <td style="width: 60%">: {{ $sktmListrik->idNikPengaju->nomor_nik }}</td>
         </tr>
         <tr>
             <td style="width: 40%">Nama</td>
@@ -201,7 +201,7 @@
     </table>
 
     <p class="paragraf">
-        Benar bahwa nama tersebut diatas adalah benar penduduk Desa kami, yang mempunyai penghasilan +
+        Benar bahwa nama tersebut diatas adalah benar penduduk Desa kami, yang mempunyai penghasilan +-
         <strong>{{ $sktmListrik->penghasilanPengaju->rentang_penghasilan ?? '-' }}</strong> per bulan. Dan surat
         keterangan ini dipergunakan untuk pengajuan Persyaratan Keringanan
         Biaya Listrik 900 kwh bok listrik atas nama <strong>{{ $sktmListrik->nama_pln }}.</strong>

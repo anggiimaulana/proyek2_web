@@ -17,6 +17,8 @@ class PengajuanSkPekerjaanControllerApi extends Controller
     {
         $skPekerjaan = PengajuanSkPekerjaan::with([
             'hubunganPengaju:id,jenis_hubungan',
+            'idKkPengaju:id,nomor_kk',
+            'idNikPengaju:id,nomor_nik',
             'jenisKelaminPengaju:id,jenis_kelamin',
             'statusPerkawinanPengaju:id,status_perkawinan',
             'pekerjaanTerdahuluPengaju:id,nama_pekerjaan',
@@ -31,16 +33,17 @@ class PengajuanSkPekerjaanControllerApi extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'hubungan' => 'required',
-            'nik' => 'required',
-            'nama' => 'required',
-            'tempat_lahir' => 'required',
+            'hubungan' => 'required|integer',
+            'kk_id' => 'required|integer',
+            'nik_id' => 'required|integer',
+            'nama' => 'required|string',
+            'tempat_lahir' => 'required|string',
             'tanggal_lahir' => 'required|date',
-            'jk' => 'required',
-            'status_perkawinan' => 'required',
-            'pekerjaan_terdahulu' => 'required',
-            'pekerjaan_sekarang' => 'required',
-            'alamat' => 'required',
+            'jk' => 'required|integer',
+            'status_perkawinan' => 'required|integer',
+            'pekerjaan_terdahulu' => 'required|integer',
+            'pekerjaan_sekarang' => 'required|integer',
+            'alamat' => 'required|string',
             'file_kk' => 'required|file|mimes:pdf,jpg,jpeg,png|max:2048',
         ]);
 
@@ -59,7 +62,8 @@ class PengajuanSkPekerjaanControllerApi extends Controller
 
             $skPekerjaan = PengajuanSkPekerjaan::create([
                 'hubungan' => $request->hubungan,
-                'nik' => $request->nik,
+                'nik_id' => $request->nik_id,
+                'kk_id' => $request->kk_id,
                 'nama' => $request->nama,
                 'tempat_lahir' => $request->tempat_lahir,
                 'tanggal_lahir' => $request->tanggal_lahir,
@@ -68,7 +72,7 @@ class PengajuanSkPekerjaanControllerApi extends Controller
                 'pekerjaan_terdahulu' => $request->pekerjaan_terdahulu,
                 'pekerjaan_sekarang' => $request->pekerjaan_sekarang,
                 'alamat' => $request->alamat,
-                'file_kk' => $namaFile,
+                'file_kk' => 'uploads/kk/' . $namaFile,
             ]);
 
             $user = Auth::guard('client')->user();
@@ -108,6 +112,8 @@ class PengajuanSkPekerjaanControllerApi extends Controller
         try {
             $skPekerjaan = PengajuanSkPekerjaan::with([
                 'hubunganPengaju:id,jenis_hubungan',
+                'idKkPengaju:id,nomor_kk',
+                'idNikPengaju:id,nomor_nik',
                 'jenisKelaminPengaju:id,jenis_kelamin',
                 'agamaPengaju:id,nama_agama',
                 'statusPerkawinanPengaju:id,status_perkawinan',
@@ -130,16 +136,17 @@ class PengajuanSkPekerjaanControllerApi extends Controller
             $data = PengajuanSkPekerjaan::findOrFail($id);
 
             $validator = Validator::make($request->all(), [
-                'hubungan' => 'required',
-                'nik' => 'required',
-                'nama' => 'required',
-                'tempat_lahir' => 'required',
+                'hubungan' => 'required|integer',
+                'kk_id' => 'required|integer',
+                'nik_id' => 'required|integer',
+                'nama' => 'required|string',
+                'tempat_lahir' => 'required|string',
                 'tanggal_lahir' => 'required|date',
-                'jk' => 'required',
-                'status_perkawinan' => 'required',
-                'pekerjaan_terdahulu' => 'required',
-                'pekerjaan_sekarang' => 'required',
-                'alamat' => 'required',
+                'jk' => 'required|integer',
+                'status_perkawinan' => 'required|integer',
+                'pekerjaan_terdahulu' => 'required|integer',
+                'pekerjaan_sekarang' => 'required|integer',
+                'alamat' => 'required|string',
                 'file_kk' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
             ]);
 
@@ -171,13 +178,14 @@ class PengajuanSkPekerjaanControllerApi extends Controller
                 $file = $request->file('file_kk');
                 $namaFile = uniqid() . '_' . $file->getClientOriginalName();
                 $file->storeAs('uploads/kk', $namaFile);
-                $data->file_kk = $namaFile;
+                $data->file_kk = 'uploads/kk/' . $namaFile;
             }
 
             // Update data lainnya
             $data->update([
                 'hubungan' => $request->hubungan,
-                'nik' => $request->nik,
+                'kk_id' => $request->kk_id,
+                'nik_id' => $request->nik_id,
                 'nama' => $request->nama,
                 'tempat_lahir' => $request->tempat_lahir,
                 'tanggal_lahir' => $request->tanggal_lahir,

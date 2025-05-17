@@ -7,13 +7,29 @@ use Illuminate\Database\Eloquent\Model;
 class StatusPerkawinan extends Model
 {
     protected $table = 'status_perkawinan';
+    protected $fillable = ['status'];
+
+    protected static function booted()
+    {
+        static::created(function ($statusPengajuan) {
+            self::clearCache($statusPengajuan);
+        });
+
+        static::updated(function ($statusPengajuan) {
+            self::clearCache($statusPengajuan);
+        });
+
+        static::deleted(function ($statusPengajuan) {
+            self::clearCache($statusPengajuan);
+        });
+    }
 
     public function users() {
         return $this->hasMany(User::class, 'status');
     }
 
     public function client() {
-        return $this->hasMany(Client::class, 'status');
+        return $this->hasMany(Nik::class, 'status');
     }
 
     public function kuwu() {

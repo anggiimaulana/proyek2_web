@@ -5,38 +5,23 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\Agama;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Symfony\Component\HttpFoundation\Response as HttpFoundationResponse;
 
 class AgamaControllerApi extends Controller
 {
     public function index()
     {
-        $agama = Agama::all();
-        $response = [
+        $agama = Cache::remember('agama_list', 1296000, function () {
+            return Agama::query()
+                ->select('id', 'nama_agama')
+                ->orderByDesc('id')
+                ->get();
+        });
+        return response()->json([
             'error' => false,
             'message' => 'Data Agama',
             'data' => $agama,
-        ];
-        return response()->json($response, HttpFoundationResponse::HTTP_OK);
-    }
-
-    public function store(Request $request)
-    {
-        //
-    }
-
-    public function show(string $id)
-    {
-        //
-    }
-
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    public function destroy(string $id)
-    {
-        //
+        ], HttpFoundationResponse::HTTP_OK);
     }
 }

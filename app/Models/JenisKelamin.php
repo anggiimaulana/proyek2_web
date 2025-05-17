@@ -10,12 +10,27 @@ class JenisKelamin extends Model
 
     protected $fillable = ['jenis_kelamin'];
 
+    protected static function booted()
+    {
+        static::created(function ($jenisKelamin) {
+            self::clearCache($jenisKelamin);
+        });
+
+        static::updated(function ($jenisKelamin) {
+            self::clearCache($jenisKelamin);
+        });
+
+        static::deleted(function ($jenisKelamin) {
+            self::clearCache($jenisKelamin);
+        });
+    }
+
     public function users() {
         return $this->hasMany(User::class, 'jk');
     }
 
     public function client() {
-        return $this->hasMany(Client::class, 'jk');
+        return $this->hasMany(Nik::class, 'jk');
     }
 
     public function kuwu() {

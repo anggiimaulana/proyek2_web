@@ -25,7 +25,7 @@ class AgamaResource extends Resource
 
     protected static ?string $navigationLabel = 'Agama';
 
-    protected static ?string $navigationIcon = 'heroicon-o-user-group';
+    protected static ?string $navigationIcon = 'heroicon-o-scale';
 
     protected static ?string $navigationGroup = 'Kelola Informasi Umum';
 
@@ -44,6 +44,9 @@ class AgamaResource extends Resource
     {
         return $table
             ->columns([
+                TextColumn::make('no')
+                    ->label('No')
+                    ->rowIndex(),
                 TextColumn::make('nama_agama')->label('Nama Agama'),
                 TextColumn::make('created_at')->label('Tanggal Dibuat')->dateTime(),
             ])
@@ -52,7 +55,8 @@ class AgamaResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()->label('Ubah')->color('warning'),
+                Tables\Actions\DeleteAction::make()->label('Hapus')->color('danger'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

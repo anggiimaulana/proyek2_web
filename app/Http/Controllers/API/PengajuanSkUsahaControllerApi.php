@@ -17,6 +17,8 @@ class PengajuanSkUsahaControllerApi extends Controller
     public function index()
     {
         $skUsaha = PengajuanSkUsaha::with([
+            'idKkPengaju:id,nomor_kk',
+            'idNikPengaju:id,nomor_nik',
             'hubunganPengaju:id,jenis_hubungan',
             'jenisKelaminPengaju:id,jenis_kelamin',
             'statusPerkawinanPengaju:id,status_perkawinan',
@@ -29,16 +31,17 @@ class PengajuanSkUsahaControllerApi extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'hubungan' => 'required',
-            'nama' => 'required',
-            'nik' => 'required',
-            'tempat_lahir' => 'required',
+            'hubungan' => 'required|integer',
+            'nik_id' => 'required|integer',
+            'kk_id' => 'required|integer',
+            'nama' => 'required|string',
+            'tempat_lahir' => 'required|string',
             'tanggal_lahir' => 'required|date',
-            'jk' => 'required',
-            'status_perkawinan' => 'required',
-            'pekerjaan' => 'required',
-            'alamat' => 'required',
-            'nama_usaha' => 'required',
+            'jk' => 'required|integer',
+            'status_perkawinan' => 'required|integer',
+            'pekerjaan' => 'required|integer',
+            'alamat' => 'required|string',
+            'nama_usaha' => 'required|string',
             'file_ktp' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
         ]);
 
@@ -57,8 +60,9 @@ class PengajuanSkUsahaControllerApi extends Controller
 
             $sku = PengajuanSkUsaha::create([
                 'hubungan' => $request->hubungan,
+                'nik_id' => $request->nik_id,
+                'kk_id' => $request->kk_id,
                 'nama' => $request->nama,
-                'nik' => $request->nik,
                 'tempat_lahir' => $request->tempat_lahir,
                 'tanggal_lahir' => $request->tanggal_lahir,
                 'jk' => $request->jk,
@@ -66,7 +70,7 @@ class PengajuanSkUsahaControllerApi extends Controller
                 'pekerjaan' => $request->pekerjaan,
                 'alamat' => $request->alamat,
                 'nama_usaha' => $request->nama_usaha,
-                'file_ktp' => $namaFile,
+                'file_ktp' => 'uploads/kk/' . $namaFile,
             ]);
 
             $user = Auth::guard('client')->user();
@@ -103,6 +107,8 @@ class PengajuanSkUsahaControllerApi extends Controller
     {
         try {
             $sku = PengajuanSkUsaha::with([
+                'idKkPengaju:id,nomor_kk',
+                'idNikPengaju:id,nomor_nik',
                 'hubunganPengaju:id,jenis_hubungan',
                 'jenisKelaminPengaju:id,jenis_kelamin',
                 'statusPerkawinanPengaju:id,status_perkawinan',
@@ -124,16 +130,17 @@ class PengajuanSkUsahaControllerApi extends Controller
             $data = PengajuanSkUsaha::findOrFail($id);
 
             $validator = Validator::make($request->all(), [
-                'hubungan' => 'required',
-                'nama' => 'required',
-                'nik' => 'required',
-                'tempat_lahir' => 'required',
+                'hubungan' => 'required|integer',
+                'nik_id' => 'required|integer',
+                'kk_id' => 'required|integer',
+                'nama' => 'required|string',
+                'tempat_lahir' => 'required|string',
                 'tanggal_lahir' => 'required|date',
-                'jk' => 'required',
-                'status_perkawinan' => 'required',
-                'pekerjaan' => 'required',
-                'alamat' => 'required',
-                'nama_usaha' => 'required',
+                'jk' => 'required|integer',
+                'status_perkawinan' => 'required|integer',
+                'pekerjaan' => 'required|integer',
+                'alamat' => 'required|string',
+                'nama_usaha' => 'required|string',
                 'file_ktp' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
             ]);
 
@@ -162,13 +169,14 @@ class PengajuanSkUsahaControllerApi extends Controller
 
                 $file = $request->file('file_ktp');
                 $namaFile = uniqid() . '_' . $file->getClientOriginalName();
-                $file->storeAs('uploads/kk', $namaFile);
+                $file->storeAs('uploads/kk', 'uploads/kk/' . $namaFile);
             }
 
             $data->update([
                 'hubungan' => $request->hubungan,
                 'nama' => $request->nama,
-                'nik' => $request->nik,
+                'nik_id' => $request->nik_id,
+                'kk_id' => $request->kk_id,
                 'tempat_lahir' => $request->tempat_lahir,
                 'tanggal_lahir' => $request->tanggal_lahir,
                 'jk' => $request->jk,

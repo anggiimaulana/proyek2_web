@@ -172,7 +172,7 @@
     <table class="tabel-data">
         <tr>
             <td style="width: 40%">NIK</td>
-            <td style="width: 60%">: {{ $skBelumMenikah->nik }}</td>
+            <td style="width: 60%">: {{ $skBelumMenikah->idNikPengaju->nomor_nik }}</td>
         </tr>
         <tr>
             <td style="width: 40%">Nama</td>

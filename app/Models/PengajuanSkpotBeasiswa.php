@@ -13,7 +13,8 @@ class PengajuanSkpotBeasiswa extends Model
     protected $fillable = [
         'hubungan',
         'nama',
-        'nik',
+        'kk_id',
+        'nik_id',
         'tempat_lahir',
         'tanggal_lahir',
         'jk',
@@ -27,7 +28,7 @@ class PengajuanSkpotBeasiswa extends Model
 
     public function getFileKkAttribute($value)
     {
-        return $value ? 'uploads/kk/' . $value : null;
+        return $value ? $value : null;
     }
 
     public function hubunganPengaju()
@@ -53,6 +54,16 @@ class PengajuanSkpotBeasiswa extends Model
     public function pekerjaanPengaju()
     {
         return $this->belongsTo(Pekerjaan::class, 'pekerjaan');
+    }
+
+    public function idKkPengaju()
+    {
+        return $this->belongsTo(KartuKeluarga::class, 'kk_id');
+    }
+
+    public function idNikPengaju()
+    {
+        return $this->belongsTo(Nik::class, 'nik_id');
     }
 
     public function pengajuan()

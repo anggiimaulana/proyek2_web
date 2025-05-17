@@ -13,43 +13,15 @@ class Client extends Authenticatable
     protected $table = 'client';
 
     protected $fillable = [
-        'nik',
-        'name',
-        'tempat_lahir',
-        'tanggal_lahir',
-        'jk',
-        'status',
-        'agama',
-        'alamat',
-        'pendidikan',
-        'pekerjaan',
+        'kk_id',
+        'nama_kepala_keluarga',
         'nomor_telepon',
         'password',
     ];
 
-    public function clientJenisKelamin()
+    public function kartuKeluarga()
     {
-        return $this->belongsTo(JenisKelamin::class, 'jk');
-    }
-
-    public function clientStatusPerkawinan()
-    {
-        return $this->belongsTo(StatusPerkawinan::class, 'status');
-    }
-
-    public function clientAgama()
-    {
-        return $this->belongsTo(Agama::class, 'agama');
-    }
-
-    public function clientPendidikan()
-    {
-        return $this->belongsTo(Pendidikan::class, 'pendidikan');
-    }
-
-    public function clientPekerjaan()
-    {
-        return $this->belongsTo(Pekerjaan::class, 'pekerjaan');
+        return $this->belongsTo(KartuKeluarga::class, 'kk_id')->select('id');
     }
 
     public function pengajuan()

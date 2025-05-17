@@ -32,6 +32,6 @@ class PengajuanSkBelumMenikahController extends Controller
             ->loadView('file.detail.skBelumMenikah', compact('skBelumMenikah', 'qrCode'))
             ->setPaper('a4', 'portrait');
 
-        return $pdf->stream("{$skBelumMenikah->nama}.pdf");
+        return $pdf->download(" SK Belum Menikah - {$skBelumMenikah->nama}.pdf");
     }
 }

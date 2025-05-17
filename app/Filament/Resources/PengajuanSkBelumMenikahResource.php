@@ -7,6 +7,8 @@ use App\Filament\Resources\PengajuanSkBelumMenikahResource\RelationManagers;
 use App\Models\Agama;
 use App\Models\Hubungan;
 use App\Models\JenisKelamin;
+use App\Models\KartuKeluarga;
+use App\Models\Nik;
 use App\Models\Pekerjaan;
 use App\Models\PengajuanSkBelumMenikah;
 use App\Models\StatusPerkawinan;
@@ -18,6 +20,8 @@ use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\ViewField;
 use Filament\Forms\Form;
+use Filament\Forms\Get;
+use Filament\Forms\Set;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
@@ -43,16 +47,48 @@ class PengajuanSkBelumMenikahResource extends Resource
     {
         return $form
             ->schema([
+                Select::make('kk_id')
+                    ->label('Nomor Kartu Keluarga')
+                    ->options(KartuKeluarga::all()->pluck('nomor_kk', 'id'))
+                    ->searchable()
+                    ->reactive()
+                    ->required(),
+
+                Select::make('nik_id')
+                    ->label('Nomor Induk Kependudukan (NIK)')
+                    ->options(function (Get $get) {
+                        $kkId = $get('kk_id');
+                        if (!$kkId) {
+                            return [];
+                        }
+                        return Nik::where('kk_id', $kkId)->pluck('nomor_nik', 'id');
+                    })
+                    ->searchable()
+                    ->required()
+                    ->disabled(fn(Get $get) => !$get('kk_id'))
+                    ->reactive()
+                    ->afterStateUpdated(function (callable $set, $state) {
+                        // Ambil data lengkap dari NIK yang dipilih
+                        $nikData = Nik::find($state);
+                        if ($nikData) {
+                            // Set value field lain
+                            $set('hubungan', $nikData->hubungan);
+                            $set('nama', $nikData->name);
+                            $set('jk', $nikData->jk);
+                            $set('tempat_lahir', $nikData->tempat_lahir);
+                            $set('tanggal_lahir', $nikData->tanggal_lahir);
+                            $set('agama', $nikData->agama);
+                            $set('pekerjaan', $nikData->pekerjaan);
+                            $set('status_perkawinan', $nikData->status);
+                            $set('alamat', $nikData->alamat);
+                        }
+                    }),
+
                 Select::make('hubungan')
-                    ->label('Hubungan Pemohon dengan Pemilik Akun')
+                    ->label('Status dalam Keluarga')
                     ->options(Hubungan::all()->pluck('jenis_hubungan', 'id'))
                     ->searchable()
                     ->required(),
-
-                TextInput::make('nik')
-                    ->label('NIK')
-                    ->required()
-                    ->placeholder('Masukan NIK'),
 
                 TextInput::make('nama')
                     ->label('Nama Lengkap')
@@ -71,7 +107,7 @@ class PengajuanSkBelumMenikahResource extends Resource
                     ->placeholder('Masukan tempat lahir'),
 
                 DatePicker::make('tanggal_lahir')
-                    ->label('Tangal Lahir')
+                    ->label('Tanggal Lahir')
                     ->required(),
 
                 Select::make('agama')
@@ -105,18 +141,18 @@ class PengajuanSkBelumMenikahResource extends Resource
                     ->openable()
                     ->preserveFilenames()
                     ->directory('uploads/kk')
-                    ->disk('public')
-                    ->nullable()
-                    ->dehydrated(false)
-                    ->hint('Kosongkan jika tidak ingin mengganti file'),
+                    ->disk('public'),
 
                 Select::make('pengajuan.status_pengajuan')
-                    ->label('Status Pengajuan')
-                    ->options(\App\Models\StatusPengajuan::all()->pluck('status', 'id'))
-                    ->default(fn($record) => $record?->pengajuan?->status_pengajuan)
+                    ->label('Kelengkapan Berkas')
+                    ->options([
+                        2 => 'Lengkap',
+                        3 => 'Tidak Lengkap',
+                    ])
                     ->searchable()
-                    ->required()
-                    ->afterStateUpdated(function ($state, $set, $get, $record) {
+                    ->required(fn(string $context) => $context === 'edit')
+                    ->visible(fn(string $context) => $context === 'edit')
+                    ->afterStateUpdated(function ($state, Set $set, Get $get, $record) {
                         if ($record?->pengajuan) {
                             $record->pengajuan->status_pengajuan = $state;
                             $record->pengajuan->save();
@@ -126,10 +162,10 @@ class PengajuanSkBelumMenikahResource extends Resource
                 Textarea::make('pengajuan.catatan')
                     ->label('Catatan Penolakan')
                     ->placeholder('Tulis alasan penolakan di sini...')
-                    ->required()
                     ->rows(4)
+                    ->required(fn(Get $get) => (int) $get('pengajuan.status_pengajuan') === 3)
                     ->columnSpan('full')
-                    ->visible(fn($get) => (int) $get('pengajuan.status_pengajuan') === 3),
+                    ->visible(fn(Get $get) => (int) $get('pengajuan.status_pengajuan') === 3),
             ]);
     }
 

@@ -21,7 +21,7 @@ class PengajuanSkStatusController extends Controller
         $hashedDate = Hashids::encode($skStatus->created_at->timestamp);
 
         // Buat link ke halaman scan
-        $link = url("/file/scan/{$hashedId}.{$hashedDate}.{$hashedName}");
+        $link = url(path: "/file/scan/{$hashedId}.{$hashedDate}.{$hashedName}");
 
         // Generate QR Code dari link
         $qrCode = base64_encode(QrCode::format('png')->size(pixels: 80)->generate($link));
@@ -31,6 +31,6 @@ class PengajuanSkStatusController extends Controller
             ->loadView('file.detail.skStatus', compact('skStatus', 'qrCode'))
             ->setPaper('a4', 'portrait');
 
-        return $pdf->stream("{$skStatus->nama}.pdf");
+        return $pdf->download("Surat Keterangan Status {$skStatus->nama}.pdf");
     }
 }

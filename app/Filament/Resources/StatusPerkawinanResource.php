@@ -25,7 +25,7 @@ class StatusPerkawinanResource extends Resource
 
     protected static ?string $navigationLabel = 'Status Perkawinan';
 
-    protected static ?string $navigationIcon = 'heroicon-o-user-group';
+    protected static ?string $navigationIcon = 'heroicon-o-user-circle';
 
     protected static ?string $navigationGroup = 'Kelola Informasi Umum';
 
@@ -44,6 +44,9 @@ class StatusPerkawinanResource extends Resource
     {
         return $table
             ->columns([
+                TextColumn::make('no')
+                    ->label('No')
+                    ->rowIndex(),
                 TextColumn::make('status_perkawinan')->label('Status Perkawinan'),
                 TextColumn::make('created_at')->label('Tanggal Dibuat')->dateTime(),
             ])
@@ -52,7 +55,8 @@ class StatusPerkawinanResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()->label('Ubah')->color('warning'),
+                Tables\Actions\DeleteAction::make()->label('Hapus')->color('danger'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

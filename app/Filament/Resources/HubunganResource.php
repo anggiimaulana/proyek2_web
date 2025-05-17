@@ -44,6 +44,9 @@ class HubunganResource extends Resource
     {
         return $table
             ->columns([
+                TextColumn::make('no')
+                    ->label('No')
+                    ->rowIndex(),
                 TextColumn::make('jenis_hubungan')->label('Nama Hubungan'),
                 TextColumn::make('created_at')->label('Tanggal Dibuat')->dateTime(),
             ])
@@ -52,7 +55,8 @@ class HubunganResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()->label('Ubah')->color('warning'),
+                Tables\Actions\DeleteAction::make()->label('Hapus')->color('danger'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
