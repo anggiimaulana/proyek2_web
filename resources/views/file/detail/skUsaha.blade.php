@@ -220,7 +220,7 @@
             </div>
         @endif
         <p>
-            <u><strong>{{ $skUsaha->pengajuan->kuwuUpdated->nama }}</strong></u>
+            <u><strong>{{ $skUsaha->pengajuan->kuwuUpdated->name }}</strong></u>
         </p>
     </div>
 </body>

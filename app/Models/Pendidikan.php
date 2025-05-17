@@ -10,21 +10,6 @@ class Pendidikan extends Model
 
     protected $fillable = ['jenis_pendidikan'];
 
-    protected static function booted()
-    {
-        static::created(function ($pendidikan) {
-            self::clearCache($pendidikan);
-        });
-
-        static::updated(function ($pendidikan) {
-            self::clearCache($pendidikan);
-        });
-
-        static::deleted(function ($pendidikan) {
-            self::clearCache($pendidikan);
-        });
-    }
-
     public function client()
     {
         return $this->hasMany(Nik::class, 'pendidikan');

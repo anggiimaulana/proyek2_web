@@ -13,7 +13,7 @@ class KuwuFactory extends Factory
     {
         return [
             'nip' => $this->faker->numerify('##########'),
-            'nama' => $this->faker->name,
+            'name' => $this->faker->name,
             'jk' => $this->faker->randomElement([1, 2]), // 1 untuk Laki-laki, 2 untuk Perempuan
             'status' => $this->faker->randomElement([1, 2]), // Misalnya status: 1 untuk menikah, 2 untuk belum
             'agama' => $this->faker->randomElement([1, 2, 3, 4]), // Asumsi ada 4 agama

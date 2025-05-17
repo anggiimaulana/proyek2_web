@@ -240,7 +240,7 @@
             </div>
         @endif
         <p>
-            <u><strong>{{ $sktmSekolah->pengajuan->kuwuUpdated->nama }}</strong></u>
+            <u><strong>{{ $sktmSekolah->pengajuan->kuwuUpdated->name }}</strong></u>
         </p>
     </div>
 </body>

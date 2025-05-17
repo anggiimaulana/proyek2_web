@@ -12,21 +12,6 @@ class Penghasilan extends Model
         'rentang_penghasilan',
     ];
 
-    protected static function booted()
-    {
-        static::created(function ($penghasilan) {
-            self::clearCache($penghasilan);
-        });
-
-        static::updated(function ($penghasilan) {
-            self::clearCache($penghasilan);
-        });
-
-        static::deleted(function ($penghasilan) {
-            self::clearCache($penghasilan);
-        });
-    }
-
     public function skpotBeasiswa()
     {
         return $this->hasMany(PengajuanSkpotBeasiswa::class, 'penghasilan');

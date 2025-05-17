@@ -99,7 +99,7 @@
                 <div class="text-center sm:text-left">
                     <p class="text-sm text-gray-500">Ditandatangani oleh</p>
                     <p class="text-base font-medium">
-                        {{ $pengajuan->kuwuUpdated->nama ?? 'Tidak ada kuwu' }}
+                        {{ $pengajuan->kuwuUpdated->name ?? 'Tidak ada kuwu' }}
                     </p>
                 </div>
 

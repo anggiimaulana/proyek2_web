@@ -11,21 +11,6 @@ class KategoriPengajuan extends Model
     protected $table = 'kategori_pengajuan';
     protected $fillable = ['nama_kategori'];
 
-    protected static function booted()
-    {
-        static::created(function ($kategoriPengajuan) {
-            self::clearCache($kategoriPengajuan);
-        });
-
-        static::updated(function ($kategoriPengajuan) {
-            self::clearCache($kategoriPengajuan);
-        });
-
-        static::deleted(function ($kategoriPengajuan) {
-            self::clearCache($kategoriPengajuan);
-        });
-    }
-
     public function pengajuan()
     {
         return $this->hasMany(Pengajuan::class, 'kategori_pengajuan');

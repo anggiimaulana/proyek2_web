@@ -237,7 +237,7 @@
             </div>
         @endif
         <p>
-            <u><strong>{{ $sktmBeasiswa->pengajuan->kuwuUpdated->nama }}</strong></u>
+            <u><strong>{{ $sktmBeasiswa->pengajuan->kuwuUpdated->name }}</strong></u>
         </p>
     </div>
 </body>

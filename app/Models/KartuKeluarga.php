@@ -18,22 +18,6 @@ class KartuKeluarga extends Model
         'kepala_keluarga'
     ];
 
-
-    protected static function booted()
-    {
-        static::created(function ($nik) {
-            self::clearCache($nik);
-        });
-
-        static::updated(function ($nik) {
-            self::clearCache($nik);
-        });
-
-        static::deleted(function ($nik) {
-            self::clearCache($nik);
-        });
-    }
-
     protected static function clearCache($nik)
     {
         Log::info("Clearing cache for NIK: {$nik->id}");

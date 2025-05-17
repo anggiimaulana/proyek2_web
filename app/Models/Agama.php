@@ -12,21 +12,6 @@ class Agama extends Model
         'nama_agama',
     ];
 
-    protected static function booted()
-    {
-        static::created(function ($agama) {
-            self::clearCache($agama);
-        });
-
-        static::updated(function ($agama) {
-            self::clearCache($agama);
-        });
-
-        static::deleted(function ($agama) {
-            self::clearCache($agama);
-        });
-    }
-
     public function users()
     {
         return $this->hasMany(User::class, 'agama');
