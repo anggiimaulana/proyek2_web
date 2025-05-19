@@ -14,7 +14,7 @@ class KategoriPengajuanControllerApi extends Controller
     {
         $kategoriPengajuan = Cache::remember('kategori_pengajuan_list', 1296000, function () {
             return KategoriPengajuan::query()
-                ->select('id', 'kategori_pengajuan')
+                ->select('id', 'nama_kategori')
                 ->orderByDesc('id')
                 ->get();
         });

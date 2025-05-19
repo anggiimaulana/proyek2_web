@@ -37,9 +37,8 @@ class AuthController extends Controller
                 'error' => false,
                 'message' => 'Login Berhasil',
                 'token' => $token,
-                'data' => [
-                    'client' => $dataClient,
-                ],
+                'client_id' => $client->id,
+                'kk_id' => $client->kk_id,
             ]);
         } catch (\Exception $e) {
             return response()->json([
