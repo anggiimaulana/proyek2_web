@@ -18,12 +18,12 @@ class NikControllerApi extends Controller
                 'kartuKeluarga:id,nomor_kk',
                 'clientJenisKelamin:id,jenis_kelamin',
                 'hubunganClient:id,jenis_hubungan',
-                'clientAgama:id,agama',
-                'clientPendidikan:id,pendidikan',
-                'clientPekerjaan:id,pekerjaan',
+                'clientAgama:id,nama_agama',
+                'clientPendidikan:id,jenis_pendidikan',
+                'clientPekerjaan:id,nama_pekerjaan',
                 'clientStatusPerkawinan:id,status_perkawinan',
-                'clientStatusHubunganKeluarga:id,hubungan'
-            ])->query()
+                'hubunganClient:id,nama_hubungan'
+            ])
                 ->select('id', 'nomor_nik', 'kk_id', 'name', 'jk', 'hubungan', 'agama', 'tempat_lahir', 'tanggal_lahir', 'pendidikan', 'pekerjaan', 'status', 'alamat')
                 ->orderByDesc('id')
                 ->get();
@@ -32,7 +32,7 @@ class NikControllerApi extends Controller
         return response()->json([
             'error' => false,
             'message' => 'Data NIK',
-            'data' => $nikUser
+            'data' => NikResource::collection($nikUser)
         ], Response::HTTP_OK);
     }
 

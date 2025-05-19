@@ -23,8 +23,6 @@ class NikResource extends JsonResource
             'pendidikan' => $this->clientPendidikan->jenis_pendidikan ?? null,
             'status' => $this->clientStatusPerkawinan->status_perkawinan ?? null,
             'alamat' => $this->alamat,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
         ];
     }
 }

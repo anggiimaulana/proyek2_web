@@ -15,9 +15,9 @@ class ClientControllerApi extends Controller
     {
         try {
             $client = Cache::remember('client_list', 1296000, function () {
-                return Client::select('kk_id', 'nama_kepala_keluarga')
+                return Client::select('id', 'kk_id', 'nama_kepala_keluarga', 'nomor_telepon')
                     ->orderByDesc('id')
-                    ->get();
+                    ->paginate(15);
             });
 
             return response()->json([
@@ -46,7 +46,7 @@ class ClientControllerApi extends Controller
             $cacheKey = "client_{$id}";
 
             $client = Cache::remember($cacheKey, 1296000, function () use ($id) {
-                return Client::select('kk_id', 'nama_kepala_keluarga', 'nomor_telepon')
+                return Client::select('id', 'kk_id', 'nama_kepala_keluarga', 'nomor_telepon')
                     ->where('id', $id)
                     ->firstOrFail();
             });
