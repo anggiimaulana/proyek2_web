@@ -15,7 +15,6 @@ class HubunganControllerApi extends Controller
         $hubungan = Cache::remember('hubungan_list', 1296000, function () {
             return Hubungan::query()
                 ->select('id', 'jenis_hubungan')
-                ->orderByDesc('id')
                 ->get();
         });
 

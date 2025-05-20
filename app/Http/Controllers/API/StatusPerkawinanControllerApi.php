@@ -15,7 +15,6 @@ class StatusPerkawinanControllerApi extends Controller
         $statusPerkawinan = Cache::remember('status_perkawinan_list', 1296000, function () {
             return StatusPerkawinan::query()
                 ->select('id', 'status_perkawinan')
-                ->orderByDesc('id')
                 ->get();
         });
         return response()->json([

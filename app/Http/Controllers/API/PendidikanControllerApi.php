@@ -15,7 +15,6 @@ class PendidikanControllerApi extends Controller
         $pendidikan = Cache::remember('pendidikan_list', 1296000, function () {
             return Pendidikan::query()
                 ->select('id', 'jenis_pendidikan')
-                ->orderByDesc('id')
                 ->get();
         });
         return response()->json([

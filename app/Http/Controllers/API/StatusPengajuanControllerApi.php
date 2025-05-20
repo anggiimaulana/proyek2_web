@@ -15,7 +15,6 @@ class StatusPengajuanControllerApi extends Controller
         $statusPengajuan = Cache::remember('status_pengajuan_list', 1296000, function () {
             return StatusPengajuan::query()
                 ->select('id', 'status')
-                ->orderByDesc('id')
                 ->get();
         });
         return response()->json([

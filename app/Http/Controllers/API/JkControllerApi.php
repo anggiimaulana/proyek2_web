@@ -15,7 +15,6 @@ class JkControllerApi extends Controller
         $jk = Cache::remember('jk_list', 1296000, function () {
             return JenisKelamin::query()
                 ->select('id', 'jenis_kelamin')
-                ->orderByDesc('id')
                 ->get();
         });
         return response()->json([
