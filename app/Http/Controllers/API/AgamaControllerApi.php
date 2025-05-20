@@ -15,7 +15,6 @@ class AgamaControllerApi extends Controller
         $agama = Cache::remember('agama_list', 1296000, function () {
             return Agama::query()
                 ->select('id', 'nama_agama')
-                ->orderByDesc('id')
                 ->get();
         });
         return response()->json([

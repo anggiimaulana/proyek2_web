@@ -25,7 +25,6 @@ class NikControllerApi extends Controller
                 'hubunganClient:id,nama_hubungan'
             ])
                 ->select('id', 'nomor_nik', 'kk_id', 'name', 'jk', 'hubungan', 'agama', 'tempat_lahir', 'tanggal_lahir', 'pendidikan', 'pekerjaan', 'status', 'alamat')
-                ->orderByDesc('id')
                 ->get();
         });
 

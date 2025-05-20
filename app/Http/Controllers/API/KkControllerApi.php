@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\KartuKeluarga;
+use App\Models\Nik;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Cache;
@@ -39,7 +40,7 @@ class KkControllerApi extends Controller
         }
 
         try {
-            $kk = KartuKeluarga::findOrFail($id);
+            $kk = KartuKeluarga::with('niks')->findOrFail($id); // pake with
 
             return response()->json([
                 'error' => false,

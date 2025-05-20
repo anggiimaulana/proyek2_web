@@ -15,7 +15,6 @@ class PekerjaanControllerApi extends Controller
         $pekerjaan = Cache::remember('pekerjaan_list', 1296000, function () {
             return Pekerjaan::query()
                 ->select('id', 'nama_pekerjaan')
-                ->orderByDesc('id')
                 ->get();
         });
         return response()->json([

@@ -15,7 +15,6 @@ class PenghasilanControllerApi extends Controller
         $penghasilan = Cache::remember('penghasilan_list', 1296000, function () {
             return Penghasilan::query()
                 ->select('id', 'rentang_penghasilan')
-                ->orderByDesc('id')
                 ->get();
         });
         $response = [
