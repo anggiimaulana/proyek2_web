@@ -31,18 +31,18 @@ class PengajuanSkUsahaControllerApi extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'hubungan' => 'required|integer',
-            'nik_id' => 'required|integer',
-            'kk_id' => 'required|integer',
-            'nama' => 'required|string',
-            'tempat_lahir' => 'required|string',
+            'hubungan' => 'required',
+            'nik_id' => 'required',
+            'kk_id' => 'required',
+            'nama' => 'required',
+            'tempat_lahir' => 'required',
             'tanggal_lahir' => 'required|date',
-            'jk' => 'required|integer',
-            'status_perkawinan' => 'required|integer',
-            'pekerjaan' => 'required|integer',
-            'alamat' => 'required|string',
-            'nama_usaha' => 'required|string',
-            'file_ktp' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
+            'jk' => 'required',
+            'status_perkawinan' => 'required',
+            'pekerjaan' => 'required',
+            'alamat' => 'required',
+            'nama_usaha' => 'required',
+            'file_ktp' => 'nullable|file|mimes:pdf,jpg,jpeg,png',
         ]);
 
         if ($validator->fails()) {
@@ -78,6 +78,7 @@ class PengajuanSkUsahaControllerApi extends Controller
                 'id_user_pengajuan' => $user->id,
                 'id_admin' => null,
                 'kategori_pengajuan' => 8,
+                'url_file' => '/file/preview/sku/' . $sku->id,
                 'detail_type' => PengajuanSkUsaha::class,
                 'status_pengajuan' => 1,
                 'catatan' => null,
@@ -130,18 +131,18 @@ class PengajuanSkUsahaControllerApi extends Controller
             $data = PengajuanSkUsaha::findOrFail($id);
 
             $validator = Validator::make($request->all(), [
-                'hubungan' => 'required|integer',
-                'nik_id' => 'required|integer',
-                'kk_id' => 'required|integer',
-                'nama' => 'required|string',
-                'tempat_lahir' => 'required|string',
+                'hubungan' => 'required',
+                'nik_id' => 'required',
+                'kk_id' => 'required',
+                'nama' => 'required',
+                'tempat_lahir' => 'required',
                 'tanggal_lahir' => 'required|date',
-                'jk' => 'required|integer',
-                'status_perkawinan' => 'required|integer',
-                'pekerjaan' => 'required|integer',
-                'alamat' => 'required|string',
-                'nama_usaha' => 'required|string',
-                'file_ktp' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
+                'jk' => 'required',
+                'status_perkawinan' => 'required',
+                'pekerjaan' => 'required',
+                'alamat' => 'required',
+                'nama_usaha' => 'required',
+                'file_ktp' => 'nullable|file|mimes:pdf,jpg,jpeg,png',
             ]);
 
             if ($validator->fails()) {
@@ -169,7 +170,7 @@ class PengajuanSkUsahaControllerApi extends Controller
 
                 $file = $request->file('file_ktp');
                 $namaFile = uniqid() . '_' . $file->getClientOriginalName();
-                $file->storeAs('uploads/kk', 'uploads/kk/' . $namaFile);
+                $file->storeAs('uploads/kk', $namaFile);
             }
 
             $data->update([
@@ -184,13 +185,13 @@ class PengajuanSkUsahaControllerApi extends Controller
                 'pekerjaan' => $request->pekerjaan,
                 'alamat' => $request->alamat,
                 'nama_usaha' => $request->nama_usaha,
-                'file_ktp' => $namaFile,
+                'file_ktp' => 'uploads/kk/' . $namaFile,
             ]);
 
             if ($pengajuan && $pengajuan->status_pengajuan == 3 && $request->hasFile('file_ktp')) {
                 $pengajuan->update([
                     'status_pengajuan' => 5,
-                    'catatan' => null,
+                    'catatan' => $data->catatan,
                     'updated_at' => now(),
                 ]);
             }

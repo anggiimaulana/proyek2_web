@@ -43,7 +43,7 @@ class PengajuanSkpotBeasiswaControllerApi extends Controller
             'pekerjaan' => 'required|integer',
             'alamat' => 'required|string',
             'penghasilan' => 'required|integer',
-            'file_kk' => 'required|file|mimes:pdf,jpg,jpeg,png|max:2048',
+            'file_kk' => 'required|file|mimes:pdf,jpg,jpeg,png',
         ]);
 
         if ($validator->fails()) {
@@ -83,6 +83,7 @@ class PengajuanSkpotBeasiswaControllerApi extends Controller
                 'id_user_pengajuan' => $user->id,
                 'id_admin' => null,
                 'kategori_pengajuan' => 7,
+                'url_file' => '/file/preview/skpot/' . $skpotBeasiswa->id,
                 'detail_type' => PengajuanSkpotBeasiswa::class,
                 'status_pengajuan' => 1,
                 'catatan' => null,
@@ -148,7 +149,7 @@ class PengajuanSkpotBeasiswaControllerApi extends Controller
                 'pekerjaan' => 'required|integer',
                 'alamat' => 'required|string',
                 'penghasilan' => 'required|integer',
-                'file_kk' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
+                'file_kk' => 'nullable|file|mimes:pdf,jpg,jpeg,png',
             ]);
 
             if ($validator->fails()) {
@@ -196,7 +197,6 @@ class PengajuanSkpotBeasiswaControllerApi extends Controller
                 'pekerjaan' => $request->pekerjaan,
                 'alamat' => $request->alamat,
                 'penghasilan' => $request->penghasilan,
-                'file_kk' => $namaFile,
             ]);
 
             // Reset status pengajuan jika sebelumnya ditolak
@@ -204,7 +204,7 @@ class PengajuanSkpotBeasiswaControllerApi extends Controller
             if ($pengajuan && $pengajuan->status_pengajuan == 3 && $request->hasFile('file_kk')) {
                 $pengajuan->update([
                     'status_pengajuan' => 5,
-                    'catatan' => null,
+                    'catatan' => $data->catatan,
                     'updated_at' => now(),
                 ]);
             }

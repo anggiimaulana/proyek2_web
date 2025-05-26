@@ -13,7 +13,8 @@ return new class extends Migration
             $table->foreignId('id_user_pengajuan')->nullable()->constrained('client')->onDelete('cascade')->onUpdate('cascade');
             $table->foreignId('id_admin')->nullable()->constrained('users')->onDelete('cascade')->onUpdate('cascade');
             $table->foreignId('kategori_pengajuan')->constrained('kategori_pengajuan')->onDelete('cascade')->onUpdate('cascade');
-            $table->morphs('detail');  // Polymorphic relationship
+            $table->string('url_file')->nullable();
+            $table->morphs('detail');
             $table->foreignId('status_pengajuan')->constrained('status_pengajuan')->onDelete('cascade')->onUpdate('cascade');
             $table->text('catatan')->nullable();
             $table->foreignId('id_admin_updated')->nullable()->constrained('users')->onDelete('cascade')->onUpdate('cascade');

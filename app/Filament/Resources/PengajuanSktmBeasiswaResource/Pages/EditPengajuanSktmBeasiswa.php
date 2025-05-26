@@ -38,6 +38,10 @@ class EditPengajuanSktmBeasiswa extends EditRecord
             'status_pengajuan' => $statusPengajuan,
         ]);
 
+        // if (isset($data['file_kk']) && is_array($data['file_kk'])) {
+        //     $data['file_kk'] = $data['file_kk'][0];
+        // }
+
         return $data;
     }
 }

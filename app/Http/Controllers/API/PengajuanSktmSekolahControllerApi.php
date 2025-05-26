@@ -46,7 +46,7 @@ class PengajuanSktmSekolahControllerApi extends Controller
             'asal_sekolah' => 'required|string',
             'kelas' => 'required|string',
             'alamat' => 'required|string',
-            'file_kk' => 'required|file|mimes:pdf,jpg,jpeg,png|max:2048',
+            'file_kk' => 'required|file|mimes:pdf,jpg,jpeg,png',
         ]);
 
         if ($validator->fails()) {
@@ -87,7 +87,8 @@ class PengajuanSktmSekolahControllerApi extends Controller
             $pengajuan = $sktm->pengajuan()->create([
                 'id_user_pengajuan' => $user->id,
                 'id_admin' => null,
-                'kategori_pengajuan' => 2,
+                'kategori_pengajuan' => 3,
+                'url_file' => '/file/preview/sktm-sekolah/' . $sktm->id,
                 'detail_type' => PengajuanSktmSekolah::class,
                 'status_pengajuan' => 1,
                 'catatan' => null,
@@ -155,7 +156,7 @@ class PengajuanSktmSekolahControllerApi extends Controller
                 'asal_sekolah' => 'required|string',
                 'kelas' => 'required|string',
                 'alamat' => 'required|string',
-                'file_kk' => 'required|file|mimes:pdf,jpg,jpeg,png|max:2048',
+                'file_kk' => 'required|file|mimes:pdf,jpg,jpeg,png',
             ]);
 
             if ($validator->fails()) {
@@ -206,7 +207,7 @@ class PengajuanSktmSekolahControllerApi extends Controller
                 'asal_sekolah' => $request->asal_sekolah,
                 'kelas' => $request->kelas,
                 'alamat' => $request->alamat,
-                'file_kk' => $namaFile,
+                'file_kk' => 'uploads/kk/' . $namaFile,
             ]);
 
             // Reset status pengajuan jika sebelumnya ditolak
@@ -214,7 +215,7 @@ class PengajuanSktmSekolahControllerApi extends Controller
             if ($pengajuan && $pengajuan->status_pengajuan == 3 && $request->hasFile('file_kk')) {
                 $pengajuan->update([
                     'status_pengajuan' => 5,
-                    'catatan' => null,
+                    'catatan' => $data->catatan,
                     'updated_at' => now(),
                 ]);
             }
