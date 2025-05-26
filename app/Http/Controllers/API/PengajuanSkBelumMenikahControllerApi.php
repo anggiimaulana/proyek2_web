@@ -42,7 +42,7 @@ class PengajuanSkBelumMenikahControllerApi extends Controller
             'pekerjaan' => 'required|integer',
             'status_perkawinan' => 'required|integer',
             'alamat' => 'required|string',
-            'file_kk' => 'required|file|mimes:pdf,jpg,jpeg,png|max:2048',
+            'file_kk' => 'required|file|mimes:pdf,jpg,jpeg,png',
         ]);
 
         if ($validator->fails()) {
@@ -82,6 +82,7 @@ class PengajuanSkBelumMenikahControllerApi extends Controller
                 'id_user_pengajuan' => $user->id,
                 'id_admin' => null,
                 'kategori_pengajuan' => 5,
+                'url_file' => '/file/preview/skbm/' . $skBelumMenikah->id,
                 'detail_type' => PengajuanSkBelumMenikah::class,
                 'status_pengajuan' => 1,
                 'catatan' => null,
@@ -147,7 +148,7 @@ class PengajuanSkBelumMenikahControllerApi extends Controller
                 'pekerjaan' => 'required|integer',
                 'status_perkawinan' => 'required|integer',
                 'alamat' => 'required|string',
-                'file_kk' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
+                'file_kk' => 'nullable|file|mimes:jpg,jpeg,png,pdf',
             ]);
 
             if ($validator->fails()) {
@@ -169,8 +170,8 @@ class PengajuanSkBelumMenikahControllerApi extends Controller
             // Jika ada file baru
             if ($request->hasFile('file_kk')) {
                 // Hapus file lama jika ada
-                if ($data->file_kk && file_exists(storage_path('app/uploads/kk/' . $data->file_kk))) {
-                    unlink(storage_path('app/uploads/kk/' . $data->file_kk));
+                if ($data->file_kk && file_exists(storage_path('app/' . $data->file_kk))) {
+                    unlink(storage_path('app/' . $data->file_kk));
                 }
 
                 $file = $request->file('file_kk');
@@ -197,7 +198,7 @@ class PengajuanSkBelumMenikahControllerApi extends Controller
             if ($data->pengajuan && $data->pengajuan->status_pengajuan == 3) {
                 $data->pengajuan->update([
                     'status_pengajuan' => 5,
-                    'catatan' => null,
+                    'catatan' => $data->catatan,
                     'updated_at' => now(),
                 ]);
             }

@@ -44,7 +44,7 @@ class PengajuanSkPekerjaanControllerApi extends Controller
             'pekerjaan_terdahulu' => 'required|integer',
             'pekerjaan_sekarang' => 'required|integer',
             'alamat' => 'required|string',
-            'file_kk' => 'required|file|mimes:pdf,jpg,jpeg,png|max:2048',
+            'file_kk' => 'required|file|mimes:pdf,jpg,jpeg,png',
         ]);
 
         if ($validator->fails()) {
@@ -82,6 +82,7 @@ class PengajuanSkPekerjaanControllerApi extends Controller
                 'id_user_pengajuan' => $user->id,
                 'id_admin' => null,
                 'kategori_pengajuan' => 6,
+                'url_file' => '/file/preview/skp/' . $skPekerjaan->id,
                 'detail_type' => PengajuanSkPekerjaan::class,
                 'status_pengajuan' => 1,
                 'catatan' => null,
@@ -147,7 +148,7 @@ class PengajuanSkPekerjaanControllerApi extends Controller
                 'pekerjaan_terdahulu' => 'required|integer',
                 'pekerjaan_sekarang' => 'required|integer',
                 'alamat' => 'required|string',
-                'file_kk' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
+                'file_kk' => 'nullable|file|mimes:pdf,jpg,jpeg,png',
             ]);
 
             if ($validator->fails()) {
@@ -202,7 +203,7 @@ class PengajuanSkPekerjaanControllerApi extends Controller
                 // reset status hanya jika file baru diupload
                 $pengajuan->update([
                     'status_pengajuan' => 5,
-                    'catatan' => null,
+                    'catatan' => $data->catatan,
                     'updated_at' => now(),
                 ]);
             }

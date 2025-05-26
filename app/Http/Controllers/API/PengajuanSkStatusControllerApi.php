@@ -43,7 +43,7 @@ class PengajuanSkStatusControllerApi extends Controller
             'pekerjaan' => 'required|integer',
             'status_perkawinan' => 'required|integer',
             'alamat' => 'required|string',
-            'file_kk' => 'required|file|mimes:pdf,jpg,jpeg,png|max:2048',
+            'file_kk' => 'required|file|mimes:pdf,jpg,jpeg,png',
         ]);
 
         if ($validator->fails()) {
@@ -81,6 +81,7 @@ class PengajuanSkStatusControllerApi extends Controller
                 'id_user_pengajuan' => $user->id,
                 'id_admin' => null,
                 'kategori_pengajuan' => 4,
+                'url_file' => '/file/preview/sks/' . $skStatus->id,
                 'detail_type' => PengajuanSkStatus::class,
                 'status_pengajuan' => 1,
                 'catatan' => null,
@@ -145,7 +146,7 @@ class PengajuanSkStatusControllerApi extends Controller
                 'pekerjaan' => 'required|integer',
                 'status_perkawinan' => 'required|integer',
                 'alamat' => 'required|string',
-                'file_kk' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
+                'file_kk' => 'nullable|file|mimes:pdf,jpg,jpeg,png',
             ]);
 
             if ($validator->fails()) {
@@ -192,7 +193,6 @@ class PengajuanSkStatusControllerApi extends Controller
                 'pekerjaan' => $request->pekerjaan,
                 'status_perkawinan' => $request->status_perkawinan,
                 'alamat' => $request->alamat,
-                'file_kk' => $namaFile,
             ]);
 
             // Reset status pengajuan jika sebelumnya ditolak
@@ -200,7 +200,7 @@ class PengajuanSkStatusControllerApi extends Controller
             if ($pengajuan && $pengajuan->status_pengajuan == 3 && $request->hasFile('file_kk')) {
                 $pengajuan->update([
                     'status_pengajuan' => 5,
-                    'catatan' => null,
+                    'catatan' => $data->catatan,
                     'updated_at' => now(),
                 ]);
             }

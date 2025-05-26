@@ -46,7 +46,7 @@ class PengajuanSktmBeasiswaControllerApi extends Controller
             'nama_ibu' => 'required|string',
             'pekerjaan_ortu' => 'required|integer',
             'alamat' => 'required|string',
-            'file_kk' => 'required|file|mimes:pdf,jpg,jpeg,png|max:2048',
+            'file_kk' => 'required|file|mimes:pdf,jpg,jpeg,png',
         ]);
 
         if ($validator->fails()) {
@@ -87,6 +87,7 @@ class PengajuanSktmBeasiswaControllerApi extends Controller
                 'id_user_pengajuan' => $user->id,
                 'id_admin' => null,
                 'kategori_pengajuan' => 2,
+                'url_file' => '/file/preview/sktm-beasiswa/' . $sktm->id,
                 'detail_type' => PengajuanSktmBeasiswa::class,
                 'status_pengajuan' => 1,
                 'catatan' => null,
@@ -140,21 +141,21 @@ class PengajuanSktmBeasiswaControllerApi extends Controller
             $data = PengajuanSktmBeasiswa::findOrFail($id);
 
             $validator = Validator::make($request->all(), [
-                'hubungan' => 'required|integer',
-                'nik_id' => 'required|integer',
-                'kk_id' => 'required|integer',
-                'nama_anak' => 'required|string',
-                'tempat_lahir' => 'required|string',
+                'hubungan' => 'required',
+                'nik_id' => 'required',
+                'kk_id' => 'required',
+                'nama_anak' => 'required',
+                'tempat_lahir' => 'required',
                 'tanggal_lahir' => 'required|date',
-                'suku' => 'required|string',
-                'jk' => 'required|integer',
-                'agama' => 'required|integer',
-                'pekerjaan_anak' => 'required|integer',
-                'nama' => 'required|string',
-                'nama_ibu' => 'required|string',
-                'pekerjaan_ortu' => 'required|integer',
-                'alamat' => 'required|string',
-                'file_kk' => 'required|file|mimes:pdf,jpg,jpeg,png|max:2048',
+                'suku' => 'required',
+                'jk' => 'required',
+                'agama' => 'required',
+                'pekerjaan_anak' => 'required',
+                'nama' => 'required',
+                'nama_ibu' => 'required',
+                'pekerjaan_ortu' => 'required',
+                'alamat' => 'required',
+                'file_kk' => 'required|file|mimes:pdf,jpg,jpeg,png',
             ]);
 
             if ($validator->fails()) {
@@ -204,7 +205,6 @@ class PengajuanSktmBeasiswaControllerApi extends Controller
                 'nama_ibu' => $request->nama_ibu,
                 'pekerjaan_ortu' => $request->pekerjaan_ortu,
                 'alamat' => $request->alamat,
-                'file_kk' => $namaFile,
             ]);
 
             // Reset status pengajuan jika sebelumnya ditolak
@@ -212,7 +212,7 @@ class PengajuanSktmBeasiswaControllerApi extends Controller
             if ($pengajuan && $pengajuan->status_pengajuan == 3 && $request->hasFile('file_kk')) {
                 $pengajuan->update([
                     'status_pengajuan' => 5,
-                    'catatan' => null,
+                    'catatan' => $data->catatan,
                     'updated_at' => now(),
                 ]);
             }

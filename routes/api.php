@@ -78,48 +78,58 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::get('/skbm/{id}', [PengajuanSkBelumMenikahControllerApi::class, 'show']);
     Route::put('/skbm/{id}', [PengajuanSkBelumMenikahControllerApi::class, 'update']);
     Route::post('/skbm', [PengajuanSkBelumMenikahControllerApi::class, 'store']);
+    Route::delete('/skbm/{id}', [PengajuanSkBelumMenikahControllerApi::class, 'destroy']);
 
     // Pengajuan skp
     Route::get('/skp', [PengajuanSkPekerjaanControllerApi::class, 'index']);
     Route::get('/skp/{id}', [PengajuanSkPekerjaanControllerApi::class, 'show']);
     Route::put('/skp/{id}', [PengajuanSkPekerjaanControllerApi::class, 'update']);
     Route::post('/skp', [PengajuanSkPekerjaanControllerApi::class, 'store']);
+    Route::delete('/skp/{id}', [PengajuanSkPekerjaanControllerApi::class, 'destroy']);
 
     // Pengajuan skpot
     Route::get('/skpot', [PengajuanSkpotBeasiswaControllerApi::class, 'index']);
     Route::get('/skpot/{id}', [PengajuanSkpotBeasiswaControllerApi::class, 'show']);
     Route::put('/skpot/{id}', [PengajuanSkpotBeasiswaControllerApi::class, 'update']);
     Route::post('/skpot', [PengajuanSkpotBeasiswaControllerApi::class, 'store']);
+    Route::delete('/skpot/{id}', [PengajuanSkpotBeasiswaControllerApi::class, 'destroy']);
 
     // Pengajuan sks
     Route::get('/sks', [PengajuanSkStatusControllerApi::class, 'index']);
     Route::get('/sks/{id}', [PengajuanSkStatusControllerApi::class, 'show']);
     Route::put('/sks/{id}', [PengajuanSkStatusControllerApi::class, 'update']);
     Route::post('/sks', [PengajuanSkStatusControllerApi::class, 'store']);
+    Route::delete('/sks/{id}', [PengajuanSkStatusControllerApi::class, 'destroy']);
 
     // Pengajuan sktm beasiswa
     Route::get('/sktm-beasiswa', [PengajuanSktmBeasiswaControllerApi::class, 'index']);
     Route::get('/sktm-beasiswa/{id}', [PengajuanSktmBeasiswaControllerApi::class, 'show']);
     Route::put('/sktm-beasiswa/{id}', [PengajuanSktmBeasiswaControllerApi::class, 'update']);
     Route::post('/sktm-beasiswa', [PengajuanSktmBeasiswaControllerApi::class, 'store']);
+    Route::delete('/sktm-beasiswa/{id}', [PengajuanSktmBeasiswaControllerApi::class, 'destroy']);
 
     // Pengajuan sktm listrik
     Route::get('/sktm-listrik', [PengajuanSktmListrikControllerApi::class, 'index']);
     Route::get('/sktm-listrik/{id}', [PengajuanSktmListrikControllerApi::class, 'show']);
     Route::put('/sktm-listrik/{id}', [PengajuanSktmListrikControllerApi::class, 'update']);
     Route::post('/sktm-listrik', [PengajuanSktmListrikControllerApi::class, 'store']);
+    Route::delete('/sktm-listrik/{id}', [PengajuanSktmListrikControllerApi::class, 'destroy']);
 
     // Pengajuan sktm sekolah
     Route::get('/sktm-sekolah', [PengajuanSktmSekolahControllerApi::class, 'index']);
     Route::get('/sktm-sekolah/{id}', [PengajuanSktmSekolahControllerApi::class, 'show']);
     Route::put('/sktm-sekolah/{id}', [PengajuanSktmSekolahControllerApi::class, 'update']);
     Route::post('/sktm-sekolah', [PengajuanSktmSekolahControllerApi::class, 'store']);
+    Route::delete('/sktm-sekolah/{id}', [PengajuanSktmSekolahControllerApi::class, 'destroy']);
 
     // Pengajuan sk usaha
     Route::get('/sku', [PengajuanSkUsahaControllerApi::class, 'index']);
     Route::get('/sku/{id}', [PengajuanSkUsahaControllerApi::class, 'show']);
     Route::put('/sku/{id}', [PengajuanSkUsahaControllerApi::class, 'update']);
     Route::post('/sku', [PengajuanSkUsahaControllerApi::class, 'store']);
+    Route::delete('/sku/{id}', [PengajuanSkUsahaControllerApi::class, 'destroy']);
+
+    Route::delete('/pengajuan/{id}', [PengajuanControllerApi::class, 'destroy']);
 
     Route::post('/client/logout', [AuthController::class, 'logout']);
 });

@@ -19,6 +19,7 @@ class Pengajuan extends Model
         'kategori_pengajuan',
         'detail_type',
         'detail_id',
+        'url_file',
         'status_pengajuan',
         'catatan',
         'id_admin_updated',
