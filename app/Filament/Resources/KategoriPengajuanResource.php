@@ -54,10 +54,10 @@ class KategoriPengajuanResource extends Resource
             ->filters([
                 //
             ])
-            ->actions([
-                Tables\Actions\EditAction::make()->label('Ubah')->color('warning'),
-                Tables\Actions\DeleteAction::make()->label('Hapus')->color('danger'),
-            ])
+            // ->actions([
+            //     Tables\Actions\EditAction::make()->label('Ubah')->color('warning'),
+            //     Tables\Actions\DeleteAction::make()->label('Hapus')->color('danger'),
+            // ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
@@ -76,8 +76,8 @@ class KategoriPengajuanResource extends Resource
     {
         return [
             'index' => Pages\ListKategoriPengajuans::route('/'),
-            'create' => Pages\CreateKategoriPengajuan::route('/create'),
-            'edit' => Pages\EditKategoriPengajuan::route('/{record}/edit'),
+            // 'create' => Pages\CreateKategoriPengajuan::route('/create'),
+            // 'edit' => Pages\EditKategoriPengajuan::route('/{record}/edit'),
         ];
     }
 }

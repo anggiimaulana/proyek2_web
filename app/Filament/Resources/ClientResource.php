@@ -17,6 +17,7 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
+use Filament\Forms\Get;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
@@ -45,11 +46,19 @@ class ClientResource extends Resource
                     ->label('Nomor Kartu Keluarga')
                     ->options(KartuKeluarga::all()->pluck('nomor_kk', 'id'))
                     ->searchable()
-                    ->required(),
+                    ->reactive()
+                    ->required()
+                    ->afterStateUpdated(function (callable $set, $state) {
+                        $kkData = KartuKeluarga::find($state);
+                        if ($kkData) {
+                            $set('nama_kepala_keluarga', $kkData->kepala_keluarga);
+                        }
+                    }),
+
                 TextInput::make('nama_kepala_keluarga')
                     ->label('Nama Kepala Keluarga')
-                    ->required()
-                    ->placeholder('Masukan nama lengkap'),
+                    ->required(),
+                    
                 TextInput::make('nomor_telepon')
                     ->label('Nomor Telepon')
                     ->required()

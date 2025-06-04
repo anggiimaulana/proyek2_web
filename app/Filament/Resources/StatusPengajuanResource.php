@@ -53,10 +53,10 @@ class StatusPengajuanResource extends Resource
             ->filters([
                 //
             ])
-            ->actions([
-                Tables\Actions\EditAction::make()->label('Ubah')->color('warning'),
-                Tables\Actions\DeleteAction::make()->label('Hapus')->color('danger'),
-            ])
+            // ->actions([
+            //     Tables\Actions\EditAction::make()->label('Ubah')->color('warning'),
+            //     Tables\Actions\DeleteAction::make()->label('Hapus')->color('danger'),
+            // ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
@@ -75,8 +75,8 @@ class StatusPengajuanResource extends Resource
     {
         return [
             'index' => Pages\ListStatusPengajuans::route('/'),
-            'create' => Pages\CreateStatusPengajuan::route('/create'),
-            'edit' => Pages\EditStatusPengajuan::route('/{record}/edit'),
+            // 'create' => Pages\CreateStatusPengajuan::route('/create'),
+            // 'edit' => Pages\EditStatusPengajuan::route('/{record}/edit'),
         ];
     }
 }

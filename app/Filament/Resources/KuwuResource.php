@@ -36,7 +36,7 @@ class KuwuResource extends Resource
     {
         return $form
             ->schema([
-                TextInput::make('nama')
+                TextInput::make('name')
                     ->label('Nama Lengkap')
                     ->required()
                     ->placeholder('Masukan nama lengkap'),
@@ -92,7 +92,7 @@ class KuwuResource extends Resource
                 TextColumn::make('no')
                     ->label('No')
                     ->rowIndex(),
-                TextColumn::make('nama')->label('Nama Lengkap'),
+                TextColumn::make('name')->label('Nama Lengkap'),
                 TextColumn::make('nip')->label('NIP'),
                 TextColumn::make('email')->label('Email'),
                 TextColumn::make('created_at')->label('Tanggal Pendaftaran')->dateTime(),
