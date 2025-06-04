@@ -33,9 +33,6 @@ class JenisKelaminResource extends Resource
     {
         return $form
             ->schema([
-                TextColumn::make('no')
-                    ->label('No')
-                    ->rowIndex(),
                 TextInput::make('jenis_kelamin')
                     ->label('Jenis Kelamin')
                     ->required()
@@ -47,6 +44,9 @@ class JenisKelaminResource extends Resource
     {
         return $table
             ->columns([
+                TextColumn::make('no')
+                    ->label('No')
+                    ->rowIndex(),
                 TextColumn::make('jenis_kelamin')->label('Jenis Kelamin'),
                 TextColumn::make('created_at')->label('Tanggal Dibuat')->dateTime(),
             ])
