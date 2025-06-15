@@ -75,6 +75,8 @@ class PengajuanSkpotBeasiswaControllerApi extends Controller
                 'alamat' => $request->alamat,
                 'penghasilan' => $request->penghasilan,
                 'file_kk' => 'uploads/kk/' . $namaFile,
+                'created_at' => now(),
+                'updated_at' => now(),
             ]);
             $user = Auth::guard('client')->user();
 
@@ -197,6 +199,7 @@ class PengajuanSkpotBeasiswaControllerApi extends Controller
                 'pekerjaan' => $request->pekerjaan,
                 'alamat' => $request->alamat,
                 'penghasilan' => $request->penghasilan,
+                'updated_at' => now(),
             ]);
 
             // Reset status pengajuan jika sebelumnya ditolak

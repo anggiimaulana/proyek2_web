@@ -79,6 +79,8 @@ class PengajuanSktmSekolahControllerApi extends Controller
                 'kelas' => $request->kelas,
                 'alamat' => $request->alamat,
                 'file_kk' => 'uploads/kk/' . $namaFile,
+                'created_at' => now(),
+                'updated_at' => now(),
             ]);
 
             $user = Auth::guard('client')->user();
@@ -208,6 +210,7 @@ class PengajuanSktmSekolahControllerApi extends Controller
                 'kelas' => $request->kelas,
                 'alamat' => $request->alamat,
                 'file_kk' => 'uploads/kk/' . $namaFile,
+                'updated_at' => now(),
             ]);
 
             // Reset status pengajuan jika sebelumnya ditolak

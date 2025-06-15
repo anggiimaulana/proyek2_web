@@ -72,8 +72,10 @@ class PengajuanSkStatusControllerApi extends Controller
                 'status_perkawinan' => $request->status_perkawinan,
                 'alamat' => $request->alamat,
                 'file_kk' => 'uploads/kk/' . $namaFile,
+                'created_at' => now(),
+                'updated_at' => now(),
             ]);
-            
+
             $user = Auth::guard('client')->user();
 
             // Buat relasi ke tabel pengajuan umum
@@ -193,6 +195,7 @@ class PengajuanSkStatusControllerApi extends Controller
                 'pekerjaan' => $request->pekerjaan,
                 'status_perkawinan' => $request->status_perkawinan,
                 'alamat' => $request->alamat,
+                'updated_at' => now(),
             ]);
 
             // Reset status pengajuan jika sebelumnya ditolak

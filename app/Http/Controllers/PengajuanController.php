@@ -17,6 +17,7 @@ class PengajuanController extends Controller
         }
 
         $url = "/file/scan/{$hashedId}.{$hashedDate}.{$hashedName}";
+        $urlFix = config('app.url') . $url;
 
         $pengajuan = Pengajuan::with(['admin', 'kuwuUpdated', 'userPengajuan'])->findOrFail($id);
         $detail = $pengajuan->detail;

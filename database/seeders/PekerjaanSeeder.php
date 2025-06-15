@@ -13,9 +13,68 @@ class PekerjaanSeeder extends Seeder
      */
     public function run(): void
     {
-        // Seed Pekerjaan
-        Pekerjaan::create(['nama_pekerjaan' => 'PNS', 'created_at' => now(), 'updated_at' => now()]);
-        Pekerjaan::create(['nama_pekerjaan' => 'Petani', 'created_at' => now(), 'updated_at' => now()]);
+        $pekerjaanList = [
+            'Belum/Tidak Bekerja',
+            'Pelajar/Mahasiswa',
+            'Mengurus Rumah Tangga',
+            'PNS',
+            'TNI',
+            'POLRI',
+            'Karyawan Swasta',
+            'Karyawan BUMN',
+            'Karyawan Honorer',
+            'Guru',
+            'Dosen',
+            'Dokter',
+            'Perawat',
+            'Bidan',
+            'Pedagang',
+            'Petani/Pekebun',
+            'Nelayan',
+            'Buruh Harian Lepas',
+            'Buruh Tani',
+            'Buruh Pabrik',
+            'Sopir',
+            'Montir',
+            'Wiraswasta',
+            'Wirausaha',
+            'Pensiunan',
+            'Notaris',
+            'Pengacara/Advokat',
+            'Arsitek',
+            'Akuntan',
+            'Seniman/Artis',
+            'Peneliti',
+            'Penyiar',
+            'Wartawan',
+            'Ustadz/Pendeta/Pemuka Agama',
+            'Tukang Cukur',
+            'Tukang Kayu',
+            'Tukang Batu',
+            'Tukang Las/Pandai Besi',
+            'Tukang Jahit',
+            'Pramugari/Pramugara',
+            'Masinis',
+            'Pilot',
+            'Nelayan/Perikanan',
+            'Pialang',
+            'Pengusaha',
+            'Konsultan',
+            'Dukun Tradisional',
+            'Imam Masjid',
+            'Pendeta',
+            'Bhiksu',
+            'Pastor',
+            'Santri',
+            'Ibu Rumah Tangga',
+        ];
 
+        foreach ($pekerjaanList as $pekerjaan) {
+            Pekerjaan::create([
+                'nama_pekerjaan' => $pekerjaan,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+        }
     }
 }

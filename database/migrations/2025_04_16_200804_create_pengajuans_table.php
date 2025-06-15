@@ -19,6 +19,7 @@ return new class extends Migration
             $table->text('catatan')->nullable();
             $table->foreignId('id_admin_updated')->nullable()->constrained('users')->onDelete('cascade')->onUpdate('cascade');
             $table->foreignId('id_kuwu_updated')->nullable()->constrained('kuwu')->onDelete('cascade')->onUpdate('cascade');
+            $table->timestamps();
         });
     }
 

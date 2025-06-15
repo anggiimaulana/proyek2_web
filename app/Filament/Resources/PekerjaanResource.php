@@ -50,7 +50,6 @@ class PekerjaanResource extends Resource
                 TextColumn::make('nama_pekerjaan')->label('Pekerjaan'),
                 TextColumn::make('created_at')->label('Tanggal Dibuat')->dateTime(),
             ])
-            ->defaultSort('id', 'desc')
             ->filters([
                 //
             ])

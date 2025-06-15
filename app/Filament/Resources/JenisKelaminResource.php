@@ -50,14 +50,13 @@ class JenisKelaminResource extends Resource
                 TextColumn::make('jenis_kelamin')->label('Jenis Kelamin'),
                 TextColumn::make('created_at')->label('Tanggal Dibuat')->dateTime(),
             ])
-            ->defaultSort('id', 'desc')
             ->filters([
                 //
             ])
-            ->actions([
-                Tables\Actions\EditAction::make()->label('Ubah')->color('warning'),
-                Tables\Actions\DeleteAction::make()->label('Hapus')->color('danger'),
-            ])
+            // ->actions([
+            //     Tables\Actions\EditAction::make()->label('Ubah')->color('warning'),
+            //     Tables\Actions\DeleteAction::make()->label('Hapus')->color('danger'),
+            // ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
@@ -76,8 +75,8 @@ class JenisKelaminResource extends Resource
     {
         return [
             'index' => Pages\ListJenisKelamins::route('/'),
-            'create' => Pages\CreateJenisKelamin::route('/create'),
-            'edit' => Pages\EditJenisKelamin::route('/{record}/edit'),
+            // 'create' => Pages\CreateJenisKelamin::route('/create'),
+            // 'edit' => Pages\EditJenisKelamin::route('/{record}/edit'),
         ];
     }
 }

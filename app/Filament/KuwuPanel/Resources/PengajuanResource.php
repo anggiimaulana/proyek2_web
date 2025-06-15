@@ -4,6 +4,7 @@ namespace App\Filament\KuwuPanel\Resources;
 
 use App\Filament\KuwuPanel\Resources\PengajuanResource\Pages;
 use App\Filament\KuwuPanel\Resources\PengajuanResource\RelationManagers;
+use App\Filament\KuwuPanel\Resources\PengajuanResource\Widgets\PengajuanStatsOverview;
 use App\Models\Pengajuan;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -21,7 +22,9 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class PengajuanResource extends Resource
 {
     protected static ?string $model = Pengajuan::class;
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-document-text';
+
+    protected static ?string $navigationLabel = 'Pengajuan Surat';
 
     public static function getNavigationBadge(): ?string
     {
@@ -48,10 +51,10 @@ class PengajuanResource extends Resource
                     ->label('Nama Pengaju')
                     ->getStateUsing(function ($record) {
                         return $record->detail?->nama ?? $record->detail?->name ?? '-';
-                    }),
+                    })->searchable()->sortable(),
                 TextColumn::make('kategoriPengajuan.nama_kategori')->label('Jenis Pengajuan'),
-                TextColumn::make('detail.created_at')->label('Tanggal Pengajuan')->dateTime(),
-                TextColumn::make('detail.updated_at')->label('Tanggal Diperbarui')->dateTime(),
+                TextColumn::make('created_at')->label('Tanggal Pengajuan')->dateTime()->sortable(),
+                TextColumn::make('updated_at')->label('Tanggal Diperbarui')->dateTime()->sortable(),
                 TextColumn::make('statusPengajuan.status')
                     ->badge()
                     ->alignCenter()
@@ -95,10 +98,17 @@ class PengajuanResource extends Resource
                         return !($record->statusPengajuan->status === 'Diproses' || $record->status_pengajuan == 2);
                     })
                     ->action(function ($record) {
+                        // Update status pengajuan dan id kuwu pada tabel utama
                         $record->update([
+                            'updated_at' => now(),
                             'status_pengajuan' => 4,
                             'id_kuwu_updated' => auth()->guard('kuwu')->user()->id,
                         ]);
+
+                        // Update updated_at pada relasi detail
+                        if ($record->detail) {
+                            $record->detail->touch();
+                        }
                     })
 
                     ->requiresConfirmation()
@@ -124,6 +134,10 @@ class PengajuanResource extends Resource
                                     'status_pengajuan' => 4,
                                     'id_kuwu_updated' => auth()->guard('kuwu')->user()->id,
                                 ]);
+                                if ($record->detail) {
+                                    $record->detail->touch();
+                                }
+                                // Untuk relasi lain lakukan hal sama
 
                                 $disetujui++;
                             } else {
@@ -156,6 +170,13 @@ class PengajuanResource extends Resource
             ]);
     }
 
+    public static function getWidgets(): array
+    {
+        return [
+            PengajuanStatsOverview::class,
+        ];
+    }
+
     public static function getRelations(): array
     {
         return [
@@ -167,8 +188,8 @@ class PengajuanResource extends Resource
     {
         return [
             'index' => Pages\ListPengajuans::route('/'),
-            'create' => Pages\CreatePengajuan::route('/create'),
-            'edit' => Pages\EditPengajuan::route('/{record}/edit'),
+            // 'create' => Pages\CreatePengajuan::route('/create'),
+            // 'edit' => Pages\EditPengajuan::route('/{record}/edit'),
         ];
     }
 }

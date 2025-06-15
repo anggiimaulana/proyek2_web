@@ -50,7 +50,6 @@ class KategoriPengajuanResource extends Resource
                 TextColumn::make('nama_kategori')->label('Kategori Pengajuan'),
                 TextColumn::make('created_at')->label('Tanggal Dibuat')->dateTime(),
             ])
-            ->defaultSort('id', 'desc')
             ->filters([
                 //
             ])

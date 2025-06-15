@@ -49,7 +49,6 @@ class StatusPengajuanResource extends Resource
                 TextColumn::make('status')->label('Status Pengajuan'),
                 TextColumn::make('created_at')->label('Tanggal Dibuat')->dateTime(),
             ])
-            ->defaultSort('id', 'desc')
             ->filters([
                 //
             ])

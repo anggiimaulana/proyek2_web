@@ -13,9 +13,19 @@ class StatusPerkawinanSeeder extends Seeder
      */
     public function run(): void
     {
-        // Seed Status Perkawinan
-        StatusPerkawinan::create(['status_perkawinan' => 'Belum Menikah', 'created_at' => now(), 'updated_at' => now()]); // ID = 1
-        StatusPerkawinan::create(['status_perkawinan' => 'Menikah', 'created_at' => now(), 'updated_at' => now()]);       // ID = 2
+        $statusList = [
+            'Belum Kawin',
+            'Kawin',
+            'Cerai Hidup',
+            'Cerai Mati',
+        ];
 
+        foreach ($statusList as $status) {
+            StatusPerkawinan::create([
+                'status_perkawinan' => $status,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+        }
     }
 }

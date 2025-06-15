@@ -154,6 +154,8 @@ class PengajuanSkPekerjaanResource extends Resource
                         if ($record?->pengajuan) {
                             $record->pengajuan->status_pengajuan = $state;
                             $record->pengajuan->save();
+
+                            $record->touch();
                         }
                     }),
 
@@ -175,10 +177,9 @@ class PengajuanSkPekerjaanResource extends Resource
                 TextColumn::make('no')
                     ->label('No')
                     ->rowIndex(),
-                TextColumn::make('nama')->label('Nama'),
-                TextColumn::make('nik')->label('NIK'),
-                TextColumn::make('created_at')->label('Tanggal Pengajuan')->dateTime(),
-                TextColumn::make('updated_at')->label('Tanggal Diperbarui')->dateTime(),
+                TextColumn::make('nama')->label('Nama')->searchable()->sortable(),
+                TextColumn::make('created_at')->label('Tanggal Pengajuan')->dateTime()->sortable(),
+                TextColumn::make('updated_at')->label('Tanggal Diperbarui')->dateTime()->sortable(),
                 TextColumn::make('pengajuan.statusPengajuan.status')->badge()
                     ->alignCenter()
                     ->color(fn(string $state): string => match ($state) {
@@ -187,7 +188,7 @@ class PengajuanSkPekerjaanResource extends Resource
                         'Disetujui' => 'success',
                         'Ditolak' => 'danger',
                         'Direvisi' => 'primary',
-                    })->label('Status'),
+                    })->label('Status')->sortable(),
             ])
             ->defaultSort('id', 'desc')
             ->filters([

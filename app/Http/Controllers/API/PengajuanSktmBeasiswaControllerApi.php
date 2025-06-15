@@ -78,6 +78,8 @@ class PengajuanSktmBeasiswaControllerApi extends Controller
                 'pekerjaan_ortu' => $request->pekerjaan_ortu,
                 'alamat' => $request->alamat,
                 'file_kk' => 'uploads/kk/' . $namaFile,
+                'created_at' => now(),
+                'updated_at' => now(),
             ]);
 
             $user = Auth::guard('client')->user();
@@ -205,6 +207,7 @@ class PengajuanSktmBeasiswaControllerApi extends Controller
                 'nama_ibu' => $request->nama_ibu,
                 'pekerjaan_ortu' => $request->pekerjaan_ortu,
                 'alamat' => $request->alamat,
+                'updated_at' => now(),
             ]);
 
             // Reset status pengajuan jika sebelumnya ditolak

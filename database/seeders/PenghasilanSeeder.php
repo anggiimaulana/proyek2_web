@@ -13,9 +13,24 @@ class PenghasilanSeeder extends Seeder
      */
     public function run(): void
     {
-        // Seed Jenis Kelamin
-        Penghasilan::create(['rentang_penghasilan' => 'Rp.5.000.000 - Rp.10.000.000', 'created_at' => now(), 'updated_at' => now()]);   // ID = 1
-        Penghasilan::create(['rentang_penghasilan' => 'Rp.10.000.000 - Rp.15.000.000', 'created_at' => now(), 'updated_at' => now()]);
-    
+        $penghasilanList = [
+            'Tidak Berpenghasilan',
+            'Kurang dari Rp.500.000',
+            'Rp.500.000 - Rp.999.999',
+            'Rp.1.000.000 - Rp.1.999.999',
+            'Rp.2.000.000 - Rp.4.999.999',
+            'Rp.5.000.000 - Rp.10.000.000',
+            'Rp.10.000.000 - Rp.15.000.000',
+            'Rp.15.000.000 - Rp.20.000.000',
+            'Lebih dari Rp.20.000.000'
+        ];
+
+        foreach ($penghasilanList as $rentang) {
+            Penghasilan::create([
+                'rentang_penghasilan' => $rentang,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+        }
     }
 }
