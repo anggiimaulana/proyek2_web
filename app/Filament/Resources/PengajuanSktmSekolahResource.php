@@ -171,6 +171,8 @@ class PengajuanSktmSekolahResource extends Resource
                         if ($record?->pengajuan) {
                             $record->pengajuan->status_pengajuan = $state;
                             $record->pengajuan->save();
+
+                            $record->touch();
                         }
                     }),
 
@@ -191,11 +193,11 @@ class PengajuanSktmSekolahResource extends Resource
                 TextColumn::make('no')
                     ->label('No')
                     ->rowIndex(),
-                TextColumn::make('nama_anak')->label('Nama Anak'),
-                TextColumn::make('nama')->label('Nama Orang Tua'),
-                TextColumn::make('asal_sekolah')->label('Asal Sekolah'),
-                TextColumn::make('created_at')->label('Tanggal Pengajuan')->dateTime(),
-                TextColumn::make('updated_at')->label('Tanggal Diperbarui')->dateTime(),
+                TextColumn::make('nama_anak')->label('Nama Anak')->searchable()->sortable(),
+                TextColumn::make('nama')->label('Nama Orang Tua')->searchable()->sortable(),
+                TextColumn::make('asal_sekolah')->label('Asal Sekolah')->searchable()->sortable(),
+                TextColumn::make('created_at')->label('Tanggal Pengajuan')->dateTime()->sortable(),
+                TextColumn::make('updated_at')->label('Tanggal Diperbarui')->dateTime()->sortable(),
                 TextColumn::make('pengajuan.statusPengajuan.status')->badge()
                     ->alignCenter()
                     ->color(fn(string $state): string => match ($state) {
@@ -204,7 +206,7 @@ class PengajuanSktmSekolahResource extends Resource
                         'Disetujui' => 'success',
                         'Ditolak' => 'danger',
                         'Direvisi' => 'primary',
-                    })->label('Status'),
+                    })->label('Status')->sortable(),
             ])
             ->defaultSort('id', 'desc')
             ->filters([

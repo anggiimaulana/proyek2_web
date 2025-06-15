@@ -53,9 +53,9 @@ class KartuKeluargaResource extends Resource
                 TextColumn::make('no')
                     ->label('No')
                     ->rowIndex(),
-                TextColumn::make('kepala_keluarga')->label('Nama Kepala Keluarga'),
-                TextColumn::make('nomor_kk')->label('Nomor Kartu Keluarga'),
-                TextColumn::make('created_at')->label('Tanggal Pendaftaran')->dateTime(),
+                TextColumn::make('kepala_keluarga')->label('Nama Kepala Keluarga')->searchable()->sortable(),
+                TextColumn::make('nomor_kk')->label('Nomor Kartu Keluarga')->searchable(),
+                TextColumn::make('created_at')->label('Tanggal Pendaftaran')->dateTime()->sortable(),
             ])
             ->defaultSort('id', 'desc')
             ->filters([

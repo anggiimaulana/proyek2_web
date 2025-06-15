@@ -50,7 +50,6 @@ class PenghasilanResource extends Resource
                 TextColumn::make('rentang_penghasilan')->label('Rentang Penghasilan'),
                 TextColumn::make('created_at')->label('Tanggal Dibuat')->dateTime(),
             ])
-            ->defaultSort('id', 'desc')
             ->filters([
                 //
             ])

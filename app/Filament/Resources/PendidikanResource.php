@@ -50,7 +50,6 @@ class PendidikanResource extends Resource
                 TextColumn::make('jenis_pendidikan')->label('Pendidikan'),
                 TextColumn::make('created_at')->label('Tanggal Dibuat')->dateTime(),
             ])
-            ->defaultSort('id', 'desc')
             ->filters([
                 //
             ])

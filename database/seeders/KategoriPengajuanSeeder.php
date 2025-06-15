@@ -8,9 +8,6 @@ use Illuminate\Database\Seeder;
 
 class KategoriPengajuanSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
         // Seed Pendidikan

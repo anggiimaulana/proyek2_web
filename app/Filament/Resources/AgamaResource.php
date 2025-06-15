@@ -50,7 +50,6 @@ class AgamaResource extends Resource
                 TextColumn::make('nama_agama')->label('Nama Agama'),
                 TextColumn::make('created_at')->label('Tanggal Dibuat')->dateTime(),
             ])
-            ->defaultSort('id', 'desc')
             ->filters([
                 //
             ])

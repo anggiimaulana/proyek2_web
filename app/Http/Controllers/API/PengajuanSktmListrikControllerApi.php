@@ -72,6 +72,8 @@ class PengajuanSktmListrikControllerApi extends Controller
                 'penghasilan' => $request->penghasilan,
                 'nama_pln' => $request->nama_pln,
                 'file_kk' => 'uploads/kk/' . $namaFile,
+                'created_at' => now(),
+                'updated_at' => now(),
             ]);
 
             $user = Auth::guard('client')->user();
@@ -194,6 +196,7 @@ class PengajuanSktmListrikControllerApi extends Controller
                 'pekerjaan' => $request->pekerjaan,
                 'penghasilan' => $request->penghasilan,
                 'nama_pln' => $request->nama_pln,
+                'updated_at' => now(),
             ]);
 
             // Reset status pengajuan jika sebelumnya ditolak

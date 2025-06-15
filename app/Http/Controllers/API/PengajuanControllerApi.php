@@ -17,7 +17,7 @@ class PengajuanControllerApi extends Controller
             'userPengajuan:id',
             'kategoriPengajuan:id,nama_kategori',
             'statusPengajuan:id,status',
-        ])->orderBy('id', 'desc')->paginate(10);
+        ])->orderBy('updated_at', 'desc')->paginate(10);
 
         return PengajuanResource::collection($pengajuan);
     }
@@ -30,7 +30,7 @@ class PengajuanControllerApi extends Controller
             'statusPengajuan:id,status',
         ])
             ->where('id_user_pengajuan', $id_user)
-            ->orderBy('id', 'desc')
+            ->orderBy('updated_at', 'desc')
             ->paginate(10);
 
         return PengajuanResource::collection($pengajuan);

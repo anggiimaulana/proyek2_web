@@ -50,7 +50,6 @@ class StatusPerkawinanResource extends Resource
                 TextColumn::make('status_perkawinan')->label('Status Perkawinan'),
                 TextColumn::make('created_at')->label('Tanggal Dibuat')->dateTime(),
             ])
-            ->defaultSort('id', 'desc')
             ->filters([
                 //
             ])

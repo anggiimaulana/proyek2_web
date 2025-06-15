@@ -50,7 +50,6 @@ class HubunganResource extends Resource
                 TextColumn::make('jenis_hubungan')->label('Nama Hubungan'),
                 TextColumn::make('created_at')->label('Tanggal Dibuat')->dateTime(),
             ])
-            ->defaultSort('id', 'desc')
             ->filters([
                 //
             ])

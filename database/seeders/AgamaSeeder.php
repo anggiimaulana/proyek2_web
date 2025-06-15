@@ -15,7 +15,11 @@ class AgamaSeeder extends Seeder
     {
         // Seed Agama
         Agama::create(['nama_agama' => 'Islam', 'created_at' => now(), 'updated_at' => now()]);    // ID = 1
-        Agama::create(['nama_agama' => 'Kristen', 'created_at' => now(), 'updated_at' => now()]);  // ID = 2
+        Agama::create(['nama_agama' => 'Kristen Protestan', 'created_at' => now(), 'updated_at' => now()]);  // ID = 2
+        Agama::create(['nama_agama' => 'Kristen Khatolik', 'created_at' => now(), 'updated_at' => now()]);  // ID = 2
+        Agama::create(['nama_agama' => 'Budha', 'created_at' => now(), 'updated_at' => now()]);  // ID = 2
+        Agama::create(['nama_agama' => 'Hindu', 'created_at' => now(), 'updated_at' => now()]);  // ID = 2
+        Agama::create(['nama_agama' => 'Konghuchu', 'created_at' => now(), 'updated_at' => now()]);  // ID = 2
 
     }
 }

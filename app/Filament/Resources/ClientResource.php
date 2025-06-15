@@ -86,9 +86,9 @@ class ClientResource extends Resource
                 TextColumn::make('no')
                     ->label('No')
                     ->rowIndex(),
-                TextColumn::make('nama_kepala_keluarga')->label('Nama Kepala Keluarga'),
-                TextColumn::make('nomor_telepon')->label('Nomor Telepon'),
-                TextColumn::make('created_at')->label('Tanggal Pendaftaran')->dateTime(),
+                TextColumn::make('nama_kepala_keluarga')->label('Nama Kepala Keluarga')->searchable()->sortable(),
+                TextColumn::make('nomor_telepon')->label('Nomor Telepon')->searchable()->sortable(),
+                TextColumn::make('created_at')->label('Tanggal Pendaftaran')->dateTime()->sortable(),
             ])
             ->defaultSort('id', 'desc')
             ->filters([

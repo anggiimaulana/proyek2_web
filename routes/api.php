@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\API\AgamaControllerApi;
+use App\Http\Controllers\API\BeritaControllerApi;
 use App\Http\Controllers\API\ClientControllerApi;
 use App\Http\Controllers\API\HubunganControllerApi;
 use App\Http\Controllers\API\JkControllerApi;
@@ -11,6 +12,7 @@ use App\Http\Controllers\API\KuwuControllerApi;
 use App\Http\Controllers\API\NikControllerApi;
 use App\Http\Controllers\API\PekerjaanControllerApi;
 use App\Http\Controllers\API\PendidikanControllerApi;
+use App\Http\Controllers\Api\PengaduanController;
 use App\Http\Controllers\API\PengajuanControllerApi;
 use App\Http\Controllers\API\PengajuanSkBelumMenikahControllerApi;
 use App\Http\Controllers\API\PengajuanSkPekerjaanControllerApi;
@@ -131,12 +133,18 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 
     Route::delete('/pengajuan/{id}', [PengajuanControllerApi::class, 'destroy']);
 
+    Route::post('/pengaduan', [PengaduanController::class, 'store']);
+    Route::get('/pengaduan/{id_user}', [PengaduanController::class, 'showByUser']);
+
     Route::post('/client/logout', [AuthController::class, 'logout']);
 });
 
+Route::get('/pengajuan', [PengajuanControllerApi::class, 'index']);
+Route::get('/pengajuan/user/{id_user}', [PengajuanControllerApi::class, 'showByUser']);
+Route::get('berita', [BeritaControllerApi::class, 'index']);
+Route::get('berita/{id}', [BeritaControllerApi::class, 'show']);
+Route::get('berita/home/show', [BeritaControllerApi::class, 'showHome']);
 
 // main pengajuan
 // Route::get('/pengajuan/detail', [PengajuanControllerApi::class, 'index']);
 
-Route::get('/pengajuan', [PengajuanControllerApi::class, 'index']);
-Route::get('/pengajuan/user/{id_user}', [PengajuanControllerApi::class, 'showByUser']);

@@ -108,9 +108,10 @@ class NIKResource extends Resource
                 TextColumn::make('no')
                     ->label('No')
                     ->rowIndex(),
-                TextColumn::make('name')->label('Nama Lengkap'),
-                TextColumn::make('nomor_nik')->label('Nomor Induk Kependudukan'),
-                TextColumn::make('created_at')->label('Tanggal Pendaftaran')->dateTime(),
+                TextColumn::make('name')->label('Nama Lengkap')->searchable()->sortable(),
+                TextColumn::make('nomor_nik')->label('Nomor Induk Kependudukan')->searchable()->sortable(),
+                TextColumn::make('kartuKeluarga.nomor_kk')->label('Nomor Kartu Keluarga')->searchable()->sortable(),
+                TextColumn::make('created_at')->label('Tanggal Pendaftaran')->dateTime()->sortable(),
             ])
             ->defaultSort('id', 'desc')
             ->filters([
@@ -140,6 +141,14 @@ class NIKResource extends Resource
             'index' => Pages\ListNIKS::route('/'),
             'create' => Pages\CreateNIK::route('/create'),
             'edit' => Pages\EditNIK::route('/{record}/edit'),
+        ];
+    }
+
+    // Method untuk mendapatkan statistik penduduk
+    public static function getWidgets(): array
+    {
+        return [
+            NIKResource\Widgets\PendudukStatsWidget::class,
         ];
     }
 }

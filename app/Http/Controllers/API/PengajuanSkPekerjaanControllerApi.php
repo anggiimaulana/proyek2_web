@@ -73,6 +73,8 @@ class PengajuanSkPekerjaanControllerApi extends Controller
                 'pekerjaan_sekarang' => $request->pekerjaan_sekarang,
                 'alamat' => $request->alamat,
                 'file_kk' => 'uploads/kk/' . $namaFile,
+                'created_at' => now(),
+                'updated_at' => now(),
             ]);
 
             $user = Auth::guard('client')->user();
@@ -195,6 +197,7 @@ class PengajuanSkPekerjaanControllerApi extends Controller
                 'pekerjaan_terdahulu' => $request->pekerjaan_terdahulu,
                 'pekerjaan_sekarang' => $request->pekerjaan_sekarang,
                 'alamat' => $request->alamat,
+                'updated_at' => now(),
             ]);
 
             // Reset status pengajuan jika sebelumnya ditolak

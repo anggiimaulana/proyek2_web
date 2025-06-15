@@ -8,9 +8,6 @@ use Illuminate\Database\Seeder;
 
 class StatusPengajuanSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
         // Seed Jenis Kelamin

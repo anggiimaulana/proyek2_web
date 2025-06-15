@@ -71,6 +71,8 @@ class PengajuanSkUsahaControllerApi extends Controller
                 'alamat' => $request->alamat,
                 'nama_usaha' => $request->nama_usaha,
                 'file_ktp' => 'uploads/kk/' . $namaFile,
+                'created_at' => now(),
+                'updated_at' => now(),
             ]);
 
             $user = Auth::guard('client')->user();
@@ -186,6 +188,7 @@ class PengajuanSkUsahaControllerApi extends Controller
                 'alamat' => $request->alamat,
                 'nama_usaha' => $request->nama_usaha,
                 'file_ktp' => 'uploads/kk/' . $namaFile,
+                'updated_at' => now(),
             ]);
 
             if ($pengajuan && $pengajuan->status_pengajuan == 3 && $request->hasFile('file_ktp')) {
